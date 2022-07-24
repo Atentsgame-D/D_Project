@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
 {
     // public ---------------------------------------------------------------------------------
     // ItemSlotUI가 있는 프리팹
@@ -42,7 +42,6 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         slotParent = transform.Find("Inventory_Base").Find("Grid Setting");
         goldText = transform.Find("MoneyPanel").Find("Money").GetComponent<TextMeshProUGUI>();
         tempItemSlotUI = GetComponentInChildren<TempItemSlotUI>();
-
         Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(Close);
     }
@@ -215,6 +214,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                         // ItemSlotUI 컴포넌트가 있으면 Inventory.MoveItem 실행
                         //Debug.Log($"End SlotID : {slotUI.ID}");
                         inven.MoveItem(dragStartID, slotUI.ID);
+                        
                         tempItemSlotUI.itemImage.sprite = null;
                     }
                 }
@@ -223,5 +223,59 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         }
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)  // 우클릭 이벤트
+        {
+            ItemSlotUI clickSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<ItemSlotUI>();   // 드래그 시작한 위치에 있는 게임 오브젝트 가져오기
+            if (clickSlot != null)
+            {
+                if (clickSlot.ItemSlot.SlotItemData.itemType == ItemType.Equipment)
+                {
+                    // 장착
+                    // 만들지 안만들지는 모르겠지만 일단 넣어놓자
+                    //StartCoroutine(weaponManager.ChangeWeaponCoroutine(item.weaponType, item.itemName);
+                }
+                else
+                {
+                    if (clickSlot.slotType == SlotType.Inventory)
+                    {
+                        Debug.Log(clickSlot.ItemSlot.SlotItemData.itemName + " 을 사용했습니다");
+                        clickSlot.SetSlotCount(clickSlot.ItemSlot, -1);
+                    }
+                    else
+                    {
+                        // 상점일때 구입창이 뜨도록 하자.
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("좌클릭");
+        }
+    }
+
+    private void SetSlotCount(ItemSlotUI itemSlotUI, int count = 1)
+    {
+        itemSlotUI.SetSlotCount(itemSlotUI.ItemSlot, count);
+
+        if (itemSlotUI.ItemSlot.ItemCount <= 0)
+        {
+            inven.RemoveItem(itemSlotUI.ItemSlot);
+            itemSlotUI.OffItemCountImage();
+        }
+    }
+
+
+    public void SetItem(Item item, ItemSlotUI itemSlotUI)
+    {
+        inven.AddItem(item.data.itemIDCode);
+        if(item.data.itemType == ItemType.Consumable)
+        {
+            itemSlotUI.OnItemCountText(item);
+            SetSlotCount(itemSlotUI);
+        }
+    }
     // ----------------------------------------------------------------------------------------
 }

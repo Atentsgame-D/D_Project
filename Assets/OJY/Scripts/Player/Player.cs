@@ -7,7 +7,8 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    // Money 관련 -------------------------------------------------------------------------------
+    // Item 관련 -------------------------------------------------------------------------------
+    private float itemPickupRange = 3.0f;       // 아이템 줍는 범위
     private int money = 0;                      // 플레이어의 소지 금액
     public int Money
     {
@@ -112,7 +113,6 @@ public class Player : MonoBehaviour
 
         inven = new Inventory();
         invenUI.InitializeInventory(inven);
-        inven.AddItem(ItemIDCode.Basic_Helmet);
         //manager.TalkPanel.SetActive(false);
     }
     private void Update()
@@ -164,10 +164,11 @@ public class Player : MonoBehaviour
         actions.Player.Skill2.performed += OnSkill_W;
         actions.Player.Skill3.performed += OnSkill_E;
         actions.Player.Skill4.performed += OnSkill_R;
+        actions.Player.PickUp.performed += OnPickUp;
     }
-
     private void OnDisable()
     {
+        actions.Player.PickUp.performed -= OnPickUp;
         actions.Player.Skill4.performed -= OnSkill_R;
         actions.Player.Skill3.performed -= OnSkill_E;
         actions.Player.Skill2.performed -= OnSkill_W;
@@ -291,4 +292,44 @@ public class Player : MonoBehaviour
         }
     }
 
+
+    private void OnPickUp(InputAction.CallbackContext context)
+    {
+        ItemPickUp();
+    }
+
+    private void ItemPickUp()
+    {
+        Collider[] cols = Physics.OverlapSphere(transform.position, itemPickupRange, LayerMask.GetMask("Item"));
+        foreach (var col in cols)
+        {
+            Item item = col.GetComponent<Item>();
+            if (item.data.itemType == ItemType.Money)
+            {
+                Money += (int)item.data.value;
+            }
+            else if(item.data.itemType == ItemType.Consumable)
+            {
+                ItemSlotUI[] slots = invenUI.GetComponentsInChildren<ItemSlotUI>();
+                foreach(var slot in slots)
+                {
+                    if (slot.ItemSlot.SlotItemData == null)
+                    {
+                        invenUI.SetItem(item, slot);
+                        break;
+                    }
+
+                    if(slot.ItemSlot.SlotItemData.itemIDCode == item.data.itemIDCode)
+                    {
+                        slot.ItemSlot.ItemCount += 1;
+                    }
+                }
+            }
+            else if(item.data.itemType == ItemType.Equipment)
+            {
+
+            }
+            Destroy(col.gameObject);
+        }
+    }
 }

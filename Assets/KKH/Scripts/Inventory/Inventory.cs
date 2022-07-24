@@ -97,6 +97,14 @@ public class Inventory
         ItemSlot slot = slots[index];
         if(slot.IsEmpty())
         {
+            if(slot.SlotItemData.itemType == ItemType.Equipment)
+            {
+                slot.ItemCount = 0;
+            }
+            else
+            {
+                slot.ItemCount += 1;
+            }
             slot.AssignSlotItem(data);
             result = true;
 
@@ -127,6 +135,23 @@ public class Inventory
         else
         {
             //Debug.Log($"실패 : 잘못된 인덱스 입니다.");
+        }
+        return result;
+    }
+
+    public bool RemoveItem(ItemSlot itemSlot)
+    {
+        bool result = false;
+
+        if (IsNotEmptySlot(itemSlot))
+        {
+            //Debug.Log($"{slot.SlotItemData.itemName}을 삭제합니다.");
+            itemSlot.ClearSlotItem();
+            //Debug.Log($"삭제 성공.");
+            result = true;
+        }
+        else
+        {
         }
         return result;
     }
@@ -203,6 +228,7 @@ public class Inventory
 
     private bool IsValidAndNotEmptySlot(uint index) => (IsValidSlotIndex(index) && !slots[index].IsEmpty());
 
+    private bool IsNotEmptySlot(ItemSlot itemSlot) => (itemSlot != null);
 
     public void PrintInventory()
     {
