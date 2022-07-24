@@ -1,0 +1,230 @@
+fileFormatVersion: 2
+guid: c5218a64521bfd64d97ff931fcd0af4d
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: ANT.001
+    100004: eyeball
+    100006: eyeball.001
+    100008: eyelish.003
+    100010: foot.L
+    100012: foot.R
+    100014: forearm.L
+    100016: forearm.R
+    100018: hand.L
+    100020: hand.L.001.L
+    100022: hand.L.001.R
+    100024: hand.L.002.L
+    100026: hand.L.002.R
+    100028: hand.L.003.L
+    100030: hand.L.003.R
+    100032: hand.L.004.L
+    100034: hand.L.004.R
+    100036: hand.L.005.L
+    100038: hand.L.005.R
+    100040: hand.L.006.L
+    100042: hand.L.006.R
+    100044: hand.L.007.L
+    100046: hand.L.007.R
+    100048: hand.L.008.L
+    100050: hand.L.008.R
+    100052: hand.L.009.L
+    100054: hand.L.009.R
+    100056: hand.L.010.L
+    100058: hand.L.010.R
+    100060: hand.L.012.L
+    100062: hand.L.012.R
+    100064: hand.R
+    100066: metarig
+    100068: pelvis.L
+    100070: pelvis.R
+    100072: shin.L
+    100074: shin.R
+    100076: shoulder.L
+    100078: shoulder.R
+    100080: spine
+    100082: spine.001
+    100084: spine.002
+    100086: spine.003
+    100088: spine.004
+    100090: spine.005
+    100092: spine.006.L.001
+    100094: spine.006.L.002
+    100096: spine.016.L
+    100098: spine.016.R
+    100100: spine.017.L
+    100102: spine.017.R
+    100104: teath up
+    100106: thigh.L
+    100108: thigh.R
+    100110: toe.L
+    100112: toe.R
+    100114: upper_arm.L
+    100116: upper_arm.R
+    400000: //RootNode
+    400002: ANT.001
+    400004: eyeball
+    400006: eyeball.001
+    400008: eyelish.003
+    400010: foot.L
+    400012: foot.R
+    400014: forearm.L
+    400016: forearm.R
+    400018: hand.L
+    400020: hand.L.001.L
+    400022: hand.L.001.R
+    400024: hand.L.002.L
+    400026: hand.L.002.R
+    400028: hand.L.003.L
+    400030: hand.L.003.R
+    400032: hand.L.004.L
+    400034: hand.L.004.R
+    400036: hand.L.005.L
+    400038: hand.L.005.R
+    400040: hand.L.006.L
+    400042: hand.L.006.R
+    400044: hand.L.007.L
+    400046: hand.L.007.R
+    400048: hand.L.008.L
+    400050: hand.L.008.R
+    400052: hand.L.009.L
+    400054: hand.L.009.R
+    400056: hand.L.010.L
+    400058: hand.L.010.R
+    400060: hand.L.012.L
+    400062: hand.L.012.R
+    400064: hand.R
+    400066: metarig
+    400068: pelvis.L
+    400070: pelvis.R
+    400072: shin.L
+    400074: shin.R
+    400076: shoulder.L
+    400078: shoulder.R
+    400080: spine
+    400082: spine.001
+    400084: spine.002
+    400086: spine.003
+    400088: spine.004
+    400090: spine.005
+    400092: spine.006.L.001
+    400094: spine.006.L.002
+    400096: spine.016.L
+    400098: spine.016.R
+    400100: spine.017.L
+    400102: spine.017.R
+    400104: teath up
+    400106: thigh.L
+    400108: thigh.R
+    400110: toe.L
+    400112: toe.R
+    400114: upper_arm.L
+    400116: upper_arm.R
+    2100000: No Name
+    2100002: teeth
+    2100004: teeth down
+    2100006: EYE_
+    2100008: Material.010
+    2100010: Ant FREE
+    2100012: tongue
+    2300000: eyeball
+    2300002: eyeball.001
+    3300000: eyeball
+    3300002: eyeball.001
+    4300000: eyelish.003
+    4300002: teath up
+    4300004: eyeball.001
+    4300006: eyeball
+    4300008: ANT.001
+    9500000: //RootNode
+    13700000: ANT.001
+    13700002: eyelish.003
+    13700004: teath up
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
