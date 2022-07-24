@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
 
     public InventoryUI InvenUI { get => invenUI; }
 
-    private Inventory inven = new Inventory();
+    private Inventory inven;
     // ------------------------------------------------------------------------------------------
 
     PlayerInputActions actions = null;
@@ -109,7 +109,10 @@ public class Player : MonoBehaviour
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         useText.gameObject.SetActive(false);
+
+        inven = new Inventory();
         invenUI.InitializeInventory(inven);
+        inven.AddItem(ItemIDCode.Basic_Helmet);
         //manager.TalkPanel.SetActive(false);
     }
     private void Update()
