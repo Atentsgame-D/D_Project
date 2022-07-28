@@ -14,6 +14,11 @@ public class GameManager : MonoBehaviour
     }
     // ------------------------------------------------------------------------------------------
 
+    // Inven 관련 --------------------------------------------------------------------------------
+    private InventoryUI inventoryUI;
+    public InventoryUI InvenUI => inventoryUI;
+    // ------------------------------------------------------------------------------------------
+
 
     private GameObject talkPanel;
     private TextMeshProUGUI talkText;
@@ -103,5 +108,6 @@ public class GameManager : MonoBehaviour
         itemData = GetComponent<ItemDataManager>();
 
         player = FindObjectOfType<Player>();
+        inventoryUI = FindObjectOfType<InventoryUI>();
     }
 }

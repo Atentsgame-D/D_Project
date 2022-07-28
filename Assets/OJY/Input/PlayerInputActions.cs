@@ -254,6 +254,34 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""ShortCut"",
+            ""id"": ""82491fa7-53cb-4cb3-b946-9a4eead7d430"",
+            ""actions"": [
+                {
+                    ""name"": ""InventoryOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""d45fa55c-8578-4806-b575-7189c306c0a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4a1ab879-17f1-4200-825b-97ec63a1fc28"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""InventoryOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -286,6 +314,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_Player_Skill3 = m_Player.FindAction("Skill3", throwIfNotFound: true);
         m_Player_Skill4 = m_Player.FindAction("Skill4", throwIfNotFound: true);
         m_Player_PickUp = m_Player.FindAction("PickUp", throwIfNotFound: true);
+        // ShortCut
+        m_ShortCut = asset.FindActionMap("ShortCut", throwIfNotFound: true);
+        m_ShortCut_InventoryOnOff = m_ShortCut.FindAction("InventoryOnOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -438,6 +469,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // ShortCut
+    private readonly InputActionMap m_ShortCut;
+    private IShortCutActions m_ShortCutActionsCallbackInterface;
+    private readonly InputAction m_ShortCut_InventoryOnOff;
+    public struct ShortCutActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public ShortCutActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @InventoryOnOff => m_Wrapper.m_ShortCut_InventoryOnOff;
+        public InputActionMap Get() { return m_Wrapper.m_ShortCut; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShortCutActions set) { return set.Get(); }
+        public void SetCallbacks(IShortCutActions instance)
+        {
+            if (m_Wrapper.m_ShortCutActionsCallbackInterface != null)
+            {
+                @InventoryOnOff.started -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.performed -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnInventoryOnOff;
+                @InventoryOnOff.canceled -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnInventoryOnOff;
+            }
+            m_Wrapper.m_ShortCutActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @InventoryOnOff.started += instance.OnInventoryOnOff;
+                @InventoryOnOff.performed += instance.OnInventoryOnOff;
+                @InventoryOnOff.canceled += instance.OnInventoryOnOff;
+            }
+        }
+    }
+    public ShortCutActions @ShortCut => new ShortCutActions(this);
     private int m_PlayerSchemeIndex = -1;
     public InputControlScheme PlayerScheme
     {
@@ -458,5 +522,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnSkill3(InputAction.CallbackContext context);
         void OnSkill4(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);
+    }
+    public interface IShortCutActions
+    {
+        void OnInventoryOnOff(InputAction.CallbackContext context);
     }
 }

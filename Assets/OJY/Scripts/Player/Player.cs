@@ -113,6 +113,16 @@ public class Player : MonoBehaviour
 
         inven = new Inventory();
         invenUI.InitializeInventory(inven);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
         //manager.TalkPanel.SetActive(false);
     }
     private void Update()
@@ -165,9 +175,17 @@ public class Player : MonoBehaviour
         actions.Player.Skill3.performed += OnSkill_E;
         actions.Player.Skill4.performed += OnSkill_R;
         actions.Player.PickUp.performed += OnPickUp;
+
+        actions.ShortCut.Enable();                                  // 인벤토리 관련
+        actions.ShortCut.InventoryOnOff.performed += OnInventortyOnOff;
     }
+
+
     private void OnDisable()
     {
+        actions.ShortCut.InventoryOnOff.performed -= OnInventortyOnOff;
+        actions.ShortCut.Disable();                                  // 인벤토리 관련
+
         actions.Player.PickUp.performed -= OnPickUp;
         actions.Player.Skill4.performed -= OnSkill_R;
         actions.Player.Skill3.performed -= OnSkill_E;
@@ -293,6 +311,15 @@ public class Player : MonoBehaviour
     }
 
 
+
+
+
+
+
+
+
+
+
     private void OnPickUp(InputAction.CallbackContext context)
     {
         ItemPickUp();
@@ -315,13 +342,13 @@ public class Player : MonoBehaviour
                 {
                     if (slot.ItemSlot.SlotItemData == null)
                     {
-                        invenUI.SetItem(item, slot);
+                        //invenUI.SetItem(item, slot);
                         break;
                     }
 
                     if(slot.ItemSlot.SlotItemData.itemIDCode == item.data.itemIDCode)
                     {
-                        slot.ItemSlot.ItemCount += 1;
+                        //slot.ItemSlot.ItemCount += 1;
                     }
                 }
             }
@@ -331,5 +358,10 @@ public class Player : MonoBehaviour
             }
             Destroy(col.gameObject);
         }
+    }
+
+    private void OnInventortyOnOff(InputAction.CallbackContext obj)
+    {
+        GameManager.Inst.InvenUI.InventoryOnOffSwitch();
     }
 }

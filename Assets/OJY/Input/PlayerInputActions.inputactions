@@ -232,6 +232,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "ShortCut",
+            "id": "82491fa7-53cb-4cb3-b946-9a4eead7d430",
+            "actions": [
+                {
+                    "name": "InventoryOnOff",
+                    "type": "Button",
+                    "id": "d45fa55c-8578-4806-b575-7189c306c0a2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4a1ab879-17f1-4200-825b-97ec63a1fc28",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Player",
+                    "action": "InventoryOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

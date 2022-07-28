@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +5,13 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IPointerClickHandler
+public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     // public ---------------------------------------------------------------------------------
     // ItemSlotUI가 있는 프리팹
     public GameObject slotPrefab;   // 초기화시 새로 생성해야할 경우 사용
-    // ----------------------------------------------------------------------------------------
-    
+                                    // ----------------------------------------------------------------------------------------
+
     // 기본 데이터 -----------------------------------------------------------------------------
     private Player player;          // 이 인벤토리를 사용하는 플레이어
     private Inventory inven;        // 이 클래스로 표현하려는 인벤토리
@@ -27,11 +26,27 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     // Item 데이터 -----------------------------------------------------------------------------
     private uint dragStartID;               // 드래그가 시작된 슬롯의 ID
     private TempItemSlotUI tempItemSlotUI;  // 임시 슬롯(아이템 드래그나 아이템 분리할 때 사용)
+
+    public TempItemSlotUI TempSlotUI { get => tempItemSlotUI; }
     // ----------------------------------------------------------------------------------------
 
+    // 상세 정보 UI ----------------------------------------------------------------------------
+    private DetailInfoUI detail;
+    public DetailInfoUI Detail => detail;
+    // ----------------------------------------------------------------------------------------
+
+    // 아이템 분할 UI --------------------------------------------------------------------------
+    private ItemSpliterUI itemSpliterUI;
+    public ItemSpliterUI SpliterUI => itemSpliterUI;
+    // ----------------------------------------------------------------------------------------
 
     // 돈 데이터 -------------------------------------------------------------------------------
     private TextMeshProUGUI goldText;   // 돈 표시용 Text
+    // ----------------------------------------------------------------------------------------
+
+    // 델리게이트 ------------------------------------------------------------------------------
+    public System.Action OnInventoryOpen;
+    public System.Action OnInventoryClose;
     // ----------------------------------------------------------------------------------------
 
     // 유니티 이벤트 함수들 ---------------------------------------------------------------------
@@ -42,6 +57,10 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         slotParent = transform.Find("Inventory_Base").Find("Grid Setting");
         goldText = transform.Find("MoneyPanel").Find("Money").GetComponent<TextMeshProUGUI>();
         tempItemSlotUI = GetComponentInChildren<TempItemSlotUI>();
+        detail = GetComponentInChildren<DetailInfoUI>();
+        itemSpliterUI = GetComponentInChildren<ItemSpliterUI>();
+        itemSpliterUI.Close();
+
         Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(Close);
     }
@@ -51,6 +70,8 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         player = GameManager.Inst.MainPlayer;   // 게임 매니저에서 플레이어 가져오기
         player.OnMoneyChange += RefreshMoney;   // 플레이어의 Money가 변경되고 실행되는 델리게이트에 함수 등록
         RefreshMoney(player.Money);             // 첫 갱신
+
+        Close();
     }
     // ----------------------------------------------------------------------------------------
 
@@ -86,7 +107,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         {
             // 크기가 같을 경우 초기화만 진행
             slotUIs = slotParent.GetComponentsInChildren<ItemSlotUI>();
-            for(int i=0; i<inven.SlotCount; i++)
+            for (int i = 0; i < inven.SlotCount; i++)
             {
                 slotUIs[i].Initialize((uint)i, inven[i]);
             }
@@ -102,7 +123,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     /// </summary>
     private void RefreshAllSlots()
     {
-        foreach(var slotUI in slotUIs)
+        foreach (var slotUI in slotUIs)
         {
             slotUI.Refresh();
         }
@@ -119,7 +140,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public void InventoryOnOffSwitch()
     {
-        if(canvasGroup.blocksRaycasts)
+        if (canvasGroup.blocksRaycasts)
         {
             Close();
         }
@@ -134,6 +155,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         canvasGroup.alpha = 1;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
+        OnInventoryOpen?.Invoke();
     }
 
     private void Close()
@@ -141,6 +163,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+        OnInventoryClose?.Invoke();
     }
 
     // ----------------------------------------------------------------------------------------
@@ -165,26 +188,21 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(eventData.button == PointerEventData.InputButton.Left)               // 좌클릭일 때만 처리
+        if (eventData.button == PointerEventData.InputButton.Left)               // 좌클릭일 때만 처리
         {
             GameObject startObj = eventData.pointerCurrentRaycast.gameObject;   // 드래그 시작한 위치에 있는 게임 오브젝트 가져오기
-            if(startObj != null)
+            if (startObj != null)
             {
-                if (startObj.name == "InventoryUI")
+                // 드래그 시작한 위치에 게임 오브젝트가 있으면
+                ItemSlotUI slotUI = startObj.GetComponent<ItemSlotUI>();        // ItemSlotUI 컴포넌트 가져오기
+                if (slotUI != null)
                 {
-
-                }
-                else
-                {
-                    // 드래그 시작한 위치에 게임 오브젝트가 있으면
-                    ItemSlotUI slotUI = startObj.GetComponent<ItemSlotUI>();        // ItemSlotUI 컴포넌트 가져오기
-                    if (slotUI != null)
-                    {
-                        // ItemSlotUI 컴포넌트가 있으면 ID기록해 놓기
-                        //Debug.Log($"Start SlotID : {slotUI.ID}");
-                        dragStartID = slotUI.ID;
-                        tempItemSlotUI.Open(slotUI.ItemSlot);
-                    }
+                    // ItemSlotUI 컴포넌트가 있으면 ID기록해 놓기
+                    //Debug.Log($"Start SlotID : {slotUI.ID}");
+                    dragStartID = slotUI.ID;
+                    tempItemSlotUI.Open(slotUI.ItemSlot);
+                    detail.Close();
+                    detail.IsPause = true;  // 디테일창 다시 안열리게 하기
                 }
             }
         }
@@ -201,81 +219,20 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             GameObject endObj = eventData.pointerCurrentRaycast.gameObject; // 드래그 끝난 위치에 있는 게임 오브젝트 가져오기
             if (endObj != null)
             {
-                if (endObj.name == "InventoryUI")
+                // 드래그 끝난 위치에 게임 오브젝트가 있으면
+                ItemSlotUI slotUI = endObj.GetComponent<ItemSlotUI>();      // ItemSlotUI 컴포넌트 가져오기
+                if (endObj != null)
                 {
-
-                }
-                else
-                {
-                    // 드래그 끝난 위치에 게임 오브젝트가 있으면
-                    ItemSlotUI slotUI = endObj.GetComponent<ItemSlotUI>();      // ItemSlotUI 컴포넌트 가져오기
-                    if (endObj != null)
-                    {
-                        // ItemSlotUI 컴포넌트가 있으면 Inventory.MoveItem 실행
-                        //Debug.Log($"End SlotID : {slotUI.ID}");
-                        inven.MoveItem(dragStartID, slotUI.ID);
-                        
-                        tempItemSlotUI.itemImage.sprite = null;
-                    }
+                    // ItemSlotUI 컴포넌트가 있으면 Inventory.MoveItem 실행
+                    //Debug.Log($"End SlotID : {slotUI.ID}");
+                    inven.MoveItem(dragStartID, slotUI.ID);
+                    detail.IsPause = false;
+                    detail.Open(slotUI.ItemSlot.SlotItemData);
                 }
             }
             tempItemSlotUI.Close();
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Right)  // 우클릭 이벤트
-        {
-            ItemSlotUI clickSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<ItemSlotUI>();   // 드래그 시작한 위치에 있는 게임 오브젝트 가져오기
-            if (clickSlot != null)
-            {
-                if (clickSlot.ItemSlot.SlotItemData.itemType == ItemType.Equipment)
-                {
-                    // 장착
-                    // 만들지 안만들지는 모르겠지만 일단 넣어놓자
-                    //StartCoroutine(weaponManager.ChangeWeaponCoroutine(item.weaponType, item.itemName);
-                }
-                else
-                {
-                    if (clickSlot.slotType == SlotType.Inventory)
-                    {
-                        Debug.Log(clickSlot.ItemSlot.SlotItemData.itemName + " 을 사용했습니다");
-                        clickSlot.SetSlotCount(clickSlot.ItemSlot, -1);
-                    }
-                    else
-                    {
-                        // 상점일때 구입창이 뜨도록 하자.
-                    }
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("좌클릭");
-        }
-    }
-
-    private void SetSlotCount(ItemSlotUI itemSlotUI, int count = 1)
-    {
-        itemSlotUI.SetSlotCount(itemSlotUI.ItemSlot, count);
-
-        if (itemSlotUI.ItemSlot.ItemCount <= 0)
-        {
-            inven.RemoveItem(itemSlotUI.ItemSlot);
-            itemSlotUI.OffItemCountImage();
-        }
-    }
-
-
-    public void SetItem(Item item, ItemSlotUI itemSlotUI)
-    {
-        inven.AddItem(item.data.itemIDCode);
-        if(item.data.itemType == ItemType.Consumable)
-        {
-            itemSlotUI.OnItemCountText(item);
-            SetSlotCount(itemSlotUI);
-        }
-    }
     // ----------------------------------------------------------------------------------------
 }

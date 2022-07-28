@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TMPro;
 
 public class TempItemSlotUI : ItemSlotUI
 {
@@ -12,9 +14,10 @@ public class TempItemSlotUI : ItemSlotUI
     protected override void Awake()
     {
         itemImage = GetComponent<Image>();
+        countText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    
+
     private void Update()
     {
         transform.position = Mouse.current.position.ReadValue();
@@ -37,6 +40,11 @@ public class TempItemSlotUI : ItemSlotUI
     /// </summary>
     public void Close()
     {
+        if (itemSlot != null)
+        {
+            itemSlot.ClearSlotItem();
+            itemSlot = null;
+        }
         gameObject.SetActive(false);
     }
 
@@ -48,5 +56,6 @@ public class TempItemSlotUI : ItemSlotUI
     {
         itemSlot = slot;
         Refresh();
+        //Refresh();
     }
 }
