@@ -5,7 +5,7 @@ using TMPro;
 
 public class MP_Bar : MonoBehaviour
 {
-    public Player player;
+    Player player;
     float mpRate = 0.0f;
     [Tooltip("1초당 회복량")]
     public float mpRecovery = 0.5f;
@@ -14,6 +14,7 @@ public class MP_Bar : MonoBehaviour
     Transform MpBarRate;
     private void Awake()
     {
+        player = GameObject.Find("Player").GetComponent<Player>();
         text = transform.Find("MpBar").GetComponent<TextMeshProUGUI>();
         MpBarRate = transform.Find("CurrentMP").GetComponent<Transform>();
     }

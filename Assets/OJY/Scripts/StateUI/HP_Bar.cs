@@ -6,10 +6,8 @@ using System;
 
 public class HP_Bar : MonoBehaviour
 {
-    private Player player;
+    Player player;
     float hpRate = 0.0f;
-    [Tooltip("1초당 회복량")]
-    public float hpRecovery = 1.0f;
 
     TextMeshProUGUI text;
     Transform HpBarRate;
@@ -23,13 +21,6 @@ public class HP_Bar : MonoBehaviour
     private void Start()
     {
         player.OnHpChange += hpBarReset;
-    }
-    private void Update()
-    {
-        //if(player.Hp < player.MaxHP)
-        //{
-        //    player.Hp += hpRecovery * Time.deltaTime;
-        //}
     }
     private void hpBarReset(float Hp)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainCamera : MonoBehaviour
 {
-    public Transform target = null;
+    Transform target = null;
     public float speed = 3.0f;
 
     Vector3 offset = Vector3.zero;
