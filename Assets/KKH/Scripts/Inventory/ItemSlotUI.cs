@@ -109,14 +109,13 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             TempItemSlotUI temp = invenUI.TempSlotUI;
             if (Keyboard.current.leftShiftKey.ReadValue() > 0 && temp.IsEmpty())
             {
-                Debug.Log("Shift + 좌클릭");
+                //Debug.Log("Shift + 좌클릭");
                 invenUI.SpliterUI.Open(this);
                 detailInfoUI.Close();
                 detailInfoUI.IsPause = true;
             }
             else
             {
-                //temp.gameObject.activeSelf;
                 if (!temp.IsEmpty())  // temp에 ItemSlot이 들어있다 => 아이템을 덜어낸 상황이다.
                 {
                     if (ItemSlot.IsEmpty())

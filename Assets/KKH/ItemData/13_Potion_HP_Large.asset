@@ -19,3 +19,4 @@ MonoBehaviour:
   itemIDCode: 13
   prefab: {fileID: 0}
   value: 0
+  maxStackCount: 5

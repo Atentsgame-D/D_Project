@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 
-public class ItemSpliterUI : MonoBehaviour
+public class ItemSpliterUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     private uint itemSplitCount = 1;
     private ItemSlotUI targetSlotUI;
@@ -13,6 +15,8 @@ public class ItemSpliterUI : MonoBehaviour
     private TMP_InputField inputField;
 
     public Action<uint, uint> OnOkClick;
+
+    private bool isMove = false;
 
     public uint ItemSplitCount
     {
@@ -95,5 +99,29 @@ public class ItemSpliterUI : MonoBehaviour
     {
         Debug.Log($"OnInputChange : {input}");
         ItemSplitCount = uint.Parse(input);
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isMove)
+            transform.position = Mouse.current.position.ReadValue();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
+        {
+            if (!isMove)
+                isMove = true;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
+        {
+            if (isMove)
+                isMove = false;
+        }
     }
 }

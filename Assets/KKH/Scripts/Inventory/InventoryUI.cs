@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
@@ -49,6 +50,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public System.Action OnInventoryOpen;
     public System.Action OnInventoryClose;
     // ----------------------------------------------------------------------------------------
+
+    private bool isMove = false;
+
 
     // 유니티 이벤트 함수들 ---------------------------------------------------------------------
     private void Awake()
@@ -186,10 +190,8 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        //if(eventData.button == PointerEventData.InputButton.Left)
-        //{
-        //    tempItemSlotUI.transform.position = eventData.position;
-        //}
+        if(isMove)
+            transform.position = Mouse.current.position.ReadValue();
     }
 
     /// <summary>
@@ -200,25 +202,41 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     {
         if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
         {
-            if (TempSlotUI.IsEmpty())    // 임시 슬롯에 아이템이 없는 경우에만 실행(아이템은 나누어서 들고 있는 상황)
+            GameObject startObj = eventData.pointerCurrentRaycast.gameObject;   // 드래그 시작한 위치에 있는 게임 오브젝트 가져오기
+            ItemSlotUI slotUI = null;
+            try
             {
-                GameObject startObj = eventData.pointerCurrentRaycast.gameObject;   // 드래그 시작한 위치에 있는 게임 오브젝트 가져오기
-                if (startObj != null)
+                slotUI = startObj.GetComponent<ItemSlotUI>();    // ItemSlotUI 컴포넌트 가져오기
+            }
+            catch
+            {
+                slotUI = null;
+            }
+
+            if (slotUI != null)
+            {
+                if (TempSlotUI.IsEmpty())    // 임시 슬롯에 아이템이 없는 경우에만 실행(아이템은 나누어서 들고 있는 상황)
                 {
-                    // 드래그 시작한 위치에 게임 오브젝트가 있으면
-                    //Debug.Log(startObj.name);
-                    ItemSlotUI slotUI = startObj.GetComponent<ItemSlotUI>();    // ItemSlotUI 컴포넌트 가져오기
-                    if (slotUI != null)
+                    if (startObj != null)
                     {
-                        // ItemSlotUI 컴포넌트가 있으면 ID 기록해 놓기
-                        //Debug.Log($"Start SlotID : {slotUI.ID}");
-                        dragStartID = slotUI.ID;
-                        inven.TempRemoveItem(dragStartID, slotUI.ItemSlot.ItemCount);
-                        tempItemSlotUI.Open();   // 드래그 시작할 때 열기
-                        detail.Close();         // 상세정보창 닫기
-                        detail.IsPause = true;  // 상세정보창 안열리게 하기
+                        // 드래그 시작한 위치에 게임 오브젝트가 있으면
+                        //Debug.Log(startObj.name);
+                        if (slotUI != null)
+                        {
+                            // ItemSlotUI 컴포넌트가 있으면 ID 기록해 놓기
+                            //Debug.Log($"Start SlotID : {slotUI.ID}");
+                            dragStartID = slotUI.ID;
+                            inven.TempRemoveItem(dragStartID, slotUI.ItemSlot.ItemCount);
+                            tempItemSlotUI.Open();   // 드래그 시작할 때 열기
+                            detail.Close();         // 상세정보창 닫기
+                            detail.IsPause = true;  // 상세정보창 안열리게 하기
+                        }
                     }
                 }
+            }
+            else
+            {
+                isMove = true;
             }
         }
     }
@@ -257,6 +275,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                     tempItemSlotUI.Close(); // 정상적으로 드래그가 끝나면 닫기
                 }
             }
+
+            if (isMove)
+                isMove = false;
         }
     }
 
