@@ -104,31 +104,52 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if (Keyboard.current.leftShiftKey.ReadValue() > 0)
+            TempItemSlotUI temp = invenUI.TempSlotUI;
+            if (Keyboard.current.leftShiftKey.ReadValue() > 0 && temp.IsEmpty())
             {
                 Debug.Log("Shift + 좌클릭");
                 invenUI.SpliterUI.Open(this);
+                detailInfoUI.Close();
+                detailInfoUI.IsPause = true;
             }
             else
             {
-                //    if(invenUI.TempSlotUI.ItemSlot.IsEmpty())
-                //    {
-                //        eventData.pointerCurrentRaycast.gameObject
-                //    }
+                //temp.gameObject.activeSelf;
+                if (!temp.IsEmpty())  // temp에 ItemSlot이 들어있다 => 아이템을 덜어낸 상황이다.
+                {
+                    if (ItemSlot.IsEmpty())
+                    {
+                        // 이 슬롯이 빈칸이다.
+                        itemSlot.AssignSlotItem(temp.ItemSlot.SlotItemData, temp.ItemSlot.ItemCount);
+                        temp.Close();
+                    }
+                    else if (temp.ItemSlot.SlotItemData == ItemSlot.SlotItemData)
+                    {
+                        // 이 슬롯에는 같은 종류의 아이템이 들어있다.
 
-                TempItemSlotUI temp = invenUI.TempSlotUI;
-                if (ItemSlot.IsEmpty())
-                {
-                    itemSlot.AssignSlotItem(temp.ItemSlot.SlotItemData, temp.ItemSlot.ItemCount);
-                    invenUI.TempSlotUI.Close();
-                }
-                else if (temp.ItemSlot.SlotItemData == ItemSlot.SlotItemData)
-                {
-                    uint remains = ItemSlot.SlotItemData.maxStackCount - ItemSlot.ItemCount;
-                    ItemSlot.IncreaseSlotItem(remains);
-                    temp.ItemSlot.DecreaseSlotItem(remains);
+                        // 담길 대상의 남은 공간
+                        uint remains = ItemSlot.SlotItemData.maxStackCount - ItemSlot.ItemCount;
+                        // 임시슬롯이 가지고 있는 것과 남은 공간 중 더 작은 것을 선택
+                        //uint small = System.Math.Min(remains, temp.ItemSlot.ItemCount);
+                        uint small = (uint)Mathf.Min((int)remains, (int)temp.ItemSlot.ItemCount);
+
+                        ItemSlot.IncreaseSlotItem(small);
+                        temp.ItemSlot.DecreaseSlotItem(small);
+                        if (temp.ItemSlot.ItemCount < 1)
+                        {
+                            temp.Close();
+                        }
+                    }
+                    else
+                    {
+                        // 다른 종류의 아이템이다.
+                        ItemData tempData = temp.ItemSlot.SlotItemData;
+                        uint tempCount = temp.ItemSlot.ItemCount;
+                        temp.ItemSlot.AssignSlotItem(itemSlot.SlotItemData, itemSlot.ItemCount);
+                        itemSlot.AssignSlotItem(tempData, tempCount);
+                    }
                 }
             }
         }

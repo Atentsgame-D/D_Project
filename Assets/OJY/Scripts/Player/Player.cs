@@ -132,6 +132,11 @@ public class Player : MonoBehaviour
         inven.AddItem(ItemIDCode.Potion_HP_Medium);
         inven.AddItem(ItemIDCode.Potion_HP_Medium);
         inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        inven.AddItem(ItemIDCode.Potion_HP_Medium);
         //manager.TalkPanel.SetActive(false);
     }
     private void Update()

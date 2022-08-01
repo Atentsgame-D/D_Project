@@ -27,12 +27,13 @@ public class TempItemSlotUI : ItemSlotUI
     /// 임시 슬롯을 보이도록 열기
     /// </summary>
     /// <param name="slot">임시 슬롯에 할당할 아이템이 들어있는 슬롯</param>
-    public void Open(ItemSlot slot)
+    public void Open()
     {
-        SetTempSlot(slot);
-        transform.position = Mouse.current.position.ReadValue();
-        gameObject.SetActive(true);
-        //itemImage.color = Color.white;
+        if (!ItemSlot.IsEmpty())        // 슬롯에 아이템이 들어있을 때만 열기
+        {
+            transform.position = Mouse.current.position.ReadValue();
+            gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -40,13 +41,11 @@ public class TempItemSlotUI : ItemSlotUI
     /// </summary>
     public void Close()
     {
-        if (itemSlot != null)
-        {
-            itemSlot.ClearSlotItem();
-            itemSlot = null;
-        }
+        itemSlot.ClearSlotItem();
         gameObject.SetActive(false);
     }
+
+    public bool IsEmpty() => itemSlot.IsEmpty();
 
     /// <summary>
     /// 임시 슬롯에서 보일 슬롯 설정

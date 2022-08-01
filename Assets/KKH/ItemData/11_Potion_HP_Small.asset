@@ -19,3 +19,4 @@ MonoBehaviour:
   itemIDCode: 11
   prefab: {fileID: 3314258523087313166, guid: 2e5120349677e124c82d6ff2b14b65c1, type: 3}
   value: 0
+  maxStackCount: 5
