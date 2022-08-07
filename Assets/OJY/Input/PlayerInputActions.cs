@@ -251,6 +251,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""8ca67824-ef9e-4b86-a303-f77e037aa148"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -308,6 +317,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d2e8591-2e26-4f6e-9bef-039b8676d5d6"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false),ScaleVector2(x=0.05,y=0.05)"",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -348,6 +368,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         // PlayerMove
         m_PlayerMove = asset.FindActionMap("PlayerMove", throwIfNotFound: true);
         m_PlayerMove_Move = m_PlayerMove.FindAction("Move", throwIfNotFound: true);
+        m_PlayerMove_Look = m_PlayerMove.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -538,11 +559,13 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_PlayerMove;
     private IPlayerMoveActions m_PlayerMoveActionsCallbackInterface;
     private readonly InputAction m_PlayerMove_Move;
+    private readonly InputAction m_PlayerMove_Look;
     public struct PlayerMoveActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerMoveActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerMove_Move;
+        public InputAction @Look => m_Wrapper.m_PlayerMove_Look;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMove; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -555,6 +578,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnMove;
+                @Look.started -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerMoveActionsCallbackInterface.OnLook;
             }
             m_Wrapper.m_PlayerMoveActionsCallbackInterface = instance;
             if (instance != null)
@@ -562,6 +588,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
             }
         }
     }
@@ -594,5 +623,6 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     public interface IPlayerMoveActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }
