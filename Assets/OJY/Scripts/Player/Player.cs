@@ -342,7 +342,7 @@ public class Player : MonoBehaviour
 
     private void OnSkill_2(InputAction.CallbackContext _) // 회전회오리
     {
-        if (coolTime.skill2_CoolTime <= 0.0f && Mp > 30.0f)
+        if (coolTime.skill2_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
             Mp -= 30.0f;
             StartCoroutine(Skill02());
@@ -362,7 +362,7 @@ public class Player : MonoBehaviour
 
     private void OnSkill_3(InputAction.CallbackContext _) // 흡혈 버프
     {
-        if (coolTime.skill3_CoolTime <= 0.0f && Mp > 50.0f)
+        if (coolTime.skill3_CoolTime <= 0.0f && Mp > 50.0f && controller.isGrounded)
         {
             Mp -= 50.0f;
             StartCoroutine(Skill03());
