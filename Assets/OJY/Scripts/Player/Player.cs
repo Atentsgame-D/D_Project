@@ -87,6 +87,7 @@ public class Player : MonoBehaviour
 
     MoveMode moveMode = MoveMode.Walk;
     //캐릭터 이동 관련---------------------------------------
+    Vector2 input = Vector2.zero;
     public float speed = 5.0f;
     public float walkSpeed = 5.0f;
     public float runSpeed = 10.0f;
@@ -151,22 +152,21 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        Move();
-        //if (inputDir.sqrMagnitude > 0.0f)
-        //{
-        //    if (moveMode == MoveMode.Run)
-        //    {
-        //        speed = runSpeed;
-        //        anim.SetBool("OnRun", true);
-        //    }
-        //    else if (moveMode == MoveMode.Walk)
-        //    {
-        //        speed = walkSpeed;
-        //        anim.SetBool("OnRun", false);
-        //    }
-        //    controller.Move(speed * Time.deltaTime * inputDir);
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-        //}
+        if (inputDir.sqrMagnitude > 0.0f)
+        {
+            if (moveMode == MoveMode.Run)
+            {
+                speed = runSpeed;
+                anim.SetBool("OnRun", true);
+            }
+            else if (moveMode == MoveMode.Walk)
+            {
+                speed = walkSpeed;
+                anim.SetBool("OnRun", false);
+            }
+            controller.Move(speed * Time.deltaTime * inputDir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+        }
 
         //캐릭터가 땅에 붙어있지 않으면 중력 작용
         if (!controller.isGrounded)
@@ -241,7 +241,6 @@ public class Player : MonoBehaviour
     {
         look = context.ReadValue<Vector2>();
     }
-    Vector2 input = Vector2.zero;
     private void OnMoveInput(InputAction.CallbackContext context) // 방향키 입력시 이동
     {
         input = context.ReadValue<Vector2>();
@@ -261,44 +260,7 @@ public class Player : MonoBehaviour
             moveMode = MoveMode.Walk;
         }
     }
-    private void Move()
-    {
-        inputDir.x = input.x;
-        inputDir.y = 0.0f;
-        inputDir.z = input.y;
-
-        if (inputDir.sqrMagnitude > 0.0f)
-        {
-            inputDir = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * inputDir;
-            targetRotation = Quaternion.LookRotation(inputDir);
-            anim.SetBool("OnMove", true);
-
-            controller.Move(speed * Time.deltaTime * inputDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-
-            if (moveMode == MoveMode.Run)
-            {
-                speed = runSpeed;
-                anim.SetBool("OnRun", true);
-            }
-            else if (moveMode == MoveMode.Walk)
-            {
-                speed = walkSpeed;
-                anim.SetBool("OnRun", false);
-            }
-        }
-        else
-        {
-            anim.SetBool("OnMove", false);
-            moveMode = MoveMode.Walk;
-        }
-
-        //Vector3 inputDir = new Vector3(input.x,0.0f,input.y).normalized;
-        //if(input != Vector2.zero)
-        //{
-
-        //}
-    }
+    
     private void OnUseInput(InputAction.CallbackContext context)
     {
         Use();
