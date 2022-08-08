@@ -445,33 +445,16 @@ public class Player : MonoBehaviour
             TargetY += look.y;
         }
 
-        // 마우스를 이동했을때
-        //if (look.sqrMagnitude > 0.0f)
-        //{
-        //    TargetX += look.x;
-        //    TargetY += look.y;
-        //}
+        // 좌우 이동을 360도로 제한
+        TargetX = Mathf.Clamp(TargetX, 0.0f, 360.0f);
+        // 상하 이동을 BottomClamp(-30도), TopClamp(70도)의 범위를 벗어나지 않게 제한
+        TargetY = Mathf.Clamp(TargetY, BottomClamp, TopClamp);
 
-        // 회전을 360도로 제한
-        TargetX = ClampAngle(TargetX, float.MinValue, float.MaxValue);
-        TargetY = ClampAngle(TargetY, BottomClamp, TopClamp);
-
-        //카메라 타겟을 회전시켜 카메라를 회전시킴
+        // 카메라 타겟을 회전시켜 카메라를 회전시킴
+        // 좌우 이동은 TargetX값(마우스 좌우 이동 값)을 Y축을 기준으로 돌리고
+        // 상하 이동은 TargetY겂(마우스 상하 이동  값)을 X축을 기준으로 돌리기 때문에
+        // Quaternion.Euler(TargetY, TargetX, 0.0f); 으로 선언한다
         cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
-    }
-
-    //회전 각도를 제한하는 Clamp를 이용하는 함수
-    private static float ClampAngle(float angle, float Min, float Max)
-    {
-        if (angle < -360f)
-        {
-            angle += 360f;
-        }
-        if (angle > 360f)
-        {
-            angle -= 360f;
-        }
-        return Mathf.Clamp(angle, Min, Max);
     }
     //-----------------------------------------------------------------------
     void ScanObject()
