@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80c631fdd5efbb149a766bbfa4c657bc, type: 3}
+  m_Name: 3_Egg
+  m_EditorClassIdentifier: 
+  id: 3
+  itemName: "\uB2EC\uAC40"
+  itemIcon: {fileID: 21300000, guid: ce993d5f7ca6ea8459974fd88e71861d, type: 3}
+  prefab: {fileID: 5649212939658213689, guid: 994c9430b8094c04ba67531cd6038344, type: 3}
+  value: 10
+  maxStackCount: 1
