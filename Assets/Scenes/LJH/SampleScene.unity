@@ -175,7 +175,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2dce7f8cafe456e4f9b57812fd843502, type: 2}
+  - {fileID: 2100000, guid: f89b255295092244cbbabe0c7455f635, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -411,8 +411,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56d43d298d3d1b4da240a3e5dd11e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  offset: {x: 0, y: 5, z: 10}
 --- !u!4 &1099815887 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5673600251653673887, guid: 7e832e7b344bc9940936c6fb7ddbc4d7, type: 3}

@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
     Material mat;
     NavMeshAgent nav;
     Animator anim;
-    GameObject player;
+    Player player;
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
         mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        player = GameObject.Find("Player");
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     private void Start()
@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
             return;
         }
 
-        // ÀÌÀü »óÅÂ¸¦ ³ª°¡¸é¼­ ÇØ¾ßÇÒ Çàµ¿
+        // ì´ì „ ìƒíƒœë¥¼ ë‚˜ê°€ë©´ì„œ í•´ì•¼í•  í–‰ë™
         switch (enemyState)
         {
             case EnemyState.Idle:
@@ -127,7 +127,7 @@ public class Enemy : MonoBehaviour
                 break;
 
             case EnemyState.Chase:
-                nav.isStopped = true;
+                nav.isStopped = true;  // ëª¬ìŠ¤í„°ê°€ ë’¤ì§€ë©´ ì—¬ê¸°ì„œ ì˜¤ë¥˜ ë°œìƒ
                 StopCoroutine(repeatChase);
 
                 break;
@@ -144,7 +144,7 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        // »õ »óÅÂ·Î µé¾î°¡¸é¼­ ÇØ¾ßÇÒ Çàµ¿
+        // ìƒˆ ìƒíƒœë¡œ ë“¤ì–´ê°€ë©´ì„œ í•´ì•¼í•  í–‰ë™
         switch (newState)
         {
             case EnemyState.Idle:
@@ -292,9 +292,9 @@ public class Enemy : MonoBehaviour
 
         if (attackCoolTime < 0)
         {
-            //anim.SetTrigger("Attack");
+            anim.SetTrigger("Attack");
             Attack();
-            //attackCoolTime = attackSpeed;
+            attackCoolTime = attackSpeed;
         }
     }
 
@@ -317,7 +317,7 @@ public class Enemy : MonoBehaviour
                     }
 
                     attackCoolTime = attackSpeed;
-                    //player.TakeDamage(damage);
+                    player.TakeDamage(damage);
                 }
 
                 break;
@@ -344,14 +344,14 @@ public class Enemy : MonoBehaviour
                     }
 
                     attackCoolTime = attackSpeed;
-                    //player.TakeDamage(damage);
+                    player.TakeDamage(damage);
                 }
 
                 break;
         }
     }
 
-    private void FreezeVelocity()    // ¹°¸®·ÂÀÌ NavAgent ÀÌµ¿À» ¹æÇØÇÏÁö ¾Êµµ·Ï ÇÏ±â
+    private void FreezeVelocity()    // ë¬¼ë¦¬ë ¥ì´ NavAgent ì´ë™ì„ ë°©í•´í•˜ì§€ ì•Šë„ë¡ í•˜ê¸°
     {
         if (isChase)
         {
@@ -362,7 +362,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             //attackTarget = other.GetComponent<IBattle>();
             ChangeState(EnemyState.Attack);
@@ -380,17 +380,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.GetComponent<Player>())
-    //    {
-    //        Player player = collision.gameObject.GetComponent<Player>();
-    //        curHealth -= player.damage;
-    //        StartCoroutine(OnDamage());
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Weapon")) // ë¬´ê¸°ì— ì³ë§ì„ë•Œ
+        {
+            curHealth -= (int)player.Damage; // ì²´ë ¥ê°ì†Œ. ì„ì‹œë¡œ ê°•ì œ í˜•ë³€í™˜ í•˜ì˜€ìŒ ì´í›„ì— ë‹¨ìœ„ í†µì¼í•  ê²ƒ 
+            StartCoroutine(OnDamage());
 
-    //        Debug.Log("Enemy : " + curHealth);
-    //    }
-    //}
+            Debug.Log("Enemy : " + Mathf.Max(0, curHealth)); // ì²´ë ¥ì„ 0ë°‘ìœ¼ë¡œ ë–¨ì–´ì§€ì§€ ì•Šê²Œ í•¨
+        }
+    }
 
     IEnumerator OnDamage()
     {
@@ -403,22 +402,33 @@ public class Enemy : MonoBehaviour
         {
             mat.color = Color.white;
         }
-
         else
         {
-            isChase = false;        // ÃßÀû ÁßÁö
-            mat.color = Color.black;
-            gameObject.layer = 8;       // Á×¾úÀ»¶§ ½ÃÃ¼³¢¸®¸¸ ºÎµúÈ÷°Ô ·¹ÀÌ¾î ¼³Á¤
-            nav.enabled = false;        // »ç¸Á ¸®¾×¼ÇÀ» À§ÇØ NavAgent ºñÈ°¼º
-
+            // ì„ì‹œ ìˆ˜ì •           
+            isChase = false;
+            Destroy(gameObject, 2);
             ChangeState(EnemyState.Dead);
             anim.SetTrigger("Die");
+            anim.SetBool("IsDead", true); // í”¼ê²©í›„ ë‹¤ë¥¸ ëª¨ì…˜ìœ¼ë¡œ ë„˜ì–´ê°€ëŠ”ê²ƒ ë°©ì§€
+            
+            // ê³µê²©ì— ì˜í•œ í”¼ê²©, ì¶©ëŒ íŒì • ì‚­ì œë¥¼ ìœ„í•´ ì½œë¼ì´ë” ë¹„í™œì„±í™”
+            gameObject.GetComponent<Collider>().enabled = false;     
+            gameObject.GetComponent<SphereCollider>().enabled = false;
+            mat.color = Color.black;
 
-            Destroy(gameObject, 3);
+            // ì›ë³¸ ì½”ë“œ
+            //isChase = false;        // ì¶”ì  ì¤‘ì§€
+            //mat.color = Color.black;
+            //gameObject.layer = 8;       // ì£½ì—ˆì„ë•Œ ì‹œì²´ë¼ë¦¬ë§Œ ë¶€ë”ªíˆê²Œ ë ˆì´ì–´ ì„¤ì •
+            //nav.enabled = false;        // ì‚¬ë§ ë¦¬ì•¡ì…˜ì„ ìœ„í•´ NavAgent ë¹„í™œì„±
+            //ChangeState(EnemyState.Dead);
+            //anim.SetTrigger("Die");
+
+            //Destroy(gameObject, 3);
         }
     }
 
-    // Ãß°İ ½ÃÀÛ
+    // ì¶”ê²© ì‹œì‘
     void ChaseStart()
     {
         isChase = true;
@@ -426,7 +436,6 @@ public class Enemy : MonoBehaviour
         {
             ChangeState(EnemyState.Patrol);
             return;
-
         }
 
     }

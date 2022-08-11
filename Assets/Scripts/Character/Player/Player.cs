@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
     public float runSpeed = 10.0f;
     public float turnSpeed = 15.0f;
 
-    public float jumpPower = 5.0f;
+    public float jumpPower = 2.5f;
     public float gravity = -9.81f;
     //---------------------------------------
     public bool tryUse = false;
@@ -140,11 +140,13 @@ public class Player : MonoBehaviour
         useText.gameObject.SetActive(false);
         inven = new Inventory();
         invenUI.InitializeInventory(inven);
-        for (int i = 0; i < 99; i++)
-        {
-            inven.AddItem(ItemIDCode.Potion_HP_Medium);
-            inven.AddItem(ItemIDCode.Potion_MP_Medium);
-        }
+
+        //인벤토리 오류로 잠시 주석처리
+        //for (int i = 0; i < 99; i++)
+        //{
+        //    inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        //    inven.AddItem(ItemIDCode.Potion_MP_Medium);
+        //}
 
         //manager.TalkPanel.SetActive(false);
     }
@@ -416,6 +418,12 @@ public class Player : MonoBehaviour
         // Quaternion.Euler(TargetY, TargetX, 0.0f); 으로 선언한다
         cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
     }
+
+    public void TakeDamage(float damage)
+    {
+        Hp -= damage;
+    }
+
     //-----------------------------------------------------------------------
     void ScanObject()
     {
