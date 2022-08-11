@@ -308,6 +308,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UI",
+            "id": "22f749b4-87de-4948-8ccb-d272452b9af6",
+            "actions": [
+                {
+                    "name": "ItemDrop",
+                    "type": "Button",
+                    "id": "cdab6e0c-352e-415c-8d59-43eef0c6427c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "0340de14-372d-4d57-933d-d6d9e69e9e37",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ItemDrop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

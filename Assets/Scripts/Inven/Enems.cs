@@ -19,8 +19,10 @@ public enum ItemIDCode
     luxury_helmet,
     Potion_HP_Small = 11,
     Potion_HP_Medium,
-    Potion_HP_Large
-
+    Potion_HP_Large,
+    Potion_MP_Small = 21,
+    Potion_MP_Medium,
+    Potion_MP_Large
 }
 
 public enum ItemType

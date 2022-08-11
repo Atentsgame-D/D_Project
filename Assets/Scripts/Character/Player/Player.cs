@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
         }
     }
     public System.Action<int> OnMoneyChange;
+
+    private float dropRange = 2.0f;
     // ------------------------------------------------------------------------------------------
 
     // Inventory 관련 ---------------------------------------------------------------------------
@@ -138,16 +140,12 @@ public class Player : MonoBehaviour
         useText.gameObject.SetActive(false);
         inven = new Inventory();
         invenUI.InitializeInventory(inven);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
-        inven.AddItem(ItemIDCode.Potion_HP_Medium);
+        for (int i = 0; i < 99; i++)
+        {
+            inven.AddItem(ItemIDCode.Potion_HP_Medium);
+            inven.AddItem(ItemIDCode.Potion_MP_Medium);
+        }
+
         //manager.TalkPanel.SetActive(false);
     }
     private void Update()
@@ -443,39 +441,43 @@ public class Player : MonoBehaviour
         ItemPickUp();
     }
 
-    private void ItemPickUp()
+    public void ItemPickUp()
     {
         Collider[] cols = Physics.OverlapSphere(transform.position, itemPickupRange, LayerMask.GetMask("Item"));
         foreach (var col in cols)
         {
             Item item = col.GetComponent<Item>();
-            if (item.data.itemType == ItemType.Money)
+            IConsumalbe consumable = item.data as IConsumalbe;
+            if (consumable != null)
             {
-                Money += (int)item.data.value;
+                consumable.Consume(this);
+                Destroy(col.gameObject);
             }
-            else if (item.data.itemType == ItemType.Consumable)
+            else
             {
-                ItemSlotUI[] slots = invenUI.GetComponentsInChildren<ItemSlotUI>();
-                foreach (var slot in slots)
+                if (inven.AddItem(item.data))
                 {
-                    if (slot.ItemSlot.SlotItemData == null)
-                    {
-                        //invenUI.SetItem(item, slot);
-                        break;
-                    }
-
-                    if (slot.ItemSlot.SlotItemData.itemIDCode == item.data.itemIDCode)
-                    {
-                        //slot.ItemSlot.ItemCount += 1;
-                    }
+                    Destroy(col.gameObject);
                 }
             }
-            else if (item.data.itemType == ItemType.Equipment)
-            {
-
-            }
-            Destroy(col.gameObject);
         }
+        //Debug.Log($"{money}");
+    }
+
+    public Vector3 ItemDropPosition(Vector3 inputPos)
+    {
+        Vector3 result = Vector3.zero;
+        Vector3 toInputPos = inputPos - transform.position;
+        if (toInputPos.sqrMagnitude > dropRange * dropRange)
+        {
+            result = transform.position + toInputPos.normalized * dropRange;
+        }
+        else
+        {
+            result = inputPos;
+        }
+
+        return result;
     }
 
     private void OnInventortyOnOff(InputAction.CallbackContext obj)
