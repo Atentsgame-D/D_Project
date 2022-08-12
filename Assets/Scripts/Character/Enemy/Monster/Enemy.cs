@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
     IEnumerator repeatChase;
     WaitForSeconds oneSecond = new(0.5f);
 
-    float closeSightRange = 4.5f;
+    float closeSightRange = 2.5f;
     float sightAngle = 120.0f;
     float sightRange = 10.0f;
     //IBattle attackTarget;
