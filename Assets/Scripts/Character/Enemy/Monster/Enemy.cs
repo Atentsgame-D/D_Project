@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public enum Type { A, B};
     public Type enemyType;
 
+    //스탯 관련
     public Slider hpSlider;
     public int maxHealth;
     public int curHealth;
@@ -25,18 +26,19 @@ public class Enemy : MonoBehaviour
     //private bool isAttack;
     private bool isDead = false;
 
-
     private int wayPointCount = 0;
     private int index = 0;
     Vector3 targetPosition = new();
     IEnumerator repeatChase;
     WaitForSeconds oneSecond = new(0.5f);
 
+    // 시야 범위
     float closeSightRange = 2.5f;
     float sightAngle = 120.0f;
     float sightRange = 10.0f;
     //IBattle attackTarget;
 
+    // 공격 관련
     float attackCoolTime = 1.5f;
     float rushCoolTime = 2.0f;
     float attackSpeed = 1.5f;
@@ -127,14 +129,13 @@ public class Enemy : MonoBehaviour
                 break;
 
             case EnemyState.Chase:
-                nav.isStopped = true;  // 몬스터가 뒤지면 여기서 오류 발생
+                nav.isStopped = true; 
                 StopCoroutine(repeatChase);
 
                 break;
 
             case EnemyState.Attack:
                 nav.isStopped = true;
-                //player = null;
 
                 break;
 
@@ -227,24 +228,30 @@ public class Enemy : MonoBehaviour
     {
         bool result = false;
         Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
-
         if (colliders.Length > 0)
         {
             Vector3 pos = colliders[0].transform.position;
 
+            // 플레이어가 시야내에 있으면
             if (InSightAngle(pos))
             {
-                if (!BlockByWall(pos))
+                // 블록에 막혀있지 않으면
+                if (!BlockByWall(pos)) // 타겟 = 플레이어 설정
                 {
                     targetPosition = pos;
                     result = true;
                 }
             }
 
+            // 플레이어가 전방 시야에 없고 근접한 일정 범위 내에 있을 때
             if (!result && (pos - transform.position).sqrMagnitude < closeSightRange * closeSightRange)
             {
-                targetPosition = pos;
-                result = true;
+                // 블록에 막혀있지 않으면
+                if (!BlockByWall(pos)) // 타겟 = 플레이어 설정
+                {
+                    targetPosition = pos;
+                    result = true;
+                }
             }
         }
 
@@ -260,6 +267,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    // 플레이어가 시야 내에 있는가
     bool InSightAngle(Vector3 targetPosition)
     {
         float angle = Vector3.Angle(transform.forward, targetPosition - transform.position);
@@ -267,6 +275,7 @@ public class Enemy : MonoBehaviour
         return (sightAngle * 0.5f) > angle;
     }
 
+    // 벽에 막혀 있는가
     bool BlockByWall(Vector3 targetPosition)
     {
         bool result = true;
