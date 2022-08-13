@@ -9,7 +9,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     NavMeshAgent agent;
     Animator anim;
 
-    EnemyState state = EnemyState.Idle;
+    Boss_EnemyState state = Boss_EnemyState.Idle;
 
     //Idle 용 --------------------------------------------------------------------------------------
     float waitTime = 3.0f;
@@ -72,16 +72,16 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
 
         switch (state)
         {
-            case EnemyState.Idle:
+            case Boss_EnemyState.Idle:
                 IdleUpdate();
                 break;
-           case EnemyState.Chase:
+           case Boss_EnemyState.Chase:
                 ChaseUpdate();
                 break;
-            case EnemyState.Attack:
+            case Boss_EnemyState.Attack:
                 AttackUpdate();
                 break;
-            case EnemyState.Dead:
+            case Boss_EnemyState.Dead:
             default:
                 break;
         }
@@ -90,14 +90,14 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         if (SearchPlayer())
         {
-            ChangeState(EnemyState.Chase);
+            ChangeState(Boss_EnemyState.Chase);
             return;
         }
 
        /* timeCountDown -= Time.deltaTime;
         if (timeCountDown < 0)
         {*/
-           // ChangeState(EnemyState.Idle);
+           // ChangeState(Boss_EnemyState.Idle);
            // return;
         //}
     }
@@ -130,7 +130,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         if (!SearchPlayer())
         {
-            ChangeState(EnemyState.Idle);
+            ChangeState(Boss_EnemyState.Idle);
             return;
         }
     }
@@ -162,7 +162,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             attackTarget = other.GetComponent<IBattle>();
-            ChangeState(EnemyState.Attack);
+            ChangeState(Boss_EnemyState.Attack);
             return;
         }
     }
@@ -171,12 +171,12 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
-            ChangeState(EnemyState.Idle);
+            ChangeState(Boss_EnemyState.Idle);
             return;
         }
     }
 
-    void ChangeState(EnemyState newState)
+    void ChangeState(Boss_EnemyState newState)
     {
         if (isDead)
         {
@@ -186,18 +186,18 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
         // 이전 상태를 나가면서 해야할 일들
         switch (state)
         {
-            case EnemyState.Idle:
+            case Boss_EnemyState.Idle:
                 agent.isStopped = true;
                 break;
-             case EnemyState.Chase:
+             case Boss_EnemyState.Chase:
                 agent.isStopped = true;
                 StopCoroutine(repeatChase);
                 break;
-            case EnemyState.Attack:
+            case Boss_EnemyState.Attack:
                 agent.isStopped = true;
                 attackTarget = null;
                 break;
-            case EnemyState.Dead:
+            case Boss_EnemyState.Dead:
                 agent.isStopped = true;
                 isDead = false;
                 break;
@@ -208,21 +208,21 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
         // 새 상태로 들어가면서 해야할 일들
         switch (newState)
         {
-            case EnemyState.Idle:
+            case Boss_EnemyState.Idle:
                 agent.isStopped = true;
                 timeCountDown = waitTime;
                 break;
-           case EnemyState.Chase:
+           case Boss_EnemyState.Chase:
                 agent.isStopped = false;
                 agent.SetDestination(targetPosition);
                 repeatChase = RepeatChase();
                 StartCoroutine(repeatChase);
                 break;
-            case EnemyState.Attack:
+            case Boss_EnemyState.Attack:
                 agent.isStopped = true;
                 attackCoolTime = attackSpeed;
                 break;
-            case EnemyState.Dead:
+            case Boss_EnemyState.Dead:
                 DiePresent();
                 break;
             default:
@@ -230,7 +230,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
         }
 
         state = newState;
-        anim.SetInteger("EnemyState", (int)state);
+        anim.SetInteger("Boss_EnemyState", (int)state);
     }
     void DiePresent()
     {
@@ -246,7 +246,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     IEnumerator DeadEffect()
     {
 
-        EnemyHP_Bar hpBar = GetComponentInChildren<EnemyHP_Bar>();
+        Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
         hpBar.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3.0f);
@@ -270,7 +270,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
 
 
         Handles.color = Color.green;
-        if (state == EnemyState.Chase || state == EnemyState.Attack)
+        if (state == Boss_EnemyState.Chase || state == Boss_EnemyState.Attack)
         {
             Handles.color = Color.red;  // 추적이나 공격 중일 때만 빨간색
         }
@@ -343,7 +343,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         if (isDead == false)
         {
-            ChangeState(EnemyState.Dead);
+            ChangeState(Boss_EnemyState.Dead);
         }
     }
 }

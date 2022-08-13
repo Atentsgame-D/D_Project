@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Boss_EnemyState
+{
+    Idle = 0,
+    Chase,
+    Attack,
+    Dead
+}
+
 public enum EnemyState
 {
     Idle = 0,
