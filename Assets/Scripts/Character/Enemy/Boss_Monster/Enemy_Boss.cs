@@ -230,7 +230,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
         }
 
         state = newState;
-        anim.SetInteger("Boss_EnemyState", (int)state);
+        anim.SetInteger("EnemyState", (int)state);
     }
     void DiePresent()
     {
