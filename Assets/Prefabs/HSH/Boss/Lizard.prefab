@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675367717124080370}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardPelvisGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684331665341204308}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRibcage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683902991989329304}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684037476003335504}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRFrontLegFinger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675682979041892052}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLLegCalf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,7 +169,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683826552337635540}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail4Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 1679684484603946734}
   - component: {fileID: 1679684484603946704}
   - component: {fileID: 1679684484603946732}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Lizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1677987056689060682}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: cd24e2e22ca4b2d4eaee3b32211140d9, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 14ef1393be92ca44a904311e4434dc07, type: 3}
   m_Controller: {fileID: 9100000, guid: f6e8ade3798588641bda1f895fdab0d4, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -354,7 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675641563769329752}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRFrontLegPalm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +386,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684126945048338318}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardSpine2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -418,7 +418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684241602721404262}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLLegAnkle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,7 +450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675616834597883226}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +482,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675847097955717398}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Lizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -513,7 +513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675698888274515764}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRRearLegCalf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,7 +545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675410520795886592}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRFrontLegUpper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -577,7 +577,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675700041844357298}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardJawGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +608,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683783471288653656}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail1Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +639,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684025376251908904}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -671,7 +671,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675362412381143048}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRRearLegAnkle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684222318791886614}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRFrontLegPalm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +735,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675403440176204148}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -767,7 +767,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675399251904431506}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardHeadGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,7 +798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683996172158831494}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail5Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -829,7 +829,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683909883559340322}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -861,7 +861,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675900578820857846}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRibcageGizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -892,7 +892,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675518665195909120}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLLegPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -923,7 +923,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675478297488608666}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLFrontLegPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -954,7 +954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675531289363269234}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardJaw
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -985,7 +985,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675831609909003804}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLLegThigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1017,7 +1017,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675604931303250146}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLFrontLegPalm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1049,7 +1049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684238697890178518}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail3Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1080,7 +1080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683850355208077328}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLLegAnkle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1113,7 +1113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1675594530228255364}
   - component: {fileID: 1632512501947008434}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Toon Lizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1230,7 +1230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675575047879321788}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLFrontLegPalm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1262,7 +1262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683886897429078436}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLLegToe1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1293,7 +1293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675347301066656610}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1324,7 +1324,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684083873704912514}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardSpine1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1356,7 +1356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675836898820085058}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardPelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1391,7 +1391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684095860321411260}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRRearLegPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1422,7 +1422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684065633750160906}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRRearLegThigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1454,7 +1454,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675881615908342302}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardTail2Gizmo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1485,7 +1485,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684276069411075522}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRRearLegToe1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1516,7 +1516,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684026443616232284}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRFrontLegPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1547,7 +1547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675600921249999198}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLFrontLegUpper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1579,7 +1579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684191869658146024}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardSpine3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1611,7 +1611,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683897177638909778}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLFrontLegFinger1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1642,7 +1642,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675529337769908402}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardLFrontLegLower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1674,7 +1674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1684304129998804946}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRFrontLegLower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1706,7 +1706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675659584788955294}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardRRearLegAnkle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1738,7 +1738,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1675376185696052026}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LizardNeck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1768,6 +1768,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1684116452826246684}
     m_Modifications:
+    - target: {fileID: 299768955102217926, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1117890143775921821, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_text
       value: Lizard
@@ -1788,9 +1792,25 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
+    - target: {fileID: 1126606515201003728, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314496934161948900, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6025028055096358071, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6025028055096358071, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7827606507688425684, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7864554700700737819, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_Pivot.x
@@ -1874,6 +1894,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7864554700700737819, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900182403671642599, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
