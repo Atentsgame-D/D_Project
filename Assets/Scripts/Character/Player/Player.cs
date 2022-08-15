@@ -154,11 +154,8 @@ public class Player : MonoBehaviour, IEquipTarget
         controller = GetComponent<CharacterController>();
         useText = GameObject.Find("UseText_GameObject");
         invenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
-<<<<<<< HEAD
         store = GameObject.Find("Store").GetComponent<StoreUI>();
-=======
         equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
->>>>>>> f42b2ef082b8f2ca076675490e4ae83c09345574
     }
     private void Start()
     {

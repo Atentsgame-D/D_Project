@@ -133,13 +133,8 @@ public class GameManager : MonoBehaviour
         itemData = GetComponent<ItemDataManager>();
 
         player = FindObjectOfType<Player>();
-<<<<<<< HEAD
         inventoryUI = FindObjectOfType<InventoryUI>();
-        storeUI = FindObjectOfType<StoreUI>();
-=======
-        inventoryUI = FindObjectOfType<InventoryUI>();        
+        storeUI = FindObjectOfType<StoreUI>();    
         equipmentUI = FindObjectOfType<EquipmentUI>();
-
->>>>>>> f42b2ef082b8f2ca076675490e4ae83c09345574
     }
 }
