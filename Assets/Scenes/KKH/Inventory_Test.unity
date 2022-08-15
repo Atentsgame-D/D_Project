@@ -244,11 +244,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2317550854712734449, guid: b8924dae22d312a43b7b9004e923b0ff, type: 3}
   m_PrefabInstance: {fileID: 4704654853190845025}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &434813463 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6313777868443219295, guid: 0fa8d199eacf5b746972b635a75b5b14, type: 3}
-  m_PrefabInstance: {fileID: 984101067}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &463679955 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7849582537596509146, guid: 307b4e7ac97f2b24eab720d9f45d7763, type: 3}
@@ -383,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDatas:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: d67dc0c31673c9647a39a6beaa084b75, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -423,6 +418,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 25779ad28532efd4d8af1b7340a72694, type: 2}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!224 &654079201 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6313777868443219295, guid: 0fa8d199eacf5b746972b635a75b5b14, type: 3}
+  m_PrefabInstance: {fileID: 1466951201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,7 +631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
---- !u!1001 &984101067
+--- !u!1001 &1466951201
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -708,7 +708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6313777868443219295, guid: 0fa8d199eacf5b746972b635a75b5b14, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -787
+      value: -784
       objectReference: {fileID: 0}
     - target: {fileID: 6313777868443219295, guid: 0fa8d199eacf5b746972b635a75b5b14, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1446,7 +1446,7 @@ RectTransform:
   - {fileID: 493262375}
   - {fileID: 396889197}
   - {fileID: 740746629}
-  - {fileID: 434813463}
+  - {fileID: 654079201}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
