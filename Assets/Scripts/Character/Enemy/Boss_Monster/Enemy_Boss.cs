@@ -4,29 +4,30 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
 
-public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
+public class Enemy_Boss : MonoBehaviour,IHealth
 {
     NavMeshAgent agent;
     Animator anim;
 
     Boss_EnemyState state = Boss_EnemyState.Idle;
 
-    //Idle ¿ë --------------------------------------------------------------------------------------
+    //Idle ìš© --------------------------------------------------------------------------------------
     float waitTime = 3.0f;
     float timeCountDown = 3.0f;
-    //ÃßÀû¿ë------------------------------------------------------------------------------------------
+    //ì¶”ì ìš©------------------------------------------------------------------------------------------
     float sightRange = 10.0f;
     float closeSightRange = 2.5f;
     Vector3 targetPosition = new();
     WaitForSeconds oneSecond = new WaitForSeconds(1.0f);
     IEnumerator repeatChase = null;
-    float sightAngle = 150.0f;   //-45 ~ +45 ¹üÀ§
-    //°ø°İ¿ë -----------------------------------------------------------------------------------------
-    float attackCoolTime = 1.0f;
+    float sightAngle = 150.0f;   //-45 ~ +45 ë²”ìœ„
+    //ê³µê²©ìš© -----------------------------------------------------------------------------------------
+    float attackCoolTime = 2.0f;
     float attackSpeed = 1.0f;
-    IBattle attackTarget;
+    Player player;
+    //IBattle attackTarget;
 
-    //»ç¸Á¿ë -----------------------------------------------------------------------------------------
+    //ì‚¬ë§ìš© -----------------------------------------------------------------------------------------
     bool isDead = false;
 
     //IHealth -------------------------------------------------------------------------------------
@@ -62,12 +63,14 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
     private void Update()
     {
+        Debug.Log($"ê³µê²© ì¿¨íƒ€ì„: {attackCoolTime}");
         //if(patrolRoute!=null)
         //{
-        //    agent.SetDestination(patrolRoute.position);  // ±æÃ£±â´Â ¿¬»ê·®ÀÌ ¸¹Àº ÀÛ¾÷. SetDestinationÀ» ÀÚÁÖÇÏ¸é ¾ÈµÈ´Ù.
+        //    agent.SetDestination(patrolRoute.position);  // ê¸¸ì°¾ê¸°ëŠ” ì—°ì‚°ëŸ‰ì´ ë§ì€ ì‘ì—…. SetDestinationì„ ìì£¼í•˜ë©´ ì•ˆëœë‹¤.
         //}        
 
         switch (state)
@@ -79,7 +82,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
                 ChaseUpdate();
                 break;
             case Boss_EnemyState.Attack:
-                AttackUpdate();
+                Targeting();
                 break;
             case Boss_EnemyState.Dead:
             default:
@@ -106,12 +109,12 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         bool result = false;
         Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
-        if (colliders.Length > 0)    // ½Ã¾ß ¹üÀ§ ¾È¿¡ ÀÖ´Â°¡?
+        if (colliders.Length > 0)    // ì‹œì•¼ ë²”ìœ„ ì•ˆì— ìˆëŠ”ê°€?
         {
             Vector3 pos = colliders[0].transform.position;
-            if (InSightAngle(pos))  // ½Ã¾ß °¢µµ ¾È¿¡ ÀÖ´Â°¡?
+            if (InSightAngle(pos))  // ì‹œì•¼ ê°ë„ ì•ˆì— ìˆëŠ”ê°€?
             {
-                if (!BlockByWall(pos))  // º®¿¡ °¡·È´Â°¡?
+                if (!BlockByWall(pos))  // ë²½ì— ê°€ë ¸ëŠ”ê°€?
                 {
                     targetPosition = pos;
                     result = true;
@@ -144,15 +147,14 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     }
     
     
-    void AttackUpdate()
+    void Targeting()
     {
         attackCoolTime -= Time.deltaTime;
-        transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(attackTarget.transform.position - transform.position), 0.1f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), 0.1f);
         if (attackCoolTime < 0.0f)
         {
             anim.SetTrigger("Attack");
-            Attack(attackTarget);
+            Attack(player);
             attackCoolTime = attackSpeed;
         }
     }
@@ -161,7 +163,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
-            attackTarget = other.GetComponent<IBattle>();
+            //attackTarget = other.GetComponent<IBattle>();
             ChangeState(Boss_EnemyState.Attack);
             return;
         }
@@ -175,6 +177,16 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
             return;
         }
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Weapon")) // ë¬´ê¸°ì— ì³ë§ì„ë•Œ
+        {
+            //curHealth -= (int)player.AttackPower; // ì²´ë ¥ê°ì†Œ. ì„ì‹œë¡œ ê°•ì œ í˜•ë³€í™˜ í•˜ì˜€ìŒ ì´í›„ì— ë‹¨ìœ„ í†µì¼í•  ê²ƒ 
+            //StartCoroutine(OnDamage());
+            Debug.Log("ê³µê²©ë°›ìŒ");
+            //Debug.Log("Enemy : " + Mathf.Max(0, curHealth)); // ì²´ë ¥ì„ 0ë°‘ìœ¼ë¡œ ë–¨ì–´ì§€ì§€ ì•Šê²Œ í•¨
+        }
+    }
 
     void ChangeState(Boss_EnemyState newState)
     {
@@ -183,7 +195,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
             return;
         }
 
-        // ÀÌÀü »óÅÂ¸¦ ³ª°¡¸é¼­ ÇØ¾ßÇÒ ÀÏµé
+        // ì´ì „ ìƒíƒœë¥¼ ë‚˜ê°€ë©´ì„œ í•´ì•¼í•  ì¼ë“¤
         switch (state)
         {
             case Boss_EnemyState.Idle:
@@ -195,7 +207,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
                 break;
             case Boss_EnemyState.Attack:
                 agent.isStopped = true;
-                attackTarget = null;
+                //attackTarget = null;
                 break;
             case Boss_EnemyState.Dead:
                 agent.isStopped = true;
@@ -205,7 +217,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
                 break;
         }
 
-        // »õ »óÅÂ·Î µé¾î°¡¸é¼­ ÇØ¾ßÇÒ ÀÏµé
+        // ìƒˆ ìƒíƒœë¡œ ë“¤ì–´ê°€ë©´ì„œ í•´ì•¼í•  ì¼ë“¤
         switch (newState)
         {
             case Boss_EnemyState.Idle:
@@ -272,23 +284,23 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
         Handles.color = Color.green;
         if (state == Boss_EnemyState.Chase || state == Boss_EnemyState.Attack)
         {
-            Handles.color = Color.red;  // ÃßÀûÀÌ³ª °ø°İ ÁßÀÏ ¶§¸¸ »¡°£»ö
+            Handles.color = Color.red;  // ì¶”ì ì´ë‚˜ ê³µê²© ì¤‘ì¼ ë•Œë§Œ ë¹¨ê°„ìƒ‰
         }
-        Handles.DrawWireDisc(transform.position, transform.up, closeSightRange); // ±ÙÁ¢ ½Ã¾ß ¹üÀ§
+        Handles.DrawWireDisc(transform.position, transform.up, closeSightRange); // ê·¼ì ‘ ì‹œì•¼ ë²”ìœ„
 
         Vector3 forward = transform.forward * sightRange;
         Quaternion q1 = Quaternion.Euler(0.5f * sightAngle * transform.up);
         Quaternion q2 = Quaternion.Euler(-0.5f * sightAngle * transform.up);
-        Handles.DrawLine(transform.position, transform.position + q1 * forward);    // ½Ã¾ß°¢ ¿À¸¥ÂÊ ³¡
-        Handles.DrawLine(transform.position, transform.position + q2 * forward);    // ½Ã¾ß°¢ ¿ŞÂÊ ³¡
+        Handles.DrawLine(transform.position, transform.position + q1 * forward);    // ì‹œì•¼ê° ì˜¤ë¥¸ìª½ ë
+        Handles.DrawLine(transform.position, transform.position + q2 * forward);    // ì‹œì•¼ê° ì™¼ìª½ ë
 
-        Handles.DrawWireArc(transform.position, transform.up, q2 * transform.forward, sightAngle, sightRange, 5.0f);// ÀüÃ¼ ½Ã¾ß¹üÀ§
+        Handles.DrawWireArc(transform.position, transform.up, q2 * transform.forward, sightAngle, sightRange, 5.0f);// ì „ì²´ ì‹œì•¼ë²”ìœ„
     }
     bool InSightAngle(Vector3 targetPosition)
     {
-        // µÎ ¹éÅÍÀÇ »çÀÌ°¢
+        // ë‘ ë°±í„°ì˜ ì‚¬ì´ê°
         float angle = Vector3.Angle(transform.forward, targetPosition - transform.position);
-        // ¸ó½ºÅÍÀÇ ½Ã¾ß¹üÀ§ °¢µµ»çÀÌ¿¡ ÀÖ´ÂÁö ¾ø´ÂÁö
+        // ëª¬ìŠ¤í„°ì˜ ì‹œì•¼ë²”ìœ„ ê°ë„ì‚¬ì´ì— ìˆëŠ”ì§€ ì—†ëŠ”ì§€
         return (sightAngle * 0.5f) > angle;
     }
     bool BlockByWall(Vector3 targetPosition)
@@ -306,7 +318,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
 
         return result;  
     }
-    public void Attack(IBattle target)
+    public void Attack(Player target)
     {
         if (target != null)
         {
@@ -316,6 +328,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
                 damage *= 2.0f;
             }
             target.TakeDamage(damage);
+            Debug.Log("ì  ê³µê²©");
         }
     }
 

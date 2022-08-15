@@ -599,7 +599,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 1.5
+  m_Radius: 1
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 1.19, z: 0}
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 100
-  attackPower: 10
+  attackPower: 50
   defencePower: 10
 --- !u!195 &2478042123065135450
 NavMeshAgent:
@@ -11498,6 +11498,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4657107793943177676, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 429
+      objectReference: {fileID: 0}
+    - target: {fileID: 4657107793943177676, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 418
+      objectReference: {fileID: 0}
     - target: {fileID: 5811767614268760525, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_SizeDelta.x
       value: 369.4032
@@ -11508,11 +11516,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5811767614268760525, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 97
+      value: 493
       objectReference: {fileID: 0}
     - target: {fileID: 5811767614268760525, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 460
+      value: 417
       objectReference: {fileID: 0}
     - target: {fileID: 6025028055096358071, guid: f4f7469188393f54db0e1ad614e63805, type: 3}
       propertyPath: m_Name

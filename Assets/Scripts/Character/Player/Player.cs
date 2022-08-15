@@ -104,9 +104,16 @@ public class Player : MonoBehaviour
     public bool gianHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
-    // 공격력 ---------------------
-    float damage = 20.0f;
-    public float Damage => damage;
+    // 전투스탯 ---------------------
+   
+    //공
+    public float attackPower = 20.0f;
+    public float AttackPower => attackPower;
+
+    //방 
+    public float defencePower = 10.0f;
+    public float DefencePower { get => defencePower; }
+
     // 카메라 -----------------------------
     Transform cameraTarget; //카메라 타겟
 
@@ -351,13 +358,13 @@ public class Player : MonoBehaviour
     }
     IEnumerator Skill02()
     {
-        damage *= 0.5f;
+        attackPower *= 0.5f;
         anim.SetBool("OnSkill2", true);
         actions.Player.Disable();
         yield return new WaitForSeconds(3.0f);
         actions.Player.Enable();
         anim.SetBool("OnSkill2", false);
-        damage *= 2.0f;
+        attackPower *= 2.0f;
     }
 
     private void OnSkill_3(InputAction.CallbackContext _) // 흡혈 버프
@@ -421,6 +428,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        damage -= defencePower;
         Hp -= damage;
     }
 
