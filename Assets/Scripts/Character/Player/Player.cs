@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     // Item 관련 -------------------------------------------------------------------------------
     private float itemPickupRange = 3.0f;       // 아이템 줍는 범위
-    private int money = 0;                      // 플레이어의 소지 금액
+    private int money = 10000;                      // 플레이어의 소지 금액
     public int Money
     {
         get => money;
@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
     public InventoryUI InvenUI { get => invenUI; }
 
     private Inventory inven;
+
+    private StoreUI store;
     // ------------------------------------------------------------------------------------------
 
     PlayerInputActions actions = null;
@@ -97,7 +99,10 @@ public class Player : MonoBehaviour
 
     public float jumpPower = 2.5f;
     public float gravity = -9.81f;
-    //---------------------------------------
+
+    // 상점확인용 변수--------------------------
+    private bool isStore = false;
+    //-----------------------------------------
     public bool tryUse = false;
     public bool isTrigger = false;
     // 스킬용 변수------------------------------
@@ -132,6 +137,7 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
         useText = GameObject.Find("UseText_GameObject");
         invenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+        store = GameObject.Find("Store").GetComponent<StoreUI>();
     }
     private void Start()
     {
@@ -272,13 +278,26 @@ public class Player : MonoBehaviour
         {
             if (tryUse)
             {
+                if (isStore)
+                {
+                    store.Open();
+                    invenUI.Open();
+                    isStore = false;
+                    useText.gameObject.SetActive(false);
+                }
                 tryUse = false;
             }
             else
             {
+                if (!isStore)
+                {
+                    store.Close();
+                    invenUI.Close();
+                    isStore = true;
+                    useText.gameObject.SetActive(true);
+                }
                 tryUse = true;
             }
-            useText.gameObject.SetActive(!tryUse);
         }
         if (scanObj != null)
         {
@@ -298,11 +317,25 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         isTrigger = true;
+        tryUse = true;
+        if (other.CompareTag("Store"))
+        {
+            isStore = true;
+        }
+        store.Close();
+        invenUI.Close();
+        useText.gameObject.SetActive(true);
     }
     private void OnTriggerExit(Collider other)
     {
         isTrigger = false;
         tryUse = false;
+        if (other.CompareTag("Store"))
+        {
+            isStore = false;
+        }
+
+        useText.gameObject.SetActive(false);
     }
     private void OnMoveModeChange(InputAction.CallbackContext context) // 쉬프트 키로 달리기 토글 설정. 기본 걷기상태
     {

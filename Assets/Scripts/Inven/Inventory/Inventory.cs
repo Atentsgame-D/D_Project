@@ -433,4 +433,12 @@ public class Inventory
         //string.Join(',', 문자열 배열);
         Debug.Log(printText);
     }
+    public void SellItem(ItemSlot slot, uint count)
+    {
+        Player player = GameManager.Inst.MainPlayer;
+
+        int sellPrice = (int)(slot.SlotItemData.value * count / 3);
+        slot.DecreaseSlotItem(count);
+        player.Money += sellPrice;
+    }
 }

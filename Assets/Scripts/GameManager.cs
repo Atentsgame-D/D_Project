@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     // ------------------------------------------------------------------------------------------
 
     // Store 관련 --------------------------------------------------------------------------------
-    StoreUI storeUI;
+    private StoreUI storeUI;
     public StoreUI StoreUI => storeUI;
     // ------------------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI talkText;
     private TalkManager talkManager;
     private GameObject scanObject;
-    private GameObject PlayerUI;
+    //private GameObject PlayerUI;
 
     private bool isAction;
     public int talkindex;
@@ -67,29 +67,42 @@ public class GameManager : MonoBehaviour
         talkText = talkPanel.transform.Find("TalkText").GetComponent<TextMeshProUGUI>();
         talkManager = GameObject.Find("TalkManager").GetComponent<TalkManager>();
         //scanObject = ???;
-        PlayerUI = GameObject.Find("PlayerUI").gameObject;
+        //PlayerUI = GameObject.Find("PlayerUI").gameObject;
     }
 
     public void Action(GameObject scanObj)
     {
-        if (isAction)
-        {
-            isAction = false;            
-        }
-        else
-        {
-            isAction = true;
-            scanObject = scanObj;
-            ObjectData objData = scanObject.GetComponent<ObjectData>();
-            Talk(objData.id, objData.isNPC);
-            Debug.Log("상호작용");
-        }
+        //if (isAction)
+        //{
+        //    isAction = false;            
+        //}
+        //else
+        //{
+        //    isAction = true;
+        //    scanObject = scanObj;
+        //    ObjectData objData = scanObject.GetComponent<ObjectData>();
+        //    Talk(objData.id, objData.isNPC);
+        //    Debug.Log("상호작용");
+        //}
+        //talkPanel.SetActive(isAction);
+        isAction = true;
+        scanObject = scanObj;
+        ObjectData objData = scanObject.GetComponent<ObjectData>();
+        Talk(objData.id, objData.isNPC);
         talkPanel.SetActive(isAction);
     }
 
     void Talk(int id, bool isNpc)
     {
         string talkData = talkManager.GetTalk(id, talkindex);
+
+        if (talkData == null) // 토크 데이터가 없을때
+        {
+            isAction = false;
+            talkindex = 0;
+            return;
+        }
+
         if (isNpc) //대상이 npc일때
         {
             talkText.text = talkData;
@@ -100,6 +113,9 @@ public class GameManager : MonoBehaviour
             talkText.text = talkData;
             //PlayerUI.SetActive(true);
         }
+
+        isAction = true;
+        talkindex++;
     }
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -113,5 +129,6 @@ public class GameManager : MonoBehaviour
 
         player = FindObjectOfType<Player>();
         inventoryUI = FindObjectOfType<InventoryUI>();
+        storeUI = FindObjectOfType<StoreUI>();
     }
 }

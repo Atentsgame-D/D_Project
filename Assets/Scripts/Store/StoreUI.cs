@@ -20,12 +20,11 @@ public class StoreUI : MonoBehaviour
     DetailInfoUI detail;
     public DetailInfoUI Detail => detail;
 
-
     // ----------------------------------------------------------------------------------------------------------------------------
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        slotParent = transform.Find("ItemSlots");
+        slotParent = transform.Find("Store_Base").Find("Grid Setting_Store");
         detail = transform.Find("Detail_Store").GetComponent<DetailInfoUI>();
 
         Button closeButton = transform.Find("CloseButton_Store").GetComponent<Button>();

@@ -12,7 +12,7 @@ public class Store
     /// <summary>
     /// 인벤토리 기본 크기
     /// </summary>
-    public const int Default_Store_Size = 6;
+    public const int Default_Store_Size = 12;
 
     /// <summary>
     /// TempSlot용 ID

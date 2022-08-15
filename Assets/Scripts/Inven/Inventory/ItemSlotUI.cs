@@ -27,6 +27,11 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     InventoryUI invenUI;
 
     /// <summary>
+    /// 상점 UI
+    /// </summary>
+    StoreUI store;
+
+    /// <summary>
     /// 상세 정보창
     /// </summary>
     DetailInfoUI detailUI;
@@ -43,8 +48,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     /// </summary>
     protected TextMeshProUGUI countText;
 
-
-
+    
     // 프로퍼티들 ----------------------------------------------------------------------------------
 
     /// <summary>
@@ -72,6 +76,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void Initialize(uint newID, ItemSlot targetSlot)
     {
         invenUI = GameManager.Inst.InvenUI; // 미리 찾아놓기
+        store = GameManager.Inst.StoreUI;
         detailUI = invenUI.Detail;
 
         id = newID;
@@ -152,6 +157,20 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         // 마우스 왼쪽 버튼 클릭일 때
         if (eventData.button == PointerEventData.InputButton.Left)
         {
+            if (store.CanvasGroup.alpha == 1)
+            {
+                if (!itemSlot.IsEmpty())
+                {
+                    if (itemSlot.ItemCount > 1)
+                    {
+                        invenUI.SpliterUI_Sell.Open(this);
+                    }
+                    else
+                    {
+                        invenUI.inven.SellItem(this.itemSlot, this.itemSlot.ItemCount);
+                    }
+                }
+            }
             TempItemSlotUI temp = invenUI.TempSlotUI;
 
             if (Keyboard.current.leftShiftKey.ReadValue() > 0 && temp.IsEmpty())

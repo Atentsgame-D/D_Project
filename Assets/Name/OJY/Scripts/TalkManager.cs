@@ -24,6 +24,11 @@ public class TalkManager : MonoBehaviour
 
     public string GetTalk(int id, int talkindex)
     {
-        return talkData[id][talkindex];
+        if (talkindex == talkData[id].Length)
+        {
+            return null;
+        }
+        else
+            return talkData[id][talkindex];
     }
 }

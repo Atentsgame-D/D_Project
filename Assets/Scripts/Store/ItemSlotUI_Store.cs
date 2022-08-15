@@ -22,7 +22,7 @@ public class ItemSlotUI_Store : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     protected void Awake()
     {
-        itemImage = transform.GetChild(0).GetComponent <Image>();
+        itemImage = transform.GetChild(0).GetComponent<Image>();
     }
 
     public void Initialize(uint newID, ItemSlot_Store targetSlot)

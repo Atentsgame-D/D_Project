@@ -14,7 +14,6 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     /// </summary>
     public GameObject slotPrefab;   // 초기화시 새로 생성해야할 경우 사용
 
-
     // 기본 데이터 ---------------------------------------------------------------------------------
     /// <summary>
     /// 이 인벤토리를 사용하는 플레이어
@@ -75,6 +74,12 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     ItemSpliterUI itemSpliterUI;
     public ItemSpliterUI SpliterUI => itemSpliterUI;
 
+    /// <summary>
+    /// 팔기 전용 아이템 분할 창
+    /// </summary>
+    ItemSpliterUI_Sell spliterUI_Sell;
+    public ItemSpliterUI_Sell SpliterUI_Sell => spliterUI_Sell;
+
     // 돈 UI --------------------------------------------------------------------------------------
     /// <summary>
     /// 돈 표시할 text
@@ -96,6 +101,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         tempItemSlotUI = GetComponentInChildren<TempItemSlotUI>();
         detail = GetComponentInChildren<DetailInfoUI>();
         itemSpliterUI = GetComponentInChildren<ItemSpliterUI>();
+        spliterUI_Sell = transform.Find("ItemSpliter_Sell").GetComponent<ItemSpliterUI_Sell>();
 
         Button closeButton = transform.Find("CloseButton").GetComponent<Button>();
         closeButton.onClick.AddListener(Close);
@@ -172,6 +178,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         itemSpliterUI.Initialize();
         itemSpliterUI.OnOkClick += OnSpliteOK;  // itemSpliterUI의 OK 버튼이 눌려졌을 때 실행할 함수 등록
 
+        spliterUI_Sell.Initialize();
+        spliterUI_Sell.OnOkClick_Sell += inven.SellItem;
+
         RefreshAllSlots();  // 전체 슬롯UI 갱신
     }
 
@@ -213,7 +222,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     /// <summary>
     /// 인벤토리 열기
     /// </summary>
-    void Open()
+    public void Open()
     {
         canvasGroup.alpha = 1;
         canvasGroup.interactable = true;
@@ -224,7 +233,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     /// <summary>
     /// 인벤토리 닫기
     /// </summary>
-    void Close()
+    public void Close()
     {
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
