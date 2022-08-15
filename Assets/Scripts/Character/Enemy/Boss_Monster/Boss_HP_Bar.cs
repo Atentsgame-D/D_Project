@@ -4,29 +4,22 @@ using UnityEngine;
 
 public class Boss_HP_Bar : MonoBehaviour
 {
-    IHealth target;
+    Enemy_Boss target;
     Transform fillPivot;
 
     private void Awake()
     {
-        target = GetComponentInParent<IHealth>();
+        target = GetComponentInParent<Enemy_Boss>();
         target.onHealthChange += SetHP_Value;
-        fillPivot = transform.Find("FillPivot");        
+        fillPivot = transform.Find("FillPivot");
     }
 
     void SetHP_Value()
     {
-        if( target != null )
+        if (target != null)
         {
             float ratio = target.HP / target.MaxHP;
             fillPivot.localScale = new Vector3(ratio, 1, 1);
         }
-    }
-
-    // 빌보드 -> 항상 카메라를 정면으로 마주보는 오브젝트    
-    private void LateUpdate()
-    {
-        //transform.LookAt(transform.position + Camera.main.transform.position - transform.position);
-        transform.forward = -Camera.main.transform.forward;
     }
 }

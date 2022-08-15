@@ -256,14 +256,8 @@ public class Inventory
     /// </summary>
     /// <param name="from">시작 슬롯의 ID</param>
     /// <param name="to">도착 슬롯의 ID</param>
-    public void MoveItem(uint from, uint to)
+    public virtual void MoveItem(uint from, uint to)
     {
-        // from, to 값에 따라 발생 가능한 4가지 경우의 수
-        // from에 있고 to에 있고
-        // from에 있고 to에 없고
-        // from에 없고 to에 있고 -> 뭔가 실행되면 안된다.
-        // from에 없고 to에 없고 -> 뭔가 실행되면 안된다.
-
         // from은 밸리드한 슬롯 인덱스고 슬롯이 비어있지 않다. 그리고 to는 밸리드한 슬롯 인덱스다.
         if (IsValidAndNotEmptySlot(from) && IsValidSlotIndex(to))
         {

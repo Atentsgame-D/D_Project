@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour
     public InventoryUI InvenUI => inventoryUI;
     // ------------------------------------------------------------------------------------------
 
+    // Equipment 관련 ---------------------------------------------------------------------------
+    private EquipmentUI equipmentUI;
+    public EquipmentUI EquipUI => equipmentUI;
+    // ------------------------------------------------------------------------------------------
+
     // Store 관련 --------------------------------------------------------------------------------
     private StoreUI storeUI;
     public StoreUI StoreUI => storeUI;
@@ -128,7 +133,13 @@ public class GameManager : MonoBehaviour
         itemData = GetComponent<ItemDataManager>();
 
         player = FindObjectOfType<Player>();
+<<<<<<< HEAD
         inventoryUI = FindObjectOfType<InventoryUI>();
         storeUI = FindObjectOfType<StoreUI>();
+=======
+        inventoryUI = FindObjectOfType<InventoryUI>();        
+        equipmentUI = FindObjectOfType<EquipmentUI>();
+
+>>>>>>> f42b2ef082b8f2ca076675490e4ae83c09345574
     }
 }

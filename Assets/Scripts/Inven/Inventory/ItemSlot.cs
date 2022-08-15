@@ -165,34 +165,12 @@ public class ItemSlot
         if (equipItem != null)
         {
             // 아이템은 장비가능하다.
-
-            ItemData_Weapon weaponData = SlotItemData as ItemData_Weapon;   // 아이템 데이터 따로 보관
             IEquipTarget equipTarget = target.GetComponent<IEquipTarget>(); // 아이템을 장비할 대상이 아이템을 장비할 수 있는지 확인
             if (equipTarget != null)
             {
-                // 대상은 특정 슬롯의 아이템을 장비하고 있다. 그리고 아이템이 장비되어 있다.
-                if (equipTarget.EquipItemSlot != null)    // 무기를 장비하고 잇는지 확인
-                {
-                    // 무기를 장비하고 있다.
-
-                    if (equipTarget.EquipItemSlot != this)      // 장비하고 있는 아이템의 슬롯을 클릭했는지 확인
-                    {
-                        // 다른 슬롯을 장비하고 있다.
-                        equipTarget.UnEquipWeapon();            // 일단 무기를 벗는다.
-                        equipTarget.EquipWeapon(this);    // 다른 무기를 장비한다.
-                        result = true;
-                    }
-                    else
-                    {
-                        equipTarget.UnEquipWeapon();            // 같은 무기를 장비한 상황이면 벗기만 한다.
-                    }
-                }
-                else
-                {
-                    // 무기를 장비하고 있지 않다. => 그냥 장비
-                    equipTarget.EquipWeapon(this);
-                    result = true;
-                }
+                equipTarget.EquipWeapon(this);
+                
+                result = true;
             }
         }
         return result;

@@ -12,7 +12,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     /// <summary>
     /// 아이템 슬롯 아이디
     /// </summary>
-    uint id;
+    protected uint id;
 
     /// <summary>
     /// 이 슬롯UI에서 가지고 있을 ItemSlot(inventory클래스가 가지고 있는 ItemSlot중 하나)
@@ -94,8 +94,14 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             // 이 슬롯에 아이템이 들어있을 때
             itemImage.sprite = itemSlot.SlotItemData.itemIcon;  // 아이콘 이미지 설정하고
             itemImage.color = Color.white;  // 불투명하게 만들기
-            countText.text = itemSlot.ItemCount.ToString();
-            
+            if (itemSlot.ItemCount > 1)
+            {
+                countText.text = itemSlot.ItemCount.ToString();
+            }
+            else
+            {
+                countText.text = "";
+            }
         }
         else
         {
@@ -226,20 +232,12 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                         itemSlot.AssignSlotItem(tempData, tempCount);
                         (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
                     }
-
-                    //if(isEquipItem)
-                    //{
-                    //    GameManager.Inst.MainPlayer.UnEquipWeapon();
-                    //    GameManager.Inst.MainPlayer.EquipWeapon(ItemSlot);
-                    //}
-
                     detailUI.IsPause = false;   // 상세정보창 일시정지 풀기
                 }
             }
         }
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            // 그냥 클릭한 상황
             if (!ItemSlot.IsEmpty())
             {
                 // 아이템 사용 시도
@@ -251,7 +249,13 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
                 // 아이템 장비 시도
                 bool isEquiped = ItemSlot.EquipSlotItem(GameManager.Inst.MainPlayer.gameObject);
+                if (isEquiped)
+                {
+                    GameManager.Inst.EquipUI.equipment.OnEquipment(ItemSlot.SlotItemData);
+                    ItemSlot.ClearSlotItem();
+                }
                 ItemSlot.ItemEquiped = isEquiped;
+
             }
         }
     }
