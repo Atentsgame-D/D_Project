@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IEquipTarget
 {
     // Item 관련 -------------------------------------------------------------------------------
     private float itemPickupRange = 3.0f;       // 아이템 줍는 범위
@@ -33,6 +33,14 @@ public class Player : MonoBehaviour
     public InventoryUI InvenUI { get => invenUI; }
 
     private Inventory inven;
+    // ------------------------------------------------------------------------------------------
+
+    // Equipment 관련 ---------------------------------------------------------------------------
+    private EquipmentUI equipUI;
+
+    public EquipmentUI EquipUI { get => equipUI; }
+
+    private Equipment equip;
     // ------------------------------------------------------------------------------------------
 
     PlayerInputActions actions = null;
@@ -107,6 +115,9 @@ public class Player : MonoBehaviour
     // 공격력 ---------------------
     float damage = 20.0f;
     public float Damage => damage;
+
+    public ItemSlot EquipItemSlot => throw new NotImplementedException();
+
     // 카메라 -----------------------------
     Transform cameraTarget; //카메라 타겟
 
@@ -132,6 +143,7 @@ public class Player : MonoBehaviour
         controller = GetComponent<CharacterController>();
         useText = GameObject.Find("UseText_GameObject");
         invenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
+        equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
     }
     private void Start()
     {
@@ -140,6 +152,8 @@ public class Player : MonoBehaviour
         useText.gameObject.SetActive(false);
         inven = new Inventory();
         invenUI.InitializeInventory(inven);
+        equip = new Equipment();
+        equipUI.InitializeEquipment(equip);
 
         //인벤토리 오류로 잠시 주석처리
         //for (int i = 0; i < 99; i++)
@@ -149,6 +163,10 @@ public class Player : MonoBehaviour
         //}
 
         //manager.TalkPanel.SetActive(false);
+
+        inven.AddItem(ItemIDCode.Weapon_Wooden_Sword);
+        inven.AddItem(ItemIDCode.Equipment_Leather_Helmet);
+        inven.AddItem(ItemIDCode.Equipment_Leather_Boot);
     }
     private void Update()
     {
@@ -214,10 +232,12 @@ public class Player : MonoBehaviour
 
         actions.ShortCut.Enable();
         actions.ShortCut.InventoryOnOff.performed += OnInventortyOnOff;
+        actions.ShortCut.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
 
     private void OnDisable()
     {
+        actions.ShortCut.EquipmentOnOff.performed -= OnEquipmentOnOff;
         actions.ShortCut.InventoryOnOff.performed -= OnInventortyOnOff;
         actions.ShortCut.Disable();
 
@@ -444,6 +464,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Item관련 -------------------------------------------------------------
+
     private void OnPickUp(InputAction.CallbackContext context)
     {
         ItemPickUp();
@@ -455,17 +477,20 @@ public class Player : MonoBehaviour
         foreach (var col in cols)
         {
             Item item = col.GetComponent<Item>();
-            IConsumalbe consumable = item.data as IConsumalbe;
-            if (consumable != null)
+            if (item != null)
             {
-                consumable.Consume(this);
-                Destroy(col.gameObject);
-            }
-            else
-            {
-                if (inven.AddItem(item.data))
+                IConsumalbe consumable = item.data as IConsumalbe;
+                if (consumable != null)
                 {
+                    consumable.Consume(this);
                     Destroy(col.gameObject);
+                }
+                else
+                {
+                    if (inven.AddItem(item.data))
+                    {
+                        Destroy(col.gameObject);
+                    }
                 }
             }
         }
@@ -492,4 +517,20 @@ public class Player : MonoBehaviour
     {
         GameManager.Inst.InvenUI.InventoryOnOffSwitch();
     }
+    //-----------------------------------------------------------------------
+    // 장비관련 --------------------------------------------------------------
+
+    private void OnEquipmentOnOff(InputAction.CallbackContext obj)
+    {
+        GameManager.Inst.EquipUI.EquipmentOnOffSwitch();
+    }
+
+    public void EquipWeapon(ItemSlot weaponSlot)
+    {
+    }
+
+    public void UnEquipWeapon()
+    {
+    }
+    //-----------------------------------------------------------------------
 }

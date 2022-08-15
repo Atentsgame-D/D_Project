@@ -223,6 +223,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EquipmentOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""a867801d-c2ac-4c2f-9e74-c791a77ed418"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -234,6 +243,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Player"",
                     ""action"": ""InventoryOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e9823a8c-a05c-4861-a5cc-487935ebc6fd"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""EquipmentOnOff"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -393,6 +413,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         // ShortCut
         m_ShortCut = asset.FindActionMap("ShortCut", throwIfNotFound: true);
         m_ShortCut_InventoryOnOff = m_ShortCut.FindAction("InventoryOnOff", throwIfNotFound: true);
+        m_ShortCut_EquipmentOnOff = m_ShortCut.FindAction("EquipmentOnOff", throwIfNotFound: true);
         // PlayerMove
         m_PlayerMove = asset.FindActionMap("PlayerMove", throwIfNotFound: true);
         m_PlayerMove_Move = m_PlayerMove.FindAction("Move", throwIfNotFound: true);
@@ -557,11 +578,13 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_ShortCut;
     private IShortCutActions m_ShortCutActionsCallbackInterface;
     private readonly InputAction m_ShortCut_InventoryOnOff;
+    private readonly InputAction m_ShortCut_EquipmentOnOff;
     public struct ShortCutActions
     {
         private @PlayerInputActions m_Wrapper;
         public ShortCutActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @InventoryOnOff => m_Wrapper.m_ShortCut_InventoryOnOff;
+        public InputAction @EquipmentOnOff => m_Wrapper.m_ShortCut_EquipmentOnOff;
         public InputActionMap Get() { return m_Wrapper.m_ShortCut; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -574,6 +597,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @InventoryOnOff.started -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnInventoryOnOff;
                 @InventoryOnOff.performed -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnInventoryOnOff;
                 @InventoryOnOff.canceled -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnInventoryOnOff;
+                @EquipmentOnOff.started -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.performed -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnEquipmentOnOff;
+                @EquipmentOnOff.canceled -= m_Wrapper.m_ShortCutActionsCallbackInterface.OnEquipmentOnOff;
             }
             m_Wrapper.m_ShortCutActionsCallbackInterface = instance;
             if (instance != null)
@@ -581,6 +607,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @InventoryOnOff.started += instance.OnInventoryOnOff;
                 @InventoryOnOff.performed += instance.OnInventoryOnOff;
                 @InventoryOnOff.canceled += instance.OnInventoryOnOff;
+                @EquipmentOnOff.started += instance.OnEquipmentOnOff;
+                @EquipmentOnOff.performed += instance.OnEquipmentOnOff;
+                @EquipmentOnOff.canceled += instance.OnEquipmentOnOff;
             }
         }
     }
@@ -683,6 +712,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     public interface IShortCutActions
     {
         void OnInventoryOnOff(InputAction.CallbackContext context);
+        void OnEquipmentOnOff(InputAction.CallbackContext context);
     }
     public interface IPlayerMoveActions
     {
