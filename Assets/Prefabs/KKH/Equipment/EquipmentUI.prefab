@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -52.247772}
+  m_AnchoredPosition: {x: 0, y: -12}
   m_SizeDelta: {x: -40, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1234380884902489065
@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7721102, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.7721102, b: 0, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 7105859875605587563}
   - component: {fileID: 8259549224132552656}
   - component: {fileID: 1692721282482596748}
-  - component: {fileID: 3650768156073448486}
+  - component: {fileID: 2427805749842604741}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -114,9 +114,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 197.13342, y: 298.7201}
+  m_SizeDelta: {x: 480, y: 650.2426}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8259549224132552656
 CanvasRenderer:
@@ -146,8 +146,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 6217b7e11307ad64884406331d3ca2ce, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -156,7 +156,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3650768156073448486
+--- !u!114 &2427805749842604741
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -496,7 +496,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2074100727400646984, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2074100727400646984, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -532,7 +532,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2074100727400646984, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -70
+      value: -49.2677
       objectReference: {fileID: 0}
     - target: {fileID: 2074100727400646984, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -549,6 +549,26 @@ PrefabInstance:
     - target: {fileID: 2074100727400646985, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
       propertyPath: m_Name
       value: TextPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074100727400646987, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074100727400646987, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9aa2c942e55346b48883bf78aba327ca, type: 3}
+    - target: {fileID: 2074100727400646987, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074100727400646987, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2074100727400646987, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2074100727400646987, guid: a9a15dcb6b4a02a4398817a29edc3f2d, type: 3}
       propertyPath: m_RaycastTarget
@@ -688,6 +708,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6313777868443219295}
     m_Modifications:
+    - target: {fileID: 1291491274289198065, guid: a7f86c15ab00ae14a827a9cd0e88395d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 91b7e74335f44c44c8dba8435bf6c3ab, type: 3}
+    - target: {fileID: 1291491274289198065, guid: a7f86c15ab00ae14a827a9cd0e88395d, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291491274289198065, guid: a7f86c15ab00ae14a827a9cd0e88395d, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1291491274289198065, guid: a7f86c15ab00ae14a827a9cd0e88395d, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1291491274289198078, guid: a7f86c15ab00ae14a827a9cd0e88395d, type: 3}
       propertyPath: m_Name
       value: CloseButton
