@@ -6,14 +6,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class InventoryUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     // public -------------------------------------------------------------------------------------
     /// <summary>
     /// ItemSlotUI가 있는 프리팹. 
     /// </summary>
     public GameObject slotPrefab;   // 초기화시 새로 생성해야할 경우 사용
-
 
     // 기본 데이터 ---------------------------------------------------------------------------------
     /// <summary>
@@ -246,20 +245,6 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     }
 
     // 이벤트 시스템의 인터페이스 함수들 -------------------------------------------------------------
-
-    /// <summary>
-    /// 드래그 중에 실행(OnBeginDrag, OnEndDrag를 사용하려면 반드시 필요해서 넣은 것)
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnDrag(PointerEventData eventData)
-    {
-        // OnBeginDrag, OnEndDrag를 사용하려면 반드시 필요해서 넣은 것
-
-        //if (eventData.button == PointerEventData.InputButton.Left)
-        //{
-        //    tempItemSlotUI.transform.position = eventData.position;
-        //}
-    }
 
     /// <summary>
     /// 드래그 시작시 실행
