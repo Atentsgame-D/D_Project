@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4698715224468389421}
   - component: {fileID: 4698715224468389420}
+  - component: {fileID: 640233623}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -44,8 +45,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23be3b4bcb8a71d4b8df4a54d867c3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  talkManager: {fileID: 0}
-  talkPanel: {fileID: 0}
-  talkText: {fileID: 0}
-  scanObject: {fileID: 0}
   talkindex: 0
+--- !u!114 &640233623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4698715224468389419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be82e5a911017ad4aa64b34d789962b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDatas:
+  - {fileID: 11400000, guid: d67dc0c31673c9647a39a6beaa084b75, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: c2be2d4e4e0a34e4190ddf2da75c4661, type: 2}
+  - {fileID: 11400000, guid: 111b2e7d8e08cdb46a70a0545c1187fe, type: 2}
+  - {fileID: 11400000, guid: 403a28172be136d4b8a666f28e6a4467, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: f0435ad6083d1f343843e9220d982365, type: 2}
+  - {fileID: 11400000, guid: 1523c19e3dd747c49baee841548b9e02, type: 2}
+  - {fileID: 11400000, guid: a5eb0744f615e5c498effe612e41e7b5, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: adc37b25760bb484296d82dd03ba6959, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 77c83851e5bc9884baf83949404be6e9, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: 25779ad28532efd4d8af1b7340a72694, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}

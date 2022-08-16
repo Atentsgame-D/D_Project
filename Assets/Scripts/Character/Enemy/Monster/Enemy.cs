@@ -15,8 +15,8 @@ public class Enemy : MonoBehaviour
 
     //스탯 관련
     public Slider hpSlider;
-    public int maxHealth;
-    public int curHealth;
+    public float maxHealth;
+    public float curHealth;
     //public Transform meleeArea;
 
     private float timeCountDown = 3.0f;
@@ -393,7 +393,11 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
-            curHealth -= (int)player.AttackPower; // 체력감소. 임시로 강제 형변환 하였음 이후에 단위 통일할 것 
+            curHealth -= player.AttackPower;
+            if (player.gainHP)
+            {
+                player.Hp += player.AttackPower*0.5f;
+            }
             StartCoroutine(OnDamage());
 
             Debug.Log("Enemy : " + Mathf.Max(0, curHealth)); // 체력을 0밑으로 떨어지지 않게 함

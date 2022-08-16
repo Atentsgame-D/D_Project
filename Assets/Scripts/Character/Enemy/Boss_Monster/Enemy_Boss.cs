@@ -22,8 +22,8 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     IEnumerator repeatChase = null;
     float sightAngle = 150.0f;   //-45 ~ +45 범위
     //공격용 -----------------------------------------------------------------------------------------
-    float attackCoolTime = 2.0f;
-    float attackSpeed = 1.0f;
+    float attackCoolTime = 0.0f;
+    float attackSpeed = 2.0f;
     Player player;
     //IBattle attackTarget;
 
@@ -67,12 +67,11 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     }
     private void Update()
     {
-        Debug.Log($"공격 쿨타임: {attackCoolTime}");
         //if(patrolRoute!=null)
         //{
         //    agent.SetDestination(patrolRoute.position);  // 길찾기는 연산량이 많은 작업. SetDestination을 자주하면 안된다.
         //}        
-
+        
         switch (state)
         {
             case Boss_EnemyState.Idle:
@@ -105,13 +104,15 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         //}
     }
 
+    Vector3 pos = Vector3.zero;
     bool SearchPlayer()
     {
         bool result = false;
         Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
+
         if (colliders.Length > 0)    // 시야 범위 안에 있는가?
         {
-            Vector3 pos = colliders[0].transform.position;
+            pos = colliders[0].transform.position;
             if (InSightAngle(pos))  // 시야 각도 안에 있는가?
             {
                 if (!BlockByWall(pos))  // 벽에 가렸는가?
@@ -181,10 +182,12 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     {
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
-            //curHealth -= (int)player.AttackPower; // 체력감소. 임시로 강제 형변환 하였음 이후에 단위 통일할 것 
-            //StartCoroutine(OnDamage());
-            Debug.Log("공격받음");
-            //Debug.Log("Enemy : " + Mathf.Max(0, curHealth)); // 체력을 0밑으로 떨어지지 않게 함
+            HP -= player.AttackPower;
+            if (player.gainHP)
+            {
+                player.Hp += player.AttackPower * 0.5f;
+            }
+            Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
         }
     }
 
@@ -232,7 +235,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 break;
             case Boss_EnemyState.Attack:
                 agent.isStopped = true;
-                attackCoolTime = attackSpeed;
                 break;
             case Boss_EnemyState.Dead:
                 DiePresent();
@@ -245,8 +247,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         anim.SetInteger("EnemyState", (int)state);
     }
     void DiePresent()
-    {
-        
+    {        
         anim.SetBool("Dead", true);
         anim.SetTrigger("Die");
         isDead = true;
@@ -257,7 +258,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     IEnumerator DeadEffect()
     {
-
         Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
         hpBar.gameObject.SetActive(false);
 
@@ -287,7 +287,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             Handles.color = Color.red;  // 추적이나 공격 중일 때만 빨간색
         }
         Handles.DrawWireDisc(transform.position, transform.up, closeSightRange); // 근접 시야 범위
-
         Vector3 forward = transform.forward * sightRange;
         Quaternion q1 = Quaternion.Euler(0.5f * sightAngle * transform.up);
         Quaternion q2 = Quaternion.Euler(-0.5f * sightAngle * transform.up);
@@ -328,7 +327,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 damage *= 2.0f;
             }
             target.TakeDamage(damage);
-            Debug.Log("적 공격");
         }
     }
 

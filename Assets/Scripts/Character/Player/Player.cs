@@ -114,7 +114,7 @@ public class Player : MonoBehaviour, IEquipTarget
     public bool tryUse = false;
     public bool isTrigger = false;
     // 스킬용 변수------------------------------
-    public bool gianHP = false;
+    public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
     // 전투스탯 ---------------------
@@ -154,7 +154,7 @@ public class Player : MonoBehaviour, IEquipTarget
         controller = GetComponent<CharacterController>();
         useText = GameObject.Find("UseText_GameObject");
         invenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
-        store = GameObject.Find("Store").GetComponent<StoreUI>();
+        store = GameObject.Find("Store").GetComponent<StoreUI>();  
         equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
     }
     private void Start()
@@ -340,7 +340,7 @@ public class Player : MonoBehaviour, IEquipTarget
         {
             isStore = true;
         }
-        store.Close();
+        store.Close(); 
         invenUI.Close();
         useText.gameObject.SetActive(true);
     }
@@ -423,9 +423,9 @@ public class Player : MonoBehaviour, IEquipTarget
 
     IEnumerator Skill03()
     {
-        gianHP = true;
+        gainHP = true;
         yield return new WaitForSeconds(6.0f);
-        gianHP = false;
+        gainHP = false;
     }
 
     private void OnSkill_4(InputAction.CallbackContext _) // 도약
