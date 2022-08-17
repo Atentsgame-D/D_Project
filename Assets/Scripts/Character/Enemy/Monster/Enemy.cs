@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     Boss_EnemyState enemyState = Boss_EnemyState.Idle;
 
     public Transform patrolRoute = null;
-    public enum Type { A, B};
+    public enum Type { PoongDang, Scorpion, Spider};
     public Type enemyType;
 
     //스탯 관련
@@ -311,7 +311,7 @@ public class Enemy : MonoBehaviour
     {
         switch (enemyType)
         {
-            case Type.A:
+            case Type.PoongDang:
 
                 if (player != null)
                 {
@@ -323,26 +323,8 @@ public class Enemy : MonoBehaviour
                     {
                         anim.SetTrigger("SmashAttack");
                         damage *= 2.0f;
-                    }
 
-                    attackCoolTime = attackSpeed;
-                    player.TakeDamage(damage);
-                }
-
-                break;
-
-            case Type.B:
-
-                if (player != null)
-                {
-                    float damage = AttackPower;
-
-                    anim.SetTrigger("Attack");
-
-                    if (Random.Range(0.0f, 1.0f) < smashRate)
-                    {
-                        anim.SetTrigger("SmashAttack");
-                        damage *= 2.0f;
+                        attackCoolTime -= Time.deltaTime;
                     }
 
                     if (Random.Range(0.0f, 1.0f) < rushRate)
@@ -353,7 +335,52 @@ public class Enemy : MonoBehaviour
                     }
 
                     attackCoolTime = attackSpeed;
-                    player.TakeDamage(damage);
+                    rushCoolTime = 2.0f;
+                    //player.TakeDamage(damage);
+                }
+
+                break;
+
+            case Type.Spider:
+
+                if (player != null)
+                {
+                    float damage = AttackPower;
+
+                    anim.SetTrigger("Bite Attack");
+
+                    if (Random.Range(0.0f, 1.0f) < smashRate)
+                    {
+                        anim.SetTrigger("Projectile Attack");
+                        damage *= 2.0f;
+
+                        attackCoolTime -= Time.deltaTime;
+                    }
+
+                    attackCoolTime = attackSpeed;
+                    //player.TakeDamage(damage);
+                }
+
+                break;
+
+            case Type.Scorpion:
+
+                if (player != null)
+                {
+                    float damage = AttackPower;
+
+                    anim.SetTrigger("Projectile Attack");
+
+                    if (Random.Range(0.0f, 1.0f) < smashRate)
+                    {
+                        anim.SetTrigger("Sting Attack");
+                        damage *= 2.0f;
+
+                        attackCoolTime -= Time.deltaTime;
+                    }
+
+                    attackCoolTime = attackSpeed;
+                    //player.TakeDamage(damage);
                 }
 
                 break;
@@ -422,6 +449,7 @@ public class Enemy : MonoBehaviour
             isChase = false;
             Destroy(gameObject, 2);
             ChangeState(Boss_EnemyState.Dead);
+            ItemDrop();
             anim.SetTrigger("Die");
             anim.SetBool("IsDead", true); // 피격후 다른 모션으로 넘어가는것 방지
             
@@ -439,6 +467,27 @@ public class Enemy : MonoBehaviour
             //anim.SetTrigger("Die");
 
             //Destroy(gameObject, 3);
+        }
+    }
+
+    // 아이템 드랍
+    void ItemDrop()
+    {
+        float randomSelect = Random.Range(0.0f, 1.0f);
+
+        if (randomSelect < 0.1f)
+        {
+            ItemFactory.MakeItem(ItemIDCode.Test_Item, transform.position, true);
+        }
+
+        else if (randomSelect < 0.3f)
+        {
+            ItemFactory.MakeItem(ItemIDCode.Test_Item, transform.position, true);
+        }
+
+        else
+        {
+            ItemFactory.MakeItem(ItemIDCode.Test_Item, transform.position, true);
         }
     }
 
