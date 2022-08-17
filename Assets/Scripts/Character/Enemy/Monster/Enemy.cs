@@ -7,7 +7,7 @@ using UnityEditor;
 
 public class Enemy : MonoBehaviour
 {
-    EnemyState enemyState = EnemyState.Idle;
+    Boss_EnemyState enemyState = Boss_EnemyState.Idle;
 
     public Transform patrolRoute = null;
     public enum Type { A, B};
@@ -80,24 +80,24 @@ public class Enemy : MonoBehaviour
     {
         switch (enemyState)
         {
-            case EnemyState.Idle:
+            case Boss_EnemyState.Idle:
                 Idle();
                 break;
 
-            case EnemyState.Patrol:
+            case Boss_EnemyState.Patrol:
                 Patrol();
                 break;
 
-            case EnemyState.Chase:
+            case Boss_EnemyState.Chase:
                 ChaseStart();
                 break;
 
-            case EnemyState.Attack:
+            case Boss_EnemyState.Attack:
                 Targeting();
 
                 break;
 
-            case EnemyState.Dead:
+            case Boss_EnemyState.Dead:
                 break;
         }
 
@@ -109,7 +109,7 @@ public class Enemy : MonoBehaviour
         FreezeVelocity();
     }
 
-    void ChangeState(EnemyState newState)
+    void ChangeState(Boss_EnemyState newState)
     {
         if (isDead)
         {
@@ -119,27 +119,27 @@ public class Enemy : MonoBehaviour
         // 이전 상태를 나가면서 해야할 행동
         switch (enemyState)
         {
-            case EnemyState.Idle:
+            case Boss_EnemyState.Idle:
                 nav.isStopped = true;
 
                 break;
 
-            case EnemyState.Patrol:
+            case Boss_EnemyState.Patrol:
                 nav.isStopped = true;
                 break;
 
-            case EnemyState.Chase:
+            case Boss_EnemyState.Chase:
                 nav.isStopped = true; 
                 StopCoroutine(repeatChase);
 
                 break;
 
-            case EnemyState.Attack:
+            case Boss_EnemyState.Attack:
                 nav.isStopped = true;
 
                 break;
 
-            case EnemyState.Dead:
+            case Boss_EnemyState.Dead:
                 isDead = false;
 
                 break;
@@ -148,17 +148,17 @@ public class Enemy : MonoBehaviour
         // 새 상태로 들어가면서 해야할 행동
         switch (newState)
         {
-            case EnemyState.Idle:
+            case Boss_EnemyState.Idle:
                 nav.isStopped = true;
                 timeCountDown = waitTime;
                 break;
 
-            case EnemyState.Patrol:
+            case Boss_EnemyState.Patrol:
                 nav.isStopped = false;
                 nav.SetDestination(patrolRoute.GetChild(index).position);
                 break;
 
-            case EnemyState.Chase:
+            case Boss_EnemyState.Chase:
                 nav.isStopped = false;
                 nav.SetDestination(targetPosition);
                 repeatChase = RepeatChase();
@@ -166,13 +166,13 @@ public class Enemy : MonoBehaviour
 
                 break;
 
-            case EnemyState.Attack:
+            case Boss_EnemyState.Attack:
                 nav.isStopped = true;
                 attackCoolTime = attackSpeed;
 
                 break;
 
-            case EnemyState.Dead:
+            case Boss_EnemyState.Dead:
 
                 break;
 
@@ -189,7 +189,7 @@ public class Enemy : MonoBehaviour
     {
         if (SearchPlayer())
         {
-            ChangeState(EnemyState.Chase);
+            ChangeState(Boss_EnemyState.Chase);
 
             return;
         }
@@ -198,7 +198,7 @@ public class Enemy : MonoBehaviour
 
         if (timeCountDown < 0)
         {
-            ChangeState(EnemyState.Patrol);
+            ChangeState(Boss_EnemyState.Patrol);
 
             return;
         }
@@ -208,7 +208,7 @@ public class Enemy : MonoBehaviour
     {
         if (SearchPlayer())
         {
-            ChangeState(EnemyState.Chase);
+            ChangeState(Boss_EnemyState.Chase);
 
             return;
         }
@@ -218,7 +218,7 @@ public class Enemy : MonoBehaviour
             index++;
             index %= wayPointCount;
 
-            ChangeState(EnemyState.Idle);
+            ChangeState(Boss_EnemyState.Idle);
 
             return;
         }
@@ -374,7 +374,7 @@ public class Enemy : MonoBehaviour
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             //attackTarget = other.GetComponent<IBattle>();
-            ChangeState(EnemyState.Attack);
+            ChangeState(Boss_EnemyState.Attack);
 
             return;
         }
@@ -384,13 +384,14 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
-            ChangeState(EnemyState.Chase);
+            ChangeState(Boss_EnemyState.Chase);
             return;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("뭔가 들어옴");
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
             curHealth -= player.AttackPower;
@@ -420,7 +421,7 @@ public class Enemy : MonoBehaviour
             // 임시 수정           
             isChase = false;
             Destroy(gameObject, 2);
-            ChangeState(EnemyState.Dead);
+            ChangeState(Boss_EnemyState.Dead);
             anim.SetTrigger("Die");
             anim.SetBool("IsDead", true); // 피격후 다른 모션으로 넘어가는것 방지
             
@@ -447,7 +448,7 @@ public class Enemy : MonoBehaviour
         isChase = true;
         if(!SearchPlayer())
         {
-            ChangeState(EnemyState.Patrol);
+            ChangeState(Boss_EnemyState.Patrol);
             return;
         }
 
@@ -459,7 +460,7 @@ public class Enemy : MonoBehaviour
         Handles.DrawWireDisc(transform.position, transform.up, sightRange);
 
         Handles.color = Color.green;
-        if (enemyState == EnemyState.Chase || enemyState == EnemyState.Attack)
+        if (enemyState == Boss_EnemyState.Chase || enemyState == Boss_EnemyState.Attack)
         {
             Handles.color = Color.red;
         }

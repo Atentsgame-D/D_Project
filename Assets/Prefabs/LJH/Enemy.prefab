@@ -469,9 +469,9 @@ GameObject:
   - component: {fileID: 7036229410721748169}
   - component: {fileID: 6986257633690501833}
   - component: {fileID: 6986257633690501814}
-  - component: {fileID: 6986257633690501813}
-  - component: {fileID: 7036229410721748168}
   - component: {fileID: 563432970}
+  - component: {fileID: 7036229410721748168}
+  - component: {fileID: 6986257633690501813}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -562,25 +562,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.7756214, y: 1.9388115, z: 4.222836}
   m_Center: {x: 0.010892153, y: 1.0191609, z: 0.22623509}
---- !u!114 &6986257633690501813
-MonoBehaviour:
+--- !u!135 &563432970
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6985134512149004239}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66a484b9e750daf439498abf622c10b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolRoute: {fileID: 0}
-  enemyType: 0
-  hpSlider: {fileID: 2063776580}
-  maxHealth: 100
-  curHealth: 100
-  attackPower: 10
-  defensePower: 10
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &7036229410721748168
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -603,19 +597,25 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!135 &563432970
-SphereCollider:
+--- !u!114 &6986257633690501813
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6985134512149004239}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 3
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a484b9e750daf439498abf622c10b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolRoute: {fileID: 0}
+  enemyType: 0
+  hpSlider: {fileID: 2063776580}
+  maxHealth: 100
+  curHealth: 100
+  attackPower: 10
+  defensePower: 10
 --- !u!1 &6985163600131735915
 GameObject:
   m_ObjectHideFlags: 0

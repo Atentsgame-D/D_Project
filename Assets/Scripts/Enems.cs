@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Boss_EnemyState
-{
-    Idle = 0,
-    Chase,
-    Attack,
-    Dead
-}
+//public enum Boss_EnemyState
+//{
+//    Idle = 0,
+//    Chase,
+//    Attack,
+//    Dead
+//}
 
-public enum EnemyState
+public enum Boss_EnemyState
 {
     Idle = 0,
     Patrol,
