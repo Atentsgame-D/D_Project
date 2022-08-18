@@ -798,11 +798,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 213734174, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 213734174, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1749279082, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_camera
@@ -814,7 +814,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6985134512149004239, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6986257633690501813, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
+      propertyPath: enemyType
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6986257633690501813, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: patrolRoute

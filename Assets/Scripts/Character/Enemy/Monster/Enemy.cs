@@ -477,17 +477,17 @@ public class Enemy : MonoBehaviour
 
         if (randomSelect < 0.1f)
         {
-            ItemFactory.MakeItem(ItemIDCode.Test_Item, transform.position, true);
+            ItemFactory.MakeItem(ItemIDCode.Potion_HP_Small, transform.position, true);
         }
 
         else if (randomSelect < 0.3f)
         {
-            ItemFactory.MakeItem(ItemIDCode.Test_Item, transform.position, true);
+            ItemFactory.MakeItem(ItemIDCode.Potion_MP_Small, transform.position, true);
         }
 
         else
         {
-            ItemFactory.MakeItem(ItemIDCode.Test_Item, transform.position, true);
+            ItemFactory.MakeItem(ItemIDCode.Weapon_Wooden_Sword, transform.position, true);
         }
     }
 
