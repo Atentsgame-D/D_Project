@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyHP_Bar : MonoBehaviour
 {
-    public Transform target;
+    public Transform m_camera;
 
     private void Update()
     {
-        transform.forward = target.forward;
+        transform.forward = m_camera.forward;
     }
 }
