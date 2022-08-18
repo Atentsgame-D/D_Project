@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class EnemyHP_Bar : MonoBehaviour
 {
-    public Transform m_camera;
+    Transform cameraTarget;
 
+    private void Awake()
+    {
+        cameraTarget = GameObject.Find("Main Camera").GetComponent<Transform>();
+    }
     private void Update()
     {
-        transform.forward = m_camera.forward;
+        transform.forward = cameraTarget.forward;
     }
 }

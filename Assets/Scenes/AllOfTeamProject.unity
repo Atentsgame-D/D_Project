@@ -798,19 +798,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 213734174, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 213734174, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1749279082, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
+      propertyPath: m_camera
+      value: 
+      objectReference: {fileID: 548474805}
     - target: {fileID: 6985134512149004239, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 6985134512149004239, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6986257633690501813, guid: eeea5cf1faa3890449d6454deb7c0c94, type: 3}
       propertyPath: patrolRoute
@@ -1019,6 +1023,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ed73a3b856184a42bb01db26b24ce63, type: 3}
+--- !u!4 &548474805 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6315878717935760026, guid: 0c5bb82ff7180d448b083ea9c0af77b4, type: 3}
+  m_PrefabInstance: {fileID: 7391070143370102962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
