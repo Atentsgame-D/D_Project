@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
-public class ItemSpliterUI_Sell : MonoBehaviour
+public class ItemSpliterUI_Sell : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     uint itemSplitCount = 1;
 
     ItemSlotUI targetSlotUI;
 
     TMP_InputField inputField;
+
+    private bool isMove = false;
 
     /// <summary>
     /// OK버튼을 눌렀을 때 실행 될 델리게이트
@@ -119,6 +123,30 @@ public class ItemSpliterUI_Sell : MonoBehaviour
         else
         {
             ItemSplitCount = uint.Parse(input);
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isMove)
+            transform.position = Mouse.current.position.ReadValue();
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
+        {
+            if (!isMove)
+                isMove = true;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
+        {
+            if (isMove)
+                isMove = false;
         }
     }
 }

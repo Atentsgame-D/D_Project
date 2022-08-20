@@ -58,6 +58,7 @@ public class ItemSpliterUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         {
             targetSlotUI = target;
             ItemSplitCount = 1;
+            transform.position = target.transform.position;
             gameObject.SetActive(true);
         }
     }

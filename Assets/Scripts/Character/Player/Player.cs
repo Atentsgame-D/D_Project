@@ -159,6 +159,9 @@ public class Player : MonoBehaviour, IEquipTarget
     }
     private void Start()
     {
+        GameManager.Inst.InvenUI.OnInventoryOpen += () => actions.Player.Disable();
+        GameManager.Inst.InvenUI.OnInventoryClose += () => actions.Player.Enable();
+
         TargetY = cameraTarget.rotation.eulerAngles.y;
 
         useText.gameObject.SetActive(false);

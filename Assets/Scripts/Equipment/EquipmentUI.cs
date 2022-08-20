@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
-public class EquipmentUI : MonoBehaviour
+public class EquipmentUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public GameObject slotPrefab;   // 초기화시 새로 생성해야할 경우 사용
     private Transform slotParent;
@@ -13,6 +15,8 @@ public class EquipmentUI : MonoBehaviour
 
     public Equipment equipment = null;
     private EquipmentSlotUI[] slotUIs;
+
+    private bool isMove = false;
 
     private void Awake()
     {
@@ -107,5 +111,29 @@ public class EquipmentUI : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (isMove)
+            transform.position = Mouse.current.position.ReadValue() + new Vector2(0,-230);
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
+        {
+            if (!isMove)
+                isMove = true;
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
+        {
+            if (isMove)
+                isMove = false;
+        }
     }
 }

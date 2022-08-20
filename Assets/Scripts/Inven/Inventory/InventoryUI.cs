@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
 
@@ -90,6 +91,7 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public Action OnInventoryOpen;
     public Action OnInventoryClose;
 
+    private bool isMove = false;
 
     // 유니티 이벤트 함수들 -------------------------------------------------------------------------
     private void Awake()
@@ -258,6 +260,8 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (isMove)
+            transform.position = Mouse.current.position.ReadValue() + new Vector2(0,-200);
     }
 
     /// <summary>
@@ -281,6 +285,11 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                         tempItemSlotUI.Open();  // 드래그 시작할 때 TempSlot 열기
                         detail.Close();         // 상세정보창 닫기
                         detail.IsPause = true;  // 상세정보창 안열리게 하기
+                    }
+                    else
+                    {
+                        if (!isMove)
+                            isMove = true;
                     }
                 }
             }
@@ -311,6 +320,11 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                         detail.IsPause = false;                         // 상세정보창 다시 열릴 수 있게 하기
                         detail.Open(slotUI.ItemSlot.SlotItemData);      // 상세정보창 열기
                         dragStartID = InvalideID;                       // 드래그 시작 id를 될 수 없는 값으로 설정(드래그가 끝났음을 표시)
+                    }
+                    else
+                    {
+                        if (!isMove)
+                            isMove = false;
                     }
                 }
 

@@ -177,62 +177,65 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                     }
                 }
             }
-            TempItemSlotUI temp = invenUI.TempSlotUI;
-
-            if (Keyboard.current.leftShiftKey.ReadValue() > 0 && temp.IsEmpty())
-            {
-                // 쉬프트 좌클릭하고 temp가 비었을 때 아이템 분할창 연다.
-
-                //Debug.Log("Shift+좌클릭 => 분할창 열기");
-                invenUI.SpliterUI.Open(this);   // 아이템 분할창 열기
-                detailUI.Close();               // 상세정보창 닫기
-                detailUI.IsPause = true;        // 상세정보창 일시 정지
-            }
             else
             {
-                // 분할된 아이템을 슬롯에 넣기                
-                if (!temp.IsEmpty())  // temp에 ItemSlot이 들어있다 => 아이템을 덜어낸 상황이다.                
+                TempItemSlotUI temp = invenUI.TempSlotUI;
+
+                if (Keyboard.current.leftShiftKey.ReadValue() > 0 && temp.IsEmpty())
                 {
-                    bool isEquipItem = temp.ItemSlot.ItemEquiped;
+                    // 쉬프트 좌클릭하고 temp가 비었을 때 아이템 분할창 연다.
 
-                    if (ItemSlot.IsEmpty())
+                    //Debug.Log("Shift+좌클릭 => 분할창 열기");
+                    invenUI.SpliterUI.Open(this);   // 아이템 분할창 열기
+                    detailUI.Close();               // 상세정보창 닫기
+                    detailUI.IsPause = true;        // 상세정보창 일시 정지
+                }
+                else
+                {
+                    // 분할된 아이템을 슬롯에 넣기                
+                    if (!temp.IsEmpty())  // temp에 ItemSlot이 들어있다 => 아이템을 덜어낸 상황이다.                
                     {
-                        // 클릭한 슬롯이 빈칸이다.
+                        bool isEquipItem = temp.ItemSlot.ItemEquiped;
 
-                        // temp에 있는 내용을 이 슬롯에 다 넣기
-                        itemSlot.AssignSlotItem(temp.ItemSlot.SlotItemData, temp.ItemSlot.ItemCount);
-                        (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
-                        temp.Close();   // temp칸 비우기
-                    }
-                    else if (temp.ItemSlot.SlotItemData == ItemSlot.SlotItemData)
-                    {
-                        // 이 슬롯에는 같은 종류의 아이템이 들어있다.
-
-                        // 담길 대상의 남은 공간
-                        uint remains = ItemSlot.SlotItemData.maxStackCount - ItemSlot.ItemCount;
-                        // 임시슬롯이 가지고 있는 것과 남은 공간 중 더 작은 것을 선택
-                        //uint small = System.Math.Min(remains, temp.ItemSlot.ItemCount);
-                        uint small = (uint)Mathf.Min((int)remains, (int)temp.ItemSlot.ItemCount);
-
-                        ItemSlot.IncreaseSlotItem(small);
-                        temp.ItemSlot.DecreaseSlotItem(small);
-                        (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
-
-                        if (temp.ItemSlot.ItemCount < 1)    // 임시 슬롯에 있던 것을 전부 넣었을 때만 닫아라
+                        if (ItemSlot.IsEmpty())
                         {
-                            temp.Close();
+                            // 클릭한 슬롯이 빈칸이다.
+
+                            // temp에 있는 내용을 이 슬롯에 다 넣기
+                            itemSlot.AssignSlotItem(temp.ItemSlot.SlotItemData, temp.ItemSlot.ItemCount);
+                            (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
+                            temp.Close();   // temp칸 비우기
                         }
+                        else if (temp.ItemSlot.SlotItemData == ItemSlot.SlotItemData)
+                        {
+                            // 이 슬롯에는 같은 종류의 아이템이 들어있다.
+
+                            // 담길 대상의 남은 공간
+                            uint remains = ItemSlot.SlotItemData.maxStackCount - ItemSlot.ItemCount;
+                            // 임시슬롯이 가지고 있는 것과 남은 공간 중 더 작은 것을 선택
+                            //uint small = System.Math.Min(remains, temp.ItemSlot.ItemCount);
+                            uint small = (uint)Mathf.Min((int)remains, (int)temp.ItemSlot.ItemCount);
+
+                            ItemSlot.IncreaseSlotItem(small);
+                            temp.ItemSlot.DecreaseSlotItem(small);
+                            (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
+
+                            if (temp.ItemSlot.ItemCount < 1)    // 임시 슬롯에 있던 것을 전부 넣었을 때만 닫아라
+                            {
+                                temp.Close();
+                            }
+                        }
+                        else
+                        {
+                            // 다른 종류의 아이템이다. => 서로 스왑
+                            ItemData tempData = temp.ItemSlot.SlotItemData;
+                            uint tempCount = temp.ItemSlot.ItemCount;
+                            temp.ItemSlot.AssignSlotItem(itemSlot.SlotItemData, itemSlot.ItemCount);
+                            itemSlot.AssignSlotItem(tempData, tempCount);
+                            (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
+                        }
+                        detailUI.IsPause = false;   // 상세정보창 일시정지 풀기
                     }
-                    else
-                    {
-                        // 다른 종류의 아이템이다. => 서로 스왑
-                        ItemData tempData = temp.ItemSlot.SlotItemData;
-                        uint tempCount = temp.ItemSlot.ItemCount;
-                        temp.ItemSlot.AssignSlotItem(itemSlot.SlotItemData, itemSlot.ItemCount);
-                        itemSlot.AssignSlotItem(tempData, tempCount);
-                        (temp.ItemSlot.ItemEquiped, ItemSlot.ItemEquiped) = (ItemSlot.ItemEquiped, temp.ItemSlot.ItemEquiped);
-                    }
-                    detailUI.IsPause = false;   // 상세정보창 일시정지 풀기
                 }
             }
         }
