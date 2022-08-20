@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
 
-public class Enemy_Boss : MonoBehaviour,IHealth
+public class Enemy_LizardBoss : MonoBehaviour, IHealth
 {
     NavMeshAgent agent;
     Animator anim;
@@ -23,7 +23,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     float sightAngle = 150.0f;   //-45 ~ +45 범위
     //공격용 -----------------------------------------------------------------------------------------
     float attackCoolTime = 0.0f;
-    float attackSpeed = 2.0f;
+    float attackSpeed = 1.0f;
     Player player;
     //IBattle attackTarget;
 
@@ -49,8 +49,8 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
 
     //IBattle -------------------------------------------------------------------------------------
-    public float attackPower = 10.0f;
-    public float defencePower = 10.0f;
+    public float attackPower = 15.0f;
+    public float defencePower = 15.0f;
     float criticalRate = 0.1f;
 
     public float AttackPower { get => attackPower; }
@@ -67,17 +67,12 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     }
     private void Update()
     {
-        //if(patrolRoute!=null)
-        //{
-        //    agent.SetDestination(patrolRoute.position);  // 길찾기는 연산량이 많은 작업. SetDestination을 자주하면 안된다.
-        //}        
-        
         switch (state)
         {
             case Boss_EnemyState.Idle:
                 IdleUpdate();
                 break;
-           case Boss_EnemyState.Chase:
+            case Boss_EnemyState.Chase:
                 ChaseUpdate();
                 break;
             case Boss_EnemyState.Attack:
@@ -95,13 +90,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             ChangeState(Boss_EnemyState.Chase);
             return;
         }
-
-       /* timeCountDown -= Time.deltaTime;
-        if (timeCountDown < 0)
-        {*/
-           // ChangeState(Boss_EnemyState.Idle);
-           // return;
-        //}
     }
 
     Vector3 pos = Vector3.zero;
@@ -146,8 +134,8 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             agent.SetDestination(targetPosition);
         }
     }
-    
-    
+
+
     void Targeting()
     {
         attackCoolTime -= Time.deltaTime;
@@ -155,45 +143,15 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         if (attackCoolTime < 0.0f)
         {
             anim.SetTrigger("Attack");
+            int randAtk = Random.Range(0, 3);
+            anim.SetInteger("AttackType", randAtk);
             Attack(player);
             attackCoolTime = attackSpeed;
         }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-    //    {
-    //        //attackTarget = other.GetComponent<IBattle>();
-    //        ChangeState(Boss_EnemyState.Attack);
-    //        return;
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-    //    {
-    //        ChangeState(Boss_EnemyState.Idle);
-    //        return;
-    //    }
-    //}
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
-    //    {
-    //        HP -= player.AttackPower;
-    //        if (player.gainHP)
-    //        {
-    //            player.Hp += player.AttackPower * 0.5f;
-    //        }
-    //        Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
-    //    }
-    //}
-
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{other.name}가 들어왔다.");
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             //attackTarget = other.GetComponent<IBattle>();
@@ -205,7 +163,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"{other.name}가 나갔다.");
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             ChangeState(Boss_EnemyState.Chase);
@@ -215,7 +172,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"{collision.collider.CompareTag}가 들어왔다.");
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
             HP -= player.AttackPower;
@@ -241,7 +197,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             case Boss_EnemyState.Idle:
                 agent.isStopped = true;
                 break;
-             case Boss_EnemyState.Chase:
+            case Boss_EnemyState.Chase:
                 agent.isStopped = true;
                 StopCoroutine(repeatChase);
                 break;
@@ -264,7 +220,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 agent.isStopped = true;
                 timeCountDown = waitTime;
                 break;
-           case Boss_EnemyState.Chase:
+            case Boss_EnemyState.Chase:
                 agent.isStopped = false;
                 agent.SetDestination(targetPosition);
                 repeatChase = RepeatChase();
@@ -284,7 +240,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         anim.SetInteger("EnemyState", (int)state);
     }
     void DiePresent()
-    {        
+    {
         anim.SetBool("Dead", true);
         anim.SetTrigger("Die");
         isDead = true;
@@ -342,17 +298,17 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     bool BlockByWall(Vector3 targetPosition)
     {
         bool result = true;
-        Ray ray = new(transform.position, targetPosition - transform.position); 
-        ray.origin += Vector3.up * 0.5f;    
+        Ray ray = new(transform.position, targetPosition - transform.position);
+        ray.origin += Vector3.up * 0.5f;
         if (Physics.Raycast(ray, out RaycastHit hit, sightRange))
         {
-            if (hit.collider.CompareTag("Player"))     
+            if (hit.collider.CompareTag("Player"))
             {
-                result = false; 
+                result = false;
             }
         }
 
-        return result;  
+        return result;
     }
     public void Attack(Player target)
     {
