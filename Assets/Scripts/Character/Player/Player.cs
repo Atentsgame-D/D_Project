@@ -341,7 +341,7 @@ public class Player : MonoBehaviour, IEquipTarget
             isStore = true;
         }
         store.Close(); 
-        invenUI.Close();
+        //invenUI.Close();
         useText.gameObject.SetActive(true);
     }
     private void OnTriggerExit(Collider other)

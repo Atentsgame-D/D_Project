@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
+public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     // public -------------------------------------------------------------------------------------
     /// <summary>
@@ -256,6 +256,10 @@ public class InventoryUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 
     // 이벤트 시스템의 인터페이스 함수들 -------------------------------------------------------------
 
+    public void OnDrag(PointerEventData eventData)
+    {
+    }
+
     /// <summary>
     /// 드래그 시작시 실행
     /// </summary>
@@ -264,19 +268,14 @@ public class InventoryUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
     {
         if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
         {
-            // 임시 슬롯에 아이템이 없고 스플리터UI가 안열렸을 경우에만 실행(아이템은 나누어서 들고 있는 상황)
             if (TempSlotUI.IsEmpty() && !SpliterUI.isActiveAndEnabled)
             {
                 GameObject startObj = eventData.pointerCurrentRaycast.gameObject;   // 드래그 시작한 위치에 있는 게임 오브젝트 가져오기
                 if (startObj != null)
                 {
-                    // 드래그 시작한 위치에 게임 오브젝트가 있으면
-                    //Debug.Log(startObj.name);
                     ItemSlotUI slotUI = startObj.GetComponent<ItemSlotUI>();    // ItemSlotUI 컴포넌트 가져오기
                     if (slotUI != null)
                     {
-                        // ItemSlotUI 컴포넌트가 있으면 ID 기록해 놓기
-                        //Debug.Log($"Start SlotID : {slotUI.ID}");
                         dragStartID = slotUI.ID;
                         inven.TempRemoveItem(dragStartID, slotUI.ItemSlot.ItemCount, slotUI.ItemSlot.ItemEquiped);   // 드래그 시작한 위치의 아이템을 TempSlot으로 옮김
                         tempItemSlotUI.Open();  // 드래그 시작할 때 TempSlot 열기
@@ -302,18 +301,11 @@ public class InventoryUI : MonoBehaviour, IBeginDragHandler, IEndDragHandler
                 if (endObj != null)
                 {
                     // 드래그 끝난 위치에 게임 오브젝트가 있으면
-                    //Debug.Log(endObj.name);
                     ItemSlotUI slotUI = endObj.GetComponent<ItemSlotUI>();  // ItemSlotUI 컴포넌트 가져오기
                     if (slotUI != null)
                     {
-                        // ItemSlotUI 컴포넌트가 있으면 Inventory.MoveItem() 실행시키기
-                        //Debug.Log($"End SlotID : {slotUI.ID}");
-
-                        // TempSlot의 아이템을 드래그가 끝난 슬롯에 옮기기.
-                        // 만약 드래그가 끝난 슬롯에 아이템이 있었을 경우 그 아이템은 TempSlot로 이동
                         inven.MoveItem(Inventory.TempSlotID, slotUI.ID);
 
-                        // 드래그가 끝난 슬롯에 있던 아이템을 dragStartID 슬롯으로 옮기기
                         inven.MoveItem(Inventory.TempSlotID, dragStartID);
 
                         detail.IsPause = false;                         // 상세정보창 다시 열릴 수 있게 하기
