@@ -9,6 +9,7 @@ using UnityEngine;
 public class ItemData_HealingPotion : ItemData, IUsable
 {
     [Header("힐링포션 데이터")]
+    public PotionType PotionType = PotionType.Heal;
     public float healPoint = 20.0f;
 
     public void Use(Player target = null)

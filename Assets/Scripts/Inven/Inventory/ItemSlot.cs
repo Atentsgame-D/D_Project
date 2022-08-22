@@ -37,7 +37,7 @@ public class ItemSlot
     public uint ItemCount
     {
         get => itemCount;
-        private set
+        set
         {
             itemCount = value;
             onSlotItemChange?.Invoke();  // 변경이 일어나면 델리게이트 실행(주로 화면 갱신용)

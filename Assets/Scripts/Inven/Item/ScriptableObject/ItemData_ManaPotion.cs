@@ -9,6 +9,7 @@ using UnityEngine;
 public class ItemData_ManaPotion : ItemData, IUsable
 {
     [Header("마나포션 데이터")]
+    public PotionType PotionType = PotionType.Mana;
     public float manaPoint = 20.0f;
     public void Use(Player target = null)
     {

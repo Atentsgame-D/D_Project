@@ -174,6 +174,16 @@ public class Player : MonoBehaviour, IEquipTarget
         inven.AddItem(ItemIDCode.Weapon_Wooden_Sword);
         inven.AddItem(ItemIDCode.Equipment_Leather_Helmet);
         inven.AddItem(ItemIDCode.Equipment_Leather_Boot);
+        for (int i = 0; i < 10; i++)
+        {
+            inven.AddItem(ItemIDCode.Potion_HP_Large);
+            inven.AddItem(ItemIDCode.Potion_HP_Small);
+            inven.AddItem(ItemIDCode.Potion_HP_Medium);
+
+            inven.AddItem(ItemIDCode.Potion_MP_Medium);
+            inven.AddItem(ItemIDCode.Potion_MP_Large);
+            inven.AddItem(ItemIDCode.Potion_MP_Small);
+        }
     }
     private void Update()
     {

@@ -57,3 +57,9 @@ public enum EquipmentType
     Helmat,
     Shoes
 }
+
+public enum PotionType
+{
+    Heal = 0,
+    Mana
+}
