@@ -7,9 +7,12 @@ EditorUserSettings:
   m_ConfigSettings:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     RecentlyUsedSceneGuid-0:
       value: 515701005c010a585c5c5e7413225c44174f412f7e7a7e657b2d1e31e7e1653e
       flags: 0
+=======
+>>>>>>> d9bad77c860f35d8e8291ad7b2176cf00c02e8a3
 =======
 >>>>>>> d9bad77c860f35d8e8291ad7b2176cf00c02e8a3
 =======
@@ -24,7 +27,11 @@ EditorUserSettings:
   m_SemanticMergeMode: 2
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_DesiredImportWorkerCount: 4
+=======
+  m_DesiredImportWorkerCount: 5
+>>>>>>> d9bad77c860f35d8e8291ad7b2176cf00c02e8a3
 =======
   m_DesiredImportWorkerCount: 5
 >>>>>>> d9bad77c860f35d8e8291ad7b2176cf00c02e8a3
