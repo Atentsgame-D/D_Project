@@ -67,11 +67,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     }
     private void Update()
     {
-        //if(patrolRoute!=null)
-        //{
-        //    agent.SetDestination(patrolRoute.position);  // 길찾기는 연산량이 많은 작업. SetDestination을 자주하면 안된다.
-        //}        
-        
         switch (state)
         {
             case Boss_EnemyState.Idle:
@@ -96,12 +91,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             return;
         }
 
-       /* timeCountDown -= Time.deltaTime;
-        if (timeCountDown < 0)
-        {*/
-           // ChangeState(Boss_EnemyState.Idle);
-           // return;
-        //}
     }
 
     Vector3 pos = Vector3.zero;
@@ -200,7 +189,6 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         {
             //attackTarget = other.GetComponent<IBattle>();
             ChangeState(Boss_EnemyState.Attack);
-
             return;
         }
     }
@@ -213,6 +201,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             ChangeState(Boss_EnemyState.Chase);
             return;
         }
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -225,8 +214,10 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             {
                 player.Hp += player.AttackPower * 0.5f;
             }
+           // StartCoroutine(DeadEffect());
 
             Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
+            StartCoroutine(DeadEffect());
         }
     }
 
@@ -276,7 +267,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 agent.isStopped = true;
                 break;
             case Boss_EnemyState.Dead:
-                DiePresent();
+               // DiePresent();
                 break;
             default:
                 break;
@@ -286,19 +277,41 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         anim.SetInteger("EnemyState", (int)state);
     }
     void DiePresent()
-    {        
+    {
+       
         anim.SetBool("Dead", true);
         anim.SetTrigger("Die");
         isDead = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         HP = 0;
+       // StartCoroutine(DeadEffect());
     }
 
     IEnumerator DeadEffect()
     {
-        Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
-        hpBar.gameObject.SetActive(false);
+        if (HP > 0.0f)
+        {
+            //anim.SetTrigger("Hit");
+            attackCoolTime = attackSpeed;
+        }
+        else
+        {
+            // Die();
+           // isChase = false;
+           // Destroy(gameObject, 2);
+            ChangeState(Boss_EnemyState.Dead);
+            //ItemDrop();
+            anim.SetTrigger("Die");
+            anim.SetBool("Dead", true);
+            /*isDead = true;
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            HP = 0;*/
+        }
+
+       // Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
+       // hpBar.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3.0f);
         Collider[] colliders = GetComponents<Collider>();
@@ -310,7 +323,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         Rigidbody rigid = GetComponent<Rigidbody>();
         rigid.isKinematic = false;
         rigid.drag = 20.0f;
-        Destroy(this.gameObject, 5.0f);
+        Destroy(this.gameObject, 12.0f);
     }
     private void OnDrawGizmos()
     {

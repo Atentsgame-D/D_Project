@@ -9,11 +9,12 @@ using UnityEngine;
 public class ItemData_HealingPotion : ItemData, IUsable
 {
     [Header("힐링포션 데이터")]
+    public PotionType PotionType = PotionType.Heal;
     public float healPoint = 20.0f;
 
     public void Use(Player target = null)
     {
-        if(target != null)
+        if(target != null && GameManager.Inst.MainPlayer.Hp < GameManager.Inst.MainPlayer.MaxHP)
         {
             target.Hp += healPoint;
             Debug.Log($"{itemName}을 사용했습니다. HP가 {healPoint}만큼 회복됩니다. 현재 HP는 {target.Hp}입니다.");

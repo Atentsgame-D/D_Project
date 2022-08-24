@@ -34,7 +34,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     /// <summary>
     /// 상세 정보창
     /// </summary>
-    DetailInfoUI detailUI;
+    protected DetailInfoUI detailUI;
 
     // UI처리용 데이터 -----------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     /// </summary>
     /// <param name="newID">이 슬롯의 ID</param>
     /// <param name="targetSlot">이 슬롯이랑 연결된 ItemSlot</param>
-    public void Initialize(uint newID, ItemSlot targetSlot)
+    public virtual void Initialize(uint newID, ItemSlot targetSlot)
     {
         invenUI = GameManager.Inst.InvenUI; // 미리 찾아놓기
         store = GameManager.Inst.StoreUI;
@@ -94,9 +94,16 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
             // 이 슬롯에 아이템이 들어있을 때
             itemImage.sprite = itemSlot.SlotItemData.itemIcon;  // 아이콘 이미지 설정하고
             itemImage.color = Color.white;  // 불투명하게 만들기
-            if (itemSlot.ItemCount > 1)
+            if (itemSlot.SlotItemData.itemType == ItemType.Consumable)
             {
-                countText.text = itemSlot.ItemCount.ToString();
+                if (itemSlot.ItemCount > 1)
+                {
+                    countText.text = itemSlot.ItemCount.ToString();
+                }
+                else
+                {
+                    countText.text = "";
+                }
             }
             else
             {
@@ -258,7 +265,6 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
                     ItemSlot.ClearSlotItem();
                 }
                 ItemSlot.ItemEquiped = isEquiped;
-
             }
         }
     }

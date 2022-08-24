@@ -9,10 +9,11 @@ using UnityEngine;
 public class ItemData_ManaPotion : ItemData, IUsable
 {
     [Header("마나포션 데이터")]
+    public PotionType PotionType = PotionType.Mana;
     public float manaPoint = 20.0f;
     public void Use(Player target = null)
     {
-        if (target != null)
+        if (target != null && GameManager.Inst.MainPlayer.Mp < GameManager.Inst.MainPlayer.MaxMP) 
         {
             target.Mp += manaPoint;
             Debug.Log($"{itemName}을 사용했습니다. MP가 {manaPoint}만큼 회복됩니다. 현재 MP는 {target.Mp}입니다.");

@@ -148,7 +148,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
@@ -179,6 +179,45 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
             }
 
             Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
+        }
+    }*/
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"{other.name}가 들어왔다.");
+        if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
+        {
+            //attackTarget = other.GetComponent<IBattle>();
+            ChangeState(Boss_EnemyState.Attack);
+
+            return;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log($"{other.name}가 나갔다.");
+        if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
+        {
+            ChangeState(Boss_EnemyState.Idle);
+            return;
+        }
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //Debug.Log($"{collision.collider.CompareTag}가 들어왔다.");
+        if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
+        {
+            HP -= player.AttackPower;
+            if (player.gainHP)
+            {
+                player.Hp += player.AttackPower * 0.5f;
+            }
+            // StartCoroutine(DeadEffect());
+
+            Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
+            StartCoroutine(DeadEffect());
         }
     }
 
@@ -228,7 +267,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
                 agent.isStopped = true;
                 break;
             case Boss_EnemyState.Dead:
-                DiePresent();
+                //DiePresent();
                 break;
             default:
                 break;
@@ -249,8 +288,28 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
 
     IEnumerator DeadEffect()
     {
-        Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
-        hpBar.gameObject.SetActive(false);
+        if (HP > 0.0f)
+        {
+            //anim.SetTrigger("Hit");
+            attackCoolTime = attackSpeed;
+        }
+        else
+        {
+            // Die();
+            // isChase = false;
+            // Destroy(gameObject, 2);
+            ChangeState(Boss_EnemyState.Dead);
+            //ItemDrop();
+            anim.SetTrigger("Die");
+            anim.SetBool("Dead", true);
+            /*isDead = true;
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            HP = 0;*/
+        }
+
+        // Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
+        // hpBar.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3.0f);
         Collider[] colliders = GetComponents<Collider>();
@@ -262,7 +321,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
         Rigidbody rigid = GetComponent<Rigidbody>();
         rigid.isKinematic = false;
         rigid.drag = 20.0f;
-        Destroy(this.gameObject, 5.0f);
+        Destroy(this.gameObject, 12.0f);
     }
     private void OnDrawGizmos()
     {

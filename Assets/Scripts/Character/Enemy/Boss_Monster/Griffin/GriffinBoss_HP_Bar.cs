@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GriffinBoss_HP_Bar : MonoBehaviour
 {
-    Enemy_GriffinBoss target;
-    Transform fillPivot;
+    IHealth target;
+    Image fill;
 
     private void Awake()
     {
-        target = GetComponentInParent<Enemy_GriffinBoss>();
+        // target = GetComponentInParent<Enemy_GriffinBoss>();
+        target = GetComponentInParent<IHealth>();
         target.onHealthChange += SetHP_Value;
-        fillPivot = transform.Find("FillPivot");
+        fill = transform.Find("Fill").GetComponent<Image>();
     }
 
     void SetHP_Value()
@@ -19,7 +21,7 @@ public class GriffinBoss_HP_Bar : MonoBehaviour
         if (target != null)
         {
             float ratio = target.HP / target.MaxHP;
-            fillPivot.localScale = new Vector3(ratio, 1, 1);
+            fill.fillAmount = ratio;
         }
     }
 }

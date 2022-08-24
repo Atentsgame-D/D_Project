@@ -335,4 +335,66 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             }
         }
     }
+
+    public ItemSlot GetHealingPotion()
+    {
+        List<ItemSlot> slotList = new List<ItemSlot>();
+        ItemData_HealingPotion oldpotion = null;
+        ItemSlot result = null;
+
+        if (slotUIs == null) return null;
+
+        foreach(var slotUI in slotUIs)
+        {
+            ItemData_HealingPotion temp = slotUI.ItemSlot.SlotItemData as ItemData_HealingPotion;
+            if (temp == null)
+                continue;
+
+            slotList.Add(slotUI.ItemSlot);
+        }
+
+        foreach(var slot in slotList)
+        {
+            ItemData_HealingPotion potion = slot.SlotItemData as ItemData_HealingPotion;
+
+            if (oldpotion == null || potion.healPoint <= oldpotion.healPoint)
+            {
+                oldpotion = potion;
+                result = slot;
+            }
+         }
+
+        return result;
+    }
+
+    public ItemSlot GetManaPotion()
+    {
+        List<ItemSlot> slotList = new List<ItemSlot>();
+        ItemData_ManaPotion oldpotion = null;
+        ItemSlot result = null;
+
+        if (slotUIs == null) return null;
+
+        foreach (var slotUI in slotUIs)
+        {
+            ItemData_ManaPotion temp = slotUI.ItemSlot.SlotItemData as ItemData_ManaPotion;
+            if (temp == null)
+                continue;
+
+            slotList.Add(slotUI.ItemSlot);
+        }
+
+        foreach (var slot in slotList)
+        {
+            ItemData_ManaPotion potion = slot.SlotItemData as ItemData_ManaPotion;
+
+            if (oldpotion == null || potion.manaPoint <= oldpotion.manaPoint)
+            {
+                oldpotion = potion;
+                result = slot;
+            }
+        }
+
+        return result;
+    }
 }
