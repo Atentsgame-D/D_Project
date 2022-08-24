@@ -321,11 +321,6 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                         detail.Open(slotUI.ItemSlot.SlotItemData);      // 상세정보창 열기
                         dragStartID = InvalideID;                       // 드래그 시작 id를 될 수 없는 값으로 설정(드래그가 끝났음을 표시)
                     }
-                    else
-                    {
-                        if (!isMove)
-                            isMove = false;
-                    }
                 }
 
                 if (tempItemSlotUI.IsEmpty())
@@ -333,7 +328,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                     tempItemSlotUI.Close(); // 드래그를 끝내고 tempSlot이 비어지면 닫기
                 }
             }
-        }
+            if (isMove)
+                isMove = false;
+        }        
     }
 
     public ItemSlot GetHealingPotion()

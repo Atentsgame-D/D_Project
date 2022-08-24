@@ -120,9 +120,11 @@ public class Player : MonoBehaviour, IEquipTarget
     // 전투스탯 ---------------------
    
     //공
-    public float attackPower = 20.0f;
-    public float AttackPower => attackPower;
-
+    private float attackPower = 20.0f;
+    public float AttackPower {
+        get => attackPower;
+        set => attackPower = value;
+    }
     //방 
     public float defencePower = 10.0f;
     public float DefencePower { get => defencePower; }
