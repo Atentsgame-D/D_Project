@@ -4,5 +4,5 @@ using UnityEngine;
 
 interface IUsable
 {
-    void Use(Player target = null);
+    bool Use(Player target = null);
 }
