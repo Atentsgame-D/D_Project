@@ -123,8 +123,16 @@ public class EquipmentUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     {
         if (eventData.button == PointerEventData.InputButton.Left) // 좌클릭일 때만 처리
         {
-            if (!isMove)
-                isMove = true;
+            GameObject startObj = eventData.pointerCurrentRaycast.gameObject;
+            if (startObj != null)
+            {
+                EquipmentSlotUI slotUI = startObj.GetComponent<EquipmentSlotUI>();
+                if (slotUI == null)
+                {
+                    if (!isMove)
+                        isMove = true;
+                }
+            }
         }
     }
 

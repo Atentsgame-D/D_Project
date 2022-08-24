@@ -149,8 +149,8 @@ public class ItemSlot
         if (usable != null)
         {
             // 아이템이 사용가능하면
-            usable.Use(target); // 아이템 사용하고
-            DecreaseSlotItem(); // 갯수 하나 감소
+            if(usable.Use(target)) // 아이템 사용하고
+                DecreaseSlotItem(); // 갯수 하나 감소
         }
     }
 
