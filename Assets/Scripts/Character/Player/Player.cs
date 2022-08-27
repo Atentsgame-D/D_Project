@@ -142,12 +142,45 @@ public class Player : MonoBehaviour, IEquipTarget
     private float attackPower = 20.0f;
     public float AttackPower
     {
-        get => attackPower;
-        set => attackPower = value;
+        get 
+        {
+            float power = attackPower;
+            EquipmentSlotUI slotui = equipUI.GetSlot(EquipmentType.Weapon);
+            if (slotui.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Weapon data = slotui.ItemSlot.SlotItemData as ItemData_Weapon;
+                power += data.attackPower;
+            }
+                return power; 
+        }
+        set
+        {
+            attackPower = value;
+        }
     }
     //방 
     public float defencePower = 10.0f;
-    public float DefencePower { get => defencePower; }
+    public float DefencePower 
+    {
+        get 
+        {
+            float power = defencePower;
+            EquipmentSlotUI helmatUI = equipUI.GetSlot(EquipmentType.Helmat);
+            EquipmentSlotUI shoesUI = equipUI.GetSlot(EquipmentType.Shoes);
+            if (helmatUI.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Equipment data = helmatUI.ItemSlot.SlotItemData as ItemData_Equipment;
+                power += data.defensePower;
+            }
+            
+            if(shoesUI.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Equipment data = helmatUI.ItemSlot.SlotItemData as ItemData_Equipment;
+                power += data.defensePower;
+            }
+                return power;
+        }
+    }
 
     public ItemSlot EquipItemSlot => throw new NotImplementedException();
 
@@ -540,7 +573,8 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         if (!IsDead)
         {
-            damage -= defencePower;
+            damage -= DefencePower;
+            if(damage < 1) damage = 1;
             Hp -= damage;
             if (Hp <= 0)
             {
