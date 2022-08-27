@@ -165,6 +165,8 @@ public class Player : MonoBehaviour, IEquipTarget
     private float inputY;
     private float inputX;
 
+    bool ThirdPersonCamera = true;
+
     //---------------------------------------
     private void Awake()
     {
@@ -252,7 +254,14 @@ public class Player : MonoBehaviour, IEquipTarget
     }
     private void LateUpdate()
     {
-        CameraRotate();
+        if (ThirdPersonCamera)
+        {
+            ThirdPersonCameraRotate();
+        }
+        else
+        {
+            FirstPersonCameraRotate();
+        }
     }
     //OnEnable / OnDisable-----------------------------------------------------------------------------
     private void OnEnable()
@@ -277,7 +286,6 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.ShortCut.InventoryOnOff.performed += OnInventortyOnOff;
         actions.ShortCut.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
-
     private void OnDisable()
     {
         actions.ShortCut.EquipmentOnOff.performed -= OnEquipmentOnOff;
@@ -300,6 +308,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.PlayerMove.Move.performed -= OnMoveInput;
         actions.PlayerMove.Disable();
     }
+
     private void OnLook(InputAction.CallbackContext context)
     {
         look = context.ReadValue<Vector2>();
@@ -485,7 +494,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
     //-----------------------------------------------------------------------
     //카메라 회전함수
-    private void CameraRotate()
+    private void ThirdPersonCameraRotate()
     {
         inputX = Input.GetAxis("Mouse X");  //마우스의 좌우 움직임 감지
         inputY = Input.GetAxis("Mouse Y");  //마우스의 상하 움직임 감지
@@ -506,6 +515,24 @@ public class Player : MonoBehaviour, IEquipTarget
         // 좌우 이동은 TargetX값(마우스 좌우 이동 값)을 Y축을 기준으로 돌리고
         // 상하 이동은 TargetY겂(마우스 상하 이동  값)을 X축을 기준으로 돌리기 때문에
         // Quaternion.Euler(TargetY, TargetX, 0.0f); 으로 선언한다
+        cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
+    }
+    private void FirstPersonCameraRotate()
+    {
+        inputX = Input.GetAxis("Mouse X");  //마우스의 좌우 움직임 감지
+        inputY = Input.GetAxis("Mouse Y");  //마우스의 상하 움직임 감지
+
+        if (inputX != 0 || inputY != 0)
+        {
+            TargetX += look.x;
+            TargetY += look.y;
+        }
+
+        // 좌우 이동을 360도로 제한
+        TargetX = Mathf.Clamp(TargetX, 0.0f, 360.0f);
+        // 상하 이동을 BottomClamp(-30도), TopClamp(70도)의 범위를 벗어나지 않게 제한
+        TargetY = Mathf.Clamp(TargetY, BottomClamp, TopClamp);
+
         cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
     }
 
