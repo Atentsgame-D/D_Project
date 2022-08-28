@@ -110,9 +110,6 @@ public class Player : MonoBehaviour, IEquipTarget
 
     // 상점확인용 변수--------------------------
     private bool isStore = false;
-    //-----------------------------------------
-    public bool tryUse = false;
-    public bool isTrigger = false;
     // 스킬용 변수------------------------------
     public bool gainHP = false;
     bool Onskill01 = false;
@@ -305,31 +302,13 @@ public class Player : MonoBehaviour, IEquipTarget
 
     public void Use()
     {
-        if (isTrigger)
+        if (isStore)
         {
-            if (tryUse)
-            {
-                if (isStore)
-                {
-                    store.Open();
-                    invenUI.Open();
-                    isStore = false;
-                    useText.gameObject.SetActive(false);
-                }
-                tryUse = false;
-            }
-            else
-            {
-                if (!isStore)
-                {
-                    store.Close();
-                    invenUI.Close();
-                    isStore = true;
-                    useText.gameObject.SetActive(true);
-                }
-                tryUse = true;
-            }
+            store.Open();
+            invenUI.Open();
+            useText.gameObject.SetActive(false);
         }
+
         if (scanObj != null)
         {
             manager.Action(scanObj);
@@ -347,27 +326,24 @@ public class Player : MonoBehaviour, IEquipTarget
     //------------------
     private void OnTriggerEnter(Collider other)
     {
-        isTrigger = true;
-        tryUse = true;
         if (other.CompareTag("Store"))
         {
             isStore = true;
+            useText.gameObject.SetActive(true);
         }
-        store.Close(); 
-        //invenUI.Close();
-        useText.gameObject.SetActive(true);
     }
+
     private void OnTriggerExit(Collider other)
     {
-        isTrigger = false;
-        tryUse = false;
         if (other.CompareTag("Store"))
         {
             isStore = false;
+            useText.gameObject.SetActive(false);
+            store.Close();
+            invenUI.Close();
         }
-
-        useText.gameObject.SetActive(false);
     }
+
     private void OnMoveModeChange(InputAction.CallbackContext context) // 쉬프트 키로 달리기 토글 설정. 기본 걷기상태
     {
         if (moveMode == MoveMode.Walk)
