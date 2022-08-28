@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IEquipTarget
 {
@@ -56,6 +57,10 @@ public class Player : MonoBehaviour, IEquipTarget
     Vector3 inputDir = Vector3.zero;
     Quaternion targetRotation = Quaternion.identity;
 
+    // 캐릭터 사망 여부 ---------------------
+    public bool IsDead = false;
+    GameOver gameOver;
+
     // 캐릭터 HP----------------------------
     float maxHP = 500.0f;
     float hp = 100.0f;
@@ -73,6 +78,20 @@ public class Player : MonoBehaviour, IEquipTarget
         }
     }
     public System.Action<float> OnHpChange;
+
+    private void Dead()
+    {
+        OnDisable();
+        StartCoroutine(resetScene());
+    }
+
+    IEnumerator resetScene()
+    {
+        gameOver.FadeOut();
+        yield return new WaitForSeconds(5.0f);
+        SceneManager.LoadScene(0);
+    }
+
     //캐릭터 MP------------------------------
     float maxMP = 300.0f;
     float mp = 50.0f;
@@ -115,14 +134,50 @@ public class Player : MonoBehaviour, IEquipTarget
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
     // 전투스탯 ---------------------
-   
-    //공
-    public float attackPower = 20.0f;
-    public float AttackPower => attackPower;
 
+    //공
+    private float attackPower = 20.0f;
+    public float AttackPower
+    {
+        get 
+        {
+            float power = attackPower;
+            EquipmentSlotUI slotui = equipUI.GetSlot(EquipmentType.Weapon);
+            if (slotui.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Weapon data = slotui.ItemSlot.SlotItemData as ItemData_Weapon;
+                power += data.attackPower;
+            }
+                return power; 
+        }
+        set
+        {
+            attackPower = value;
+        }
+    }
     //방 
     public float defencePower = 10.0f;
-    public float DefencePower { get => defencePower; }
+    public float DefencePower 
+    {
+        get 
+        {
+            float power = defencePower;
+            EquipmentSlotUI helmatUI = equipUI.GetSlot(EquipmentType.Helmat);
+            EquipmentSlotUI shoesUI = equipUI.GetSlot(EquipmentType.Shoes);
+            if (helmatUI.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Equipment data = helmatUI.ItemSlot.SlotItemData as ItemData_Equipment;
+                power += data.defensePower;
+            }
+            
+            if(shoesUI.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Equipment data = helmatUI.ItemSlot.SlotItemData as ItemData_Equipment;
+                power += data.defensePower;
+            }
+                return power;
+        }
+    }
 
     public ItemSlot EquipItemSlot => throw new NotImplementedException();
 
@@ -140,6 +195,8 @@ public class Player : MonoBehaviour, IEquipTarget
     private float inputY;
     private float inputX;
 
+    bool ThirdPersonCamera = true;
+
     //---------------------------------------
     private void Awake()
     {
@@ -151,8 +208,9 @@ public class Player : MonoBehaviour, IEquipTarget
         controller = GetComponent<CharacterController>();
         useText = GameObject.Find("UseText_GameObject");
         invenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
-        store = GameObject.Find("Store").GetComponent<StoreUI>();  
+        store = GameObject.Find("Store").GetComponent<StoreUI>();
         equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
+        gameOver = GameObject.Find("GameOver").GetComponent<GameOver>();
     }
     private void Start()
     {
@@ -184,46 +242,56 @@ public class Player : MonoBehaviour, IEquipTarget
     }
     private void Update()
     {
-        if (inputDir.sqrMagnitude > 0.0f)
+        if (!IsDead) //캐릭터가 살아 있을 떄
         {
-            if (moveMode == MoveMode.Run)
+            if (inputDir.sqrMagnitude > 0.0f)
             {
-                speed = runSpeed;
-                anim.SetBool("OnRun", true);
+                if (moveMode == MoveMode.Run)
+                {
+                    speed = runSpeed;
+                    anim.SetBool("OnRun", true);
+                }
+                else if (moveMode == MoveMode.Walk)
+                {
+                    speed = walkSpeed;
+                    anim.SetBool("OnRun", false);
+                }
+                controller.Move(speed * Time.deltaTime * inputDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
             }
-            else if (moveMode == MoveMode.Walk)
+
+            //캐릭터가 땅에 붙어있지 않으면 중력 작용
+            if (!controller.isGrounded)
             {
-                speed = walkSpeed;
-                anim.SetBool("OnRun", false);
+                inputDir.y += gravity * Time.deltaTime;
             }
-            controller.Move(speed * Time.deltaTime * inputDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-        }
 
-        //캐릭터가 땅에 붙어있지 않으면 중력 작용
-        if (!controller.isGrounded)
-        {
-            inputDir.y += gravity * Time.deltaTime;
-        }
-
-        //스킬1을 사용했을떄 전방으로 돌진
-        if (Onskill01)
-        {
-            transform.Translate(skill01Distance * Vector3.forward * Time.deltaTime, Space.Self);
-        }
-
-        ScanObject();
-        if (scanObj == null)
-        {
-            if (manager.TalkPanel != null)
+            //스킬1을 사용했을떄 전방으로 돌진
+            if (Onskill01)
             {
-                manager.TalkPanel.SetActive(false);
+                transform.Translate(skill01Distance * Vector3.forward * Time.deltaTime, Space.Self);
+            }
+
+            ScanObject();
+            if (scanObj == null)
+            {
+                if (manager.TalkPanel != null)
+                {
+                    manager.TalkPanel.SetActive(false);
+                }
             }
         }
     }
     private void LateUpdate()
     {
-        CameraRotate();
+        if (ThirdPersonCamera)
+        {
+            ThirdPersonCameraRotate();
+        }
+        else
+        {
+            FirstPersonCameraRotate();
+        }
     }
     //OnEnable / OnDisable-----------------------------------------------------------------------------
     private void OnEnable()
@@ -248,7 +316,6 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.ShortCut.InventoryOnOff.performed += OnInventortyOnOff;
         actions.ShortCut.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
-
     private void OnDisable()
     {
         actions.ShortCut.EquipmentOnOff.performed -= OnEquipmentOnOff;
@@ -271,6 +338,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.PlayerMove.Move.performed -= OnMoveInput;
         actions.PlayerMove.Disable();
     }
+
     private void OnLook(InputAction.CallbackContext context)
     {
         look = context.ReadValue<Vector2>();
@@ -294,7 +362,7 @@ public class Player : MonoBehaviour, IEquipTarget
             moveMode = MoveMode.Walk;
         }
     }
-    
+
     private void OnUseInput(InputAction.CallbackContext context)
     {
         Use();
@@ -435,7 +503,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
     //-----------------------------------------------------------------------
     //카메라 회전함수
-    private void CameraRotate()
+    private void ThirdPersonCameraRotate()
     {
         inputX = Input.GetAxis("Mouse X");  //마우스의 좌우 움직임 감지
         inputY = Input.GetAxis("Mouse Y");  //마우스의 상하 움직임 감지
@@ -458,11 +526,38 @@ public class Player : MonoBehaviour, IEquipTarget
         // Quaternion.Euler(TargetY, TargetX, 0.0f); 으로 선언한다
         cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
     }
+    private void FirstPersonCameraRotate()
+    {
+        inputX = Input.GetAxis("Mouse X");  //마우스의 좌우 움직임 감지
+        inputY = Input.GetAxis("Mouse Y");  //마우스의 상하 움직임 감지
+
+        if (inputX != 0 || inputY != 0)
+        {
+            TargetX += look.x;
+            TargetY += look.y;
+        }
+
+        // 좌우 이동을 360도로 제한
+        TargetX = Mathf.Clamp(TargetX, 0.0f, 360.0f);
+        // 상하 이동을 BottomClamp(-30도), TopClamp(70도)의 범위를 벗어나지 않게 제한
+        TargetY = Mathf.Clamp(TargetY, BottomClamp, TopClamp);
+
+        cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
+    }
 
     public void TakeDamage(float damage)
     {
-        damage -= defencePower;
-        Hp -= damage;
+        if (!IsDead)
+        {
+            damage -= DefencePower;
+            if(damage < 1) damage = 1;
+            Hp -= damage;
+            if (Hp <= 0)
+            {
+                IsDead = true;
+                Dead();
+            }
+        }
     }
 
     //-----------------------------------------------------------------------
