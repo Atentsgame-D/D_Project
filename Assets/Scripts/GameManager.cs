@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     public StoreUI StoreUI => storeUI;
     // ------------------------------------------------------------------------------------------
 
+    // 카메라 관련 --------------------------------------------------------------------------------
+    private FirstPersonCamera firstPersonCamera;
+    public FirstPersonCamera FirstPersonCamera => firstPersonCamera;
+    //------------
+
     private GameObject talkPanel;
     private TextMeshProUGUI talkText;
     private TalkManager talkManager;

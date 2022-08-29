@@ -183,6 +183,8 @@ public class Player : MonoBehaviour, IEquipTarget
 
     // 카메라 -----------------------------
     Transform cameraTarget; //카메라 타겟
+    FirstPersonCamera FirstCamera;
+    FirstCameraBody FirstBody;
 
     Vector2 look;
 
@@ -195,12 +197,18 @@ public class Player : MonoBehaviour, IEquipTarget
     private float inputY;
     private float inputX;
 
-    bool ThirdPersonCamera = true;
+    /// <summary>
+    /// 3인칭 카메라 사용여부(true면 3인칭 false면 1인칭 )
+    /// </summary>
+    public bool On3rdCamera = true;
 
     //---------------------------------------
     private void Awake()
     {
         cameraTarget = transform.Find("PlayerCameraRoot").GetComponent<Transform>();
+        FirstCamera = GameObject.Find("Player1stCamera").GetComponent<FirstPersonCamera>();
+        FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
+
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         coolTime = GameObject.Find("SkillInfo").GetComponent<SkillCoolTimeManager>();
         actions = new PlayerInputActions();
@@ -217,7 +225,7 @@ public class Player : MonoBehaviour, IEquipTarget
         GameManager.Inst.InvenUI.OnInventoryOpen += () => actions.Player.Disable();
         GameManager.Inst.InvenUI.OnInventoryClose += () => actions.Player.Enable();
 
-        TargetY = cameraTarget.rotation.eulerAngles.y;
+        //TargetY = cameraTarget.rotation.eulerAngles.y;
 
         useText.gameObject.SetActive(false);
         inven = new Inventory();
@@ -284,14 +292,7 @@ public class Player : MonoBehaviour, IEquipTarget
     }
     private void LateUpdate()
     {
-        if (ThirdPersonCamera)
-        {
-            ThirdPersonCameraRotate();
-        }
-        else
-        {
-            FirstPersonCameraRotate();
-        }
+        CameraRotate();
     }
     //OnEnable / OnDisable-----------------------------------------------------------------------------
     private void OnEnable()
@@ -303,6 +304,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
         actions.Player.Enable();
         actions.Player.Use.performed += OnUseInput;                  //f키
+        actions.Player.CameraChange.performed += CameraChange;       //g키
         actions.Player.Jump.performed += OnJump;
         actions.Player.MoveModeChange.performed += OnMoveModeChange; // 왼쪽 쉬프트 
         actions.Player.Skill1.performed += OnSkill_1;
@@ -330,6 +332,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Skill1.performed -= OnSkill_1;
         actions.Player.MoveModeChange.performed -= OnMoveModeChange;
         actions.Player.Jump.performed -= OnJump;
+        actions.Player.CameraChange.performed -= CameraChange;
         actions.Player.Use.performed -= OnUseInput;
         actions.Player.Disable();
 
@@ -339,10 +342,34 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.PlayerMove.Disable();
     }
 
+    private void CameraChange(InputAction.CallbackContext _)
+    {
+        Debug.Log("시점 변경");
+        if (On3rdCamera)
+        {
+            FirstCamera.ChangeCamera(true);
+            StartCoroutine(onBody());
+            On3rdCamera = false;
+        }
+        else
+        {
+            FirstCamera.ChangeCamera(false);
+            FirstBody.OnBody(true);
+            On3rdCamera = true;
+        }
+
+    }
+    IEnumerator onBody()
+    {
+        yield return new WaitForSeconds(2.0f);
+        FirstBody.OnBody(false);
+    }
+
     private void OnLook(InputAction.CallbackContext context)
     {
         look = context.ReadValue<Vector2>();
     }
+
     private void OnMoveInput(InputAction.CallbackContext context) // 방향키 입력시 이동
     {
         input = context.ReadValue<Vector2>();
@@ -503,7 +530,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
     //-----------------------------------------------------------------------
     //카메라 회전함수
-    private void ThirdPersonCameraRotate()
+    private void CameraRotate()
     {
         inputX = Input.GetAxis("Mouse X");  //마우스의 좌우 움직임 감지
         inputY = Input.GetAxis("Mouse Y");  //마우스의 상하 움직임 감지
@@ -524,24 +551,6 @@ public class Player : MonoBehaviour, IEquipTarget
         // 좌우 이동은 TargetX값(마우스 좌우 이동 값)을 Y축을 기준으로 돌리고
         // 상하 이동은 TargetY겂(마우스 상하 이동  값)을 X축을 기준으로 돌리기 때문에
         // Quaternion.Euler(TargetY, TargetX, 0.0f); 으로 선언한다
-        cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
-    }
-    private void FirstPersonCameraRotate()
-    {
-        inputX = Input.GetAxis("Mouse X");  //마우스의 좌우 움직임 감지
-        inputY = Input.GetAxis("Mouse Y");  //마우스의 상하 움직임 감지
-
-        if (inputX != 0 || inputY != 0)
-        {
-            TargetX += look.x;
-            TargetY += look.y;
-        }
-
-        // 좌우 이동을 360도로 제한
-        TargetX = Mathf.Clamp(TargetX, 0.0f, 360.0f);
-        // 상하 이동을 BottomClamp(-30도), TopClamp(70도)의 범위를 벗어나지 않게 제한
-        TargetY = Mathf.Clamp(TargetY, BottomClamp, TopClamp);
-
         cameraTarget.rotation = Quaternion.Euler(TargetY, TargetX, 0.0f);
     }
 

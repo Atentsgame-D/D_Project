@@ -37,6 +37,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""CameraChange"",
+                    ""type"": ""Button"",
+                    ""id"": ""f590dfd7-bd74-4cef-b75d-35b4f88328df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MoveModeChange"",
                     ""type"": ""Button"",
                     ""id"": ""b48de213-945c-4b77-a8ce-c411dd725c1a"",
@@ -206,6 +215,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Player"",
                     ""action"": ""NormalAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""877bc798-4c04-4668-aa0b-b94e1ec90bf7"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Player"",
+                    ""action"": ""CameraChange"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -402,6 +422,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
+        m_Player_CameraChange = m_Player.FindAction("CameraChange", throwIfNotFound: true);
         m_Player_MoveModeChange = m_Player.FindAction("MoveModeChange", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Skill1 = m_Player.FindAction("Skill1", throwIfNotFound: true);
@@ -481,6 +502,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Use;
+    private readonly InputAction m_Player_CameraChange;
     private readonly InputAction m_Player_MoveModeChange;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Skill1;
@@ -494,6 +516,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Use => m_Wrapper.m_Player_Use;
+        public InputAction @CameraChange => m_Wrapper.m_Player_CameraChange;
         public InputAction @MoveModeChange => m_Wrapper.m_Player_MoveModeChange;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Skill1 => m_Wrapper.m_Player_Skill1;
@@ -514,6 +537,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Use.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUse;
+                @CameraChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraChange;
+                @CameraChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraChange;
+                @CameraChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCameraChange;
                 @MoveModeChange.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMoveModeChange;
                 @MoveModeChange.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMoveModeChange;
                 @MoveModeChange.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMoveModeChange;
@@ -545,6 +571,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @CameraChange.started += instance.OnCameraChange;
+                @CameraChange.performed += instance.OnCameraChange;
+                @CameraChange.canceled += instance.OnCameraChange;
                 @MoveModeChange.started += instance.OnMoveModeChange;
                 @MoveModeChange.performed += instance.OnMoveModeChange;
                 @MoveModeChange.canceled += instance.OnMoveModeChange;
@@ -700,6 +729,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnUse(InputAction.CallbackContext context);
+        void OnCameraChange(InputAction.CallbackContext context);
         void OnMoveModeChange(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSkill1(InputAction.CallbackContext context);
