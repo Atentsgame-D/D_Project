@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public StoreUI StoreUI => storeUI;
     // ------------------------------------------------------------------------------------------
 
+    public GameObject CoverImage;       // 스타트쒼
     private GameObject talkPanel;
     private TextMeshProUGUI talkText;
     private TalkManager talkManager;
@@ -121,6 +122,11 @@ public class GameManager : MonoBehaviour
 
         isAction = true;
         talkindex++;
+    }
+
+    public void OnClickStartButton()
+    {
+        CoverImage.SetActive(false);
     }
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
