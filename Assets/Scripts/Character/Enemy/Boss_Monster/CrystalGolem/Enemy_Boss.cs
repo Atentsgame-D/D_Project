@@ -22,8 +22,8 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     IEnumerator repeatChase = null;
     float sightAngle = 150.0f;   //-45 ~ +45 범위
     //공격용 -----------------------------------------------------------------------------------------
-    float attackCoolTime = 0.0f;
-    float attackSpeed = 2.0f;
+    float attackCoolTime = 2.0f;
+    float attackSpeed = 1.0f;
     Player player;
     //IBattle attackTarget;
 
@@ -67,6 +67,12 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     }
     private void Update()
     {
+        Debug.Log($"공격 쿨타임: {attackCoolTime}");
+        //if(patrolRoute!=null)
+        //{
+        //    agent.SetDestination(patrolRoute.position);  // 길찾기는 연산량이 많은 작업. SetDestination을 자주하면 안된다.
+        //}        
+
         switch (state)
         {
             case Boss_EnemyState.Idle:
@@ -91,17 +97,21 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             return;
         }
 
+       /* timeCountDown -= Time.deltaTime;
+        if (timeCountDown < 0)
+        {*/
+           // ChangeState(Boss_EnemyState.Idle);
+           // return;
+        //}
     }
 
-    Vector3 pos = Vector3.zero;
     bool SearchPlayer()
     {
         bool result = false;
         Collider[] colliders = Physics.OverlapSphere(transform.position, sightRange, LayerMask.GetMask("Player"));
-
         if (colliders.Length > 0)    // 시야 범위 안에 있는가?
         {
-            pos = colliders[0].transform.position;
+            Vector3 pos = colliders[0].transform.position;
             if (InSightAngle(pos))  // 시야 각도 안에 있는가?
             {
                 if (!BlockByWall(pos))  // 벽에 가렸는가?
@@ -144,47 +154,19 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         if (attackCoolTime < 0.0f)
         {
             anim.SetTrigger("Attack");
-            int randAtk = Random.Range(0, 3);
-            anim.SetInteger("AttackType", randAtk);
+            int rand = Random.Range(0, 3);
+            anim.SetInteger("AttackType", rand);
             Attack(player);
             attackCoolTime = attackSpeed;
         }
+        else
+        {
+            anim.SetInteger("AttackType", -1);  // 이거 어택 타겟이 0으로 고정되서 어택 무한루프 돌더라 일단 이렇게 막아놓긴 했는데 더 확인해봐봐
+        }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-    //    {
-    //        //attackTarget = other.GetComponent<IBattle>();
-    //        ChangeState(Boss_EnemyState.Attack);
-    //        return;
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-    //    {
-    //        ChangeState(Boss_EnemyState.Idle);
-    //        return;
-    //    }
-    //}
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
-    //    {
-    //        HP -= player.AttackPower;
-    //        if (player.gainHP)
-    //        {
-    //            player.Hp += player.AttackPower * 0.5f;
-    //        }
-    //        Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
-    //    }
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{other.name}가 들어왔다.");
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             //attackTarget = other.GetComponent<IBattle>();
@@ -195,29 +177,20 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"{other.name}가 나갔다.");
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
-            ChangeState(Boss_EnemyState.Chase);
+            ChangeState(Boss_EnemyState.Idle);
             return;
         }
-        
     }
-
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"{collision.collider.CompareTag}가 들어왔다.");
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
-            HP -= player.AttackPower;
-            if (player.gainHP)
-            {
-                player.Hp += player.AttackPower * 0.5f;
-            }
-           // StartCoroutine(DeadEffect());
-
-            Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
-            StartCoroutine(DeadEffect());
+            //curHealth -= (int)player.AttackPower; // 체력감소. 임시로 강제 형변환 하였음 이후에 단위 통일할 것 
+            //StartCoroutine(OnDamage());
+            Debug.Log("공격받음");
+            //Debug.Log("Enemy : " + Mathf.Max(0, curHealth)); // 체력을 0밑으로 떨어지지 않게 함
         }
     }
 
@@ -265,9 +238,10 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 break;
             case Boss_EnemyState.Attack:
                 agent.isStopped = true;
+                attackCoolTime = attackSpeed;
                 break;
             case Boss_EnemyState.Dead:
-               // DiePresent();
+                DiePresent();
                 break;
             default:
                 break;
@@ -278,40 +252,20 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     }
     void DiePresent()
     {
-       
+        
         anim.SetBool("Dead", true);
         anim.SetTrigger("Die");
         isDead = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         HP = 0;
-       // StartCoroutine(DeadEffect());
     }
 
     IEnumerator DeadEffect()
     {
-        if (HP > 0.0f)
-        {
-            //anim.SetTrigger("Hit");
-            attackCoolTime = attackSpeed;
-        }
-        else
-        {
-            // Die();
-           // isChase = false;
-           // Destroy(gameObject, 2);
-            ChangeState(Boss_EnemyState.Dead);
-            //ItemDrop();
-            anim.SetTrigger("Die");
-            anim.SetBool("Dead", true);
-            /*isDead = true;
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
-            HP = 0;*/
-        }
 
-       // Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
-       // hpBar.gameObject.SetActive(false);
+        Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
+        hpBar.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(3.0f);
         Collider[] colliders = GetComponents<Collider>();
@@ -323,7 +277,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         Rigidbody rigid = GetComponent<Rigidbody>();
         rigid.isKinematic = false;
         rigid.drag = 20.0f;
-        Destroy(this.gameObject, 12.0f);
+        Destroy(this.gameObject, 5.0f);
     }
     private void OnDrawGizmos()
     {
@@ -339,6 +293,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             Handles.color = Color.red;  // 추적이나 공격 중일 때만 빨간색
         }
         Handles.DrawWireDisc(transform.position, transform.up, closeSightRange); // 근접 시야 범위
+
         Vector3 forward = transform.forward * sightRange;
         Quaternion q1 = Quaternion.Euler(0.5f * sightAngle * transform.up);
         Quaternion q2 = Quaternion.Euler(-0.5f * sightAngle * transform.up);
@@ -372,13 +327,14 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     public void Attack(Player target)
     {
         if (target != null)
-        {            
+        {
             float damage = AttackPower;
             if (Random.Range(0.0f, 1.0f) < criticalRate)
             {
                 damage *= 2.0f;
             }
             target.TakeDamage(damage);
+            Debug.Log("적 공격");
         }
     }
 
