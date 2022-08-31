@@ -317,7 +317,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2efef4a89694b469ec1c6b1ee727c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!1 &4451830298933614460
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +441,7 @@ GameObject:
   - component: {fileID: 6660156785315655526}
   - component: {fileID: 6718306712528861467}
   m_Layer: 0
-  m_Name: PoongDang
+  m_Name: Spider
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
