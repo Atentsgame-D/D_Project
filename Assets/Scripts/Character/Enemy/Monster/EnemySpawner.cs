@@ -13,6 +13,9 @@ public class EnemySpawner : MonoBehaviour
     private float spawnRange = 5.0f;
     private float spawnTime;
     private float timeAfterSpawn;           // 게임 진행 시간
+    int spawnCount = 0;
+
+    GameObject enemy;
 
     private void Start()
     {
@@ -28,19 +31,21 @@ public class EnemySpawner : MonoBehaviour
     private void Spawn()
     {
         timeAfterSpawn += Time.deltaTime;
+        spawnCount = (int)GameObject.FindGameObjectsWithTag("Enemy").Length;
 
-        if (transform.childCount < maxSpawn)
+        if (timeAfterSpawn >= spawnTime)
         {
-            if (timeAfterSpawn >= spawnTime)
+            if (spawnCount < maxSpawn)
             {
                 int spawnPos = Random.Range(0, spawnPoint.Length);
                 Vector2 randomSpawnRange = Random.insideUnitCircle * spawnRange;
-                GameObject enemy = Instantiate(enemyPrefab, spawnPoint[spawnPos].position, spawnPoint[spawnPos].rotation);
+                enemy = Instantiate(enemyPrefab, spawnPoint[spawnPos].position, spawnPoint[spawnPos].rotation);
 
-                enemy.GetComponent<Enemy>().patrolRoute = transform.GetChild(0);
+                enemy.GetComponent<Enemy>().patrolRoute = GameObject.Find("PatrolRoute").GetComponent<Transform>();
                 timeAfterSpawn = 0f;
             }
         }
+
         spawnTime = Random.Range(MinSpawnTime, MaxSpawnTime);
     }
 }
