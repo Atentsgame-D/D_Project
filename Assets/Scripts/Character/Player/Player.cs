@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour, IEquipTarget
 {
@@ -56,6 +57,10 @@ public class Player : MonoBehaviour, IEquipTarget
     Vector3 inputDir = Vector3.zero;
     Quaternion targetRotation = Quaternion.identity;
 
+    // 캐릭터 사망 여부 ---------------------
+    public bool IsDead = false;
+    GameOver gameOver;
+
     // 캐릭터 HP----------------------------
     float maxHP = 500.0f;
     float hp = 100.0f;
@@ -73,6 +78,20 @@ public class Player : MonoBehaviour, IEquipTarget
         }
     }
     public System.Action<float> OnHpChange;
+
+    private void Dead()
+    {
+        OnDisable();
+        StartCoroutine(resetScene());
+    }
+
+    IEnumerator resetScene()
+    {
+        gameOver.FadeOut();
+        yield return new WaitForSeconds(5.0f);
+        SceneManager.LoadScene(0);
+    }
+
     //캐릭터 MP------------------------------
     float maxMP = 300.0f;
     float mp = 50.0f;
@@ -110,29 +129,62 @@ public class Player : MonoBehaviour, IEquipTarget
 
     // 상점확인용 변수--------------------------
     private bool isStore = false;
-    //-----------------------------------------
-    public bool tryUse = false;
-    public bool isTrigger = false;
     // 스킬용 변수------------------------------
     public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
     // 전투스탯 ---------------------
-   
+
     //공
     private float attackPower = 20.0f;
-    public float AttackPower {
-        get => attackPower;
-        set => attackPower = value;
+    public float AttackPower
+    {
+        get 
+        {
+            float power = attackPower;
+            EquipmentSlotUI slotui = equipUI.GetSlot(EquipmentType.Weapon);
+            if (slotui.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Weapon data = slotui.ItemSlot.SlotItemData as ItemData_Weapon;
+                power += data.attackPower;
+            }
+                return power; 
+        }
+        set
+        {
+            attackPower = value;
+        }
     }
     //방 
     public float defencePower = 10.0f;
-    public float DefencePower { get => defencePower; }
+    public float DefencePower 
+    {
+        get 
+        {
+            float power = defencePower;
+            EquipmentSlotUI helmatUI = equipUI.GetSlot(EquipmentType.Helmat);
+            EquipmentSlotUI shoesUI = equipUI.GetSlot(EquipmentType.Shoes);
+            if (helmatUI.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Equipment data = helmatUI.ItemSlot.SlotItemData as ItemData_Equipment;
+                power += data.defensePower;
+            }
+            
+            if(shoesUI.ItemSlot.SlotItemData != null)
+            {
+                ItemData_Equipment data = helmatUI.ItemSlot.SlotItemData as ItemData_Equipment;
+                power += data.defensePower;
+            }
+                return power;
+        }
+    }
 
     public ItemSlot EquipItemSlot => throw new NotImplementedException();
 
     // 카메라 -----------------------------
     Transform cameraTarget; //카메라 타겟
+    FirstPersonCamera FirstCamera;
+    FirstCameraBody FirstBody;
 
     Vector2 look;
 
@@ -145,10 +197,18 @@ public class Player : MonoBehaviour, IEquipTarget
     private float inputY;
     private float inputX;
 
+    /// <summary>
+    /// 3인칭 카메라 사용여부(true면 3인칭 false면 1인칭 )
+    /// </summary>
+    public bool On3rdCamera = true;
+
     //---------------------------------------
     private void Awake()
     {
         cameraTarget = transform.Find("PlayerCameraRoot").GetComponent<Transform>();
+        FirstCamera = GameObject.Find("Player1stCamera").GetComponent<FirstPersonCamera>();
+        FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
+
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         coolTime = GameObject.Find("SkillInfo").GetComponent<SkillCoolTimeManager>();
         actions = new PlayerInputActions();
@@ -156,15 +216,16 @@ public class Player : MonoBehaviour, IEquipTarget
         controller = GetComponent<CharacterController>();
         useText = GameObject.Find("UseText_GameObject");
         invenUI = GameObject.Find("InventoryUI").GetComponent<InventoryUI>();
-        store = GameObject.Find("Store").GetComponent<StoreUI>();  
+        store = GameObject.Find("Store").GetComponent<StoreUI>();
         equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
+        gameOver = GameObject.Find("GameOver").GetComponent<GameOver>();
     }
     private void Start()
     {
         GameManager.Inst.InvenUI.OnInventoryOpen += () => actions.Player.Disable();
         GameManager.Inst.InvenUI.OnInventoryClose += () => actions.Player.Enable();
 
-        TargetY = cameraTarget.rotation.eulerAngles.y;
+        //TargetY = cameraTarget.rotation.eulerAngles.y;
 
         useText.gameObject.SetActive(false);
         inven = new Inventory();
@@ -189,40 +250,43 @@ public class Player : MonoBehaviour, IEquipTarget
     }
     private void Update()
     {
-        if (inputDir.sqrMagnitude > 0.0f)
+        if (!IsDead) //캐릭터가 살아 있을 떄
         {
-            if (moveMode == MoveMode.Run)
+            if (inputDir.sqrMagnitude > 0.0f)
             {
-                speed = runSpeed;
-                anim.SetBool("OnRun", true);
+                if (moveMode == MoveMode.Run)
+                {
+                    speed = runSpeed;
+                    anim.SetBool("OnRun", true);
+                }
+                else if (moveMode == MoveMode.Walk)
+                {
+                    speed = walkSpeed;
+                    anim.SetBool("OnRun", false);
+                }
+                controller.Move(speed * Time.deltaTime * inputDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
             }
-            else if (moveMode == MoveMode.Walk)
+
+            //캐릭터가 땅에 붙어있지 않으면 중력 작용
+            if (!controller.isGrounded)
             {
-                speed = walkSpeed;
-                anim.SetBool("OnRun", false);
+                inputDir.y += gravity * Time.deltaTime;
             }
-            controller.Move(speed * Time.deltaTime * inputDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-        }
 
-        //캐릭터가 땅에 붙어있지 않으면 중력 작용
-        if (!controller.isGrounded)
-        {
-            inputDir.y += gravity * Time.deltaTime;
-        }
-
-        //스킬1을 사용했을떄 전방으로 돌진
-        if (Onskill01)
-        {
-            transform.Translate(skill01Distance * Vector3.forward * Time.deltaTime, Space.Self);
-        }
-
-        ScanObject();
-        if (scanObj == null)
-        {
-            if (manager.TalkPanel != null)
+            //스킬1을 사용했을떄 전방으로 돌진
+            if (Onskill01)
             {
-                manager.TalkPanel.SetActive(false);
+                transform.Translate(skill01Distance * Vector3.forward * Time.deltaTime, Space.Self);
+            }
+
+            ScanObject();
+            if (scanObj == null)
+            {
+                if (manager.TalkPanel != null)
+                {
+                    manager.TalkPanel.SetActive(false);
+                }
             }
         }
     }
@@ -240,6 +304,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
         actions.Player.Enable();
         actions.Player.Use.performed += OnUseInput;                  //f키
+        actions.Player.CameraChange.performed += CameraChange;       //g키
         actions.Player.Jump.performed += OnJump;
         actions.Player.MoveModeChange.performed += OnMoveModeChange; // 왼쪽 쉬프트 
         actions.Player.Skill1.performed += OnSkill_1;
@@ -253,7 +318,6 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.ShortCut.InventoryOnOff.performed += OnInventortyOnOff;
         actions.ShortCut.EquipmentOnOff.performed += OnEquipmentOnOff;
     }
-
     private void OnDisable()
     {
         actions.ShortCut.EquipmentOnOff.performed -= OnEquipmentOnOff;
@@ -268,6 +332,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Skill1.performed -= OnSkill_1;
         actions.Player.MoveModeChange.performed -= OnMoveModeChange;
         actions.Player.Jump.performed -= OnJump;
+        actions.Player.CameraChange.performed -= CameraChange;
         actions.Player.Use.performed -= OnUseInput;
         actions.Player.Disable();
 
@@ -276,10 +341,35 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.PlayerMove.Move.performed -= OnMoveInput;
         actions.PlayerMove.Disable();
     }
+
+    private void CameraChange(InputAction.CallbackContext _)
+    {
+        Debug.Log("시점 변경");
+        if (On3rdCamera)
+        {
+            FirstCamera.ChangeCamera(true);
+            StartCoroutine(onBody());
+            On3rdCamera = false;
+        }
+        else
+        {
+            FirstCamera.ChangeCamera(false);
+            FirstBody.OnBody(true);
+            On3rdCamera = true;
+        }
+
+    }
+    IEnumerator onBody()
+    {
+        yield return new WaitForSeconds(2.0f);
+        FirstBody.OnBody(false);
+    }
+
     private void OnLook(InputAction.CallbackContext context)
     {
         look = context.ReadValue<Vector2>();
     }
+
     private void OnMoveInput(InputAction.CallbackContext context) // 방향키 입력시 이동
     {
         input = context.ReadValue<Vector2>();
@@ -299,7 +389,7 @@ public class Player : MonoBehaviour, IEquipTarget
             moveMode = MoveMode.Walk;
         }
     }
-    
+
     private void OnUseInput(InputAction.CallbackContext context)
     {
         Use();
@@ -307,31 +397,13 @@ public class Player : MonoBehaviour, IEquipTarget
 
     public void Use()
     {
-        if (isTrigger)
+        if (isStore)
         {
-            if (tryUse)
-            {
-                if (isStore)
-                {
-                    store.Open();
-                    invenUI.Open();
-                    isStore = false;
-                    useText.gameObject.SetActive(false);
-                }
-                tryUse = false;
-            }
-            else
-            {
-                if (!isStore)
-                {
-                    store.Close();
-                    invenUI.Close();
-                    isStore = true;
-                    useText.gameObject.SetActive(true);
-                }
-                tryUse = true;
-            }
+            store.Open();
+            invenUI.Open();
+            useText.gameObject.SetActive(false);
         }
+
         if (scanObj != null)
         {
             manager.Action(scanObj);
@@ -349,27 +421,24 @@ public class Player : MonoBehaviour, IEquipTarget
     //------------------
     private void OnTriggerEnter(Collider other)
     {
-        isTrigger = true;
-        tryUse = true;
         if (other.CompareTag("Store"))
         {
             isStore = true;
+            useText.gameObject.SetActive(true);
         }
-        store.Close(); 
-        //invenUI.Close();
-        useText.gameObject.SetActive(true);
     }
+
     private void OnTriggerExit(Collider other)
     {
-        isTrigger = false;
-        tryUse = false;
         if (other.CompareTag("Store"))
         {
             isStore = false;
+            useText.gameObject.SetActive(false);
+            store.Close();
+            invenUI.Close();
         }
-
-        useText.gameObject.SetActive(false);
     }
+
     private void OnMoveModeChange(InputAction.CallbackContext context) // 쉬프트 키로 달리기 토글 설정. 기본 걷기상태
     {
         if (moveMode == MoveMode.Walk)
@@ -487,8 +556,17 @@ public class Player : MonoBehaviour, IEquipTarget
 
     public void TakeDamage(float damage)
     {
-        damage -= defencePower;
-        Hp -= damage;
+        if (!IsDead)
+        {
+            damage -= DefencePower;
+            if(damage < 1) damage = 1;
+            Hp -= damage;
+            if (Hp <= 0)
+            {
+                IsDead = true;
+                Dead();
+            }
+        }
     }
 
     //-----------------------------------------------------------------------

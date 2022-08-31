@@ -185,7 +185,6 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
      }*/
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"{other.name}가 들어왔다.");
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             //attackTarget = other.GetComponent<IBattle>();
@@ -197,7 +196,6 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log($"{other.name}가 나갔다.");
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
             ChangeState(Boss_EnemyState.Idle);
@@ -208,7 +206,6 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"{collision.collider.CompareTag}가 들어왔다.");
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
             HP -= player.AttackPower;

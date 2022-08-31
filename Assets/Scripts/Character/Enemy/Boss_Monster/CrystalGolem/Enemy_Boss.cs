@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
 
-public class Enemy_Boss : MonoBehaviour,IHealth
+public class Enemy_Boss : MonoBehaviour,IHealth, IBattle
 {
     NavMeshAgent agent;
     Animator anim;

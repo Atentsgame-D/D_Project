@@ -144,4 +144,17 @@ public class EquipmentUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
                 isMove = false;
         }
     }
+
+    public EquipmentSlotUI GetSlot(EquipmentType type)
+    {
+        EquipmentSlotUI slotUI = null;
+
+        foreach(var UI in slotUIs)
+        {
+            if(UI.equipmentSlotType == type)
+                slotUI = UI;
+        }
+
+        return slotUI;
+    }
 }

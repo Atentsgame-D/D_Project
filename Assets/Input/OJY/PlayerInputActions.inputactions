@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "CameraChange",
+                    "type": "Button",
+                    "id": "f590dfd7-bd74-4cef-b75d-35b4f88328df",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MoveModeChange",
                     "type": "Button",
                     "id": "b48de213-945c-4b77-a8ce-c411dd725c1a",
@@ -184,6 +193,17 @@
                     "processors": "",
                     "groups": "Player",
                     "action": "NormalAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "877bc798-4c04-4668-aa0b-b94e1ec90bf7",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Player",
+                    "action": "CameraChange",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
