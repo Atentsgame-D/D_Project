@@ -76,9 +76,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        talkPanel = GameObject.Find("TalkPanel").gameObject;
-        talkText = talkPanel.transform.Find("TalkText").GetComponent<TextMeshProUGUI>();
-        talkManager = GameObject.Find("TalkManager").GetComponent<TalkManager>();
+        //talkPanel = GameObject.Find("TalkPanel").gameObject;
+        //talkText = talkPanel.transform.Find("TalkText").GetComponent<TextMeshProUGUI>();
+        //talkManager = GameObject.Find("TalkManager").GetComponent<TalkManager>();
         //scanObject = ???;
         //PlayerUI = GameObject.Find("PlayerUI").gameObject;
     }
@@ -144,7 +144,9 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         itemData = GetComponent<ItemDataManager>();
-
+        talkPanel = GameObject.Find("TalkPanel").gameObject;
+        talkText = talkPanel.transform.Find("TalkText").GetComponent<TextMeshProUGUI>();
+        talkManager = GameObject.Find("TalkManager").GetComponent<TalkManager>();
         player = FindObjectOfType<Player>();
         inventoryUI = FindObjectOfType<InventoryUI>();
         storeUI = FindObjectOfType<StoreUI>();    
