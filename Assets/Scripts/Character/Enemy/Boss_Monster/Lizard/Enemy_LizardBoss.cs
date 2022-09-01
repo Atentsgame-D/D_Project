@@ -198,7 +198,7 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
         {
-            ChangeState(Boss_EnemyState.Idle);
+            ChangeState(Boss_EnemyState.Chase);
             return;
         }
 

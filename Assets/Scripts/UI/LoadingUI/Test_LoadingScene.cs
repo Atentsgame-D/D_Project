@@ -6,10 +6,10 @@ public class Test_LoadingScene : MonoBehaviour
 {
     void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Space))
-       // {
-           // LoadingScene.Instance.LoadScene("Boss2");
-           // Debug.Log("´­·¶µû");
-        //}
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            LoadingScene.Instance.LoadScene("Boss2");
+           Debug.Log("´­·¶µû");
+        }
     }
 }
