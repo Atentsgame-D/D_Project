@@ -20,7 +20,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         timeAfterSpawn = 0;
-        spawnTime = Random.Range(MinSpawnTime, MaxSpawnTime);
+        //spawnTime = Random.Range(MinSpawnTime, MaxSpawnTime);
     }
 
     private void Update()
@@ -41,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
                 Vector2 randomSpawnRange = Random.insideUnitCircle * spawnRange;
                 enemy = Instantiate(enemyPrefab, spawnPoint[spawnPos].position, spawnPoint[spawnPos].rotation);
 
-                enemy.GetComponent<Enemy>().patrolRoute = GameObject.Find("PatrolRoute").GetComponent<Transform>();
+                enemy.GetComponent<Enemy>().patrolRoute = transform.Find("PatrolRoute");
                 timeAfterSpawn = 0f;
             }
         }

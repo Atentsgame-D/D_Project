@@ -190,7 +190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2efef4a89694b469ec1c6b1ee727c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!1 &5794273734157749499
 GameObject:
   m_ObjectHideFlags: 0
@@ -6165,7 +6164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolRoute: {fileID: 0}
   enemyType: 1
-  hpSlider: {fileID: 0}
+  hpSlider: {fileID: 8595227163064222998}
   maxHealth: 100
   curHealth: 100
   attackPower: 10

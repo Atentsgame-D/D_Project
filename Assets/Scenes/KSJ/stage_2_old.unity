@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 34937fafadcc4c24e8aebf8204632cf8, type: 2}
 --- !u!1 &23845941
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +987,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawner (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7853125341330966836, guid: 2a68dab6c5ef5044cb8a1bec1146ac90, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 6717183465393620065, guid: a4ca95b57d25fb04dbc2c7dfd23146c6, type: 3}
     - target: {fileID: 7853125341330966837, guid: 2a68dab6c5ef5044cb8a1bec1146ac90, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -4108,6 +4112,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawner (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7853125341330966836, guid: 2a68dab6c5ef5044cb8a1bec1146ac90, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 6717183465393620065, guid: a4ca95b57d25fb04dbc2c7dfd23146c6, type: 3}
     - target: {fileID: 7853125341330966837, guid: 2a68dab6c5ef5044cb8a1bec1146ac90, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4185,6 +4193,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7853125341330966836, guid: 2a68dab6c5ef5044cb8a1bec1146ac90, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 6717183465393620065, guid: a4ca95b57d25fb04dbc2c7dfd23146c6, type: 3}
     - target: {fileID: 7853125341330966837, guid: 2a68dab6c5ef5044cb8a1bec1146ac90, type: 3}
       propertyPath: m_RootOrder
       value: 2
