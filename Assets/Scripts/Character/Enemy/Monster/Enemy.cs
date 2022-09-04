@@ -215,8 +215,9 @@ public class Enemy : MonoBehaviour
 
         if (nav.remainingDistance <= nav.stoppingDistance)
         {
-            index++;
-            index %= wayPointCount;
+            index = Random.Range(0, 4);
+            //index++;
+            //index %= wayPointCount;
 
             ChangeState(Boss_EnemyState.Idle);
 

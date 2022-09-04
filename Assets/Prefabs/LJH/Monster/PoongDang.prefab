@@ -1739,7 +1739,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolRoute: {fileID: 0}
   enemyType: 2
-  hpSlider: {fileID: 0}
+  hpSlider: {fileID: 8501304583619323208}
   maxHealth: 100
   curHealth: 100
   attackPower: 10
