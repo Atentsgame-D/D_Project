@@ -205,13 +205,14 @@ GameObject:
   - component: {fileID: 1679684484603946705}
   - component: {fileID: 480537843}
   - component: {fileID: 1679684484603946704}
+  - component: {fileID: 358688616}
   m_Layer: 0
   m_Name: Lizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1684116452826246684
 Transform:
   m_ObjectHideFlags: 0
@@ -328,6 +329,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &358688616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677987056689060682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566cea74fdfbf284dbc10fe1556be73c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  attackPower: 1
+  defencePower: 15
 --- !u!1 &1677996614400793802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,6 +1771,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_LizardBossBar
       objectReference: {fileID: 0}
+    - target: {fileID: 2199476208965199395, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2523444031316666101, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1839,6 +1859,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
+      propertyPath: m_text
+      value: Lizard
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8227101493014938417, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
@@ -1847,3 +1875,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2523444031316666101, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
   m_PrefabInstance: {fileID: 7975754689794802246}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8292025855475396895 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2142766979660329817, guid: cf7c4b0acbf51464497513484e4a35e6, type: 3}
+  m_PrefabInstance: {fileID: 7975754689794802246}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &592767673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8292025855475396895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab5372de958a004ba3964090242d145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
