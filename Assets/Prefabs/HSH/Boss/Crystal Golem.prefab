@@ -507,13 +507,15 @@ GameObject:
   - component: {fileID: 2478042123065135448}
   - component: {fileID: 6630143789867200887}
   - component: {fileID: 2478042123065135450}
+  - component: {fileID: 213028136}
+  - component: {fileID: 213028137}
   m_Layer: 0
   m_Name: Crystal Golem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2478042125139517276
 Transform:
   m_ObjectHideFlags: 0
@@ -613,7 +615,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.6
+  m_Radius: 2
   m_Center: {x: 0, y: 1.09, z: 0}
 --- !u!114 &6630143789867200887
 MonoBehaviour:
@@ -652,6 +654,32 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &213028136
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2478042125139203906}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Center: {x: -1.4, y: 0.7, z: 0}
+--- !u!135 &213028137
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2478042125139203906}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Center: {x: 1.4, y: 0.7, z: 0}
 --- !u!1 &2478042125139207502
 GameObject:
   m_ObjectHideFlags: 0
@@ -11465,6 +11493,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_BossBar
       objectReference: {fileID: 0}
+    - target: {fileID: 2199476208965199395, guid: 14dacfb0065deda47a24842862d27649, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2523444031316666101, guid: 14dacfb0065deda47a24842862d27649, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -11548,6 +11580,20 @@ PrefabInstance:
     - target: {fileID: 2523444031316666101, guid: 14dacfb0065deda47a24842862d27649, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: 14dacfb0065deda47a24842862d27649, type: 3}
+      propertyPath: m_text
+      value: 'Crystal Golem
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: 14dacfb0065deda47a24842862d27649, type: 3}
+      propertyPath: m_margin.z
+      value: -205.74158
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: 14dacfb0065deda47a24842862d27649, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14dacfb0065deda47a24842862d27649, type: 3}

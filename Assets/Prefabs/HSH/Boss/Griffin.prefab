@@ -1560,13 +1560,14 @@ GameObject:
   - component: {fileID: 2456712462266581807}
   - component: {fileID: 8098853540941720916}
   - component: {fileID: 2456712462266581801}
+  - component: {fileID: 1215474244}
   m_Layer: 0
   m_Name: Griffin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2456712462039966335
 Transform:
   m_ObjectHideFlags: 0
@@ -1690,6 +1691,21 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1215474244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2456712462040274089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d98ea9b68d2480f4c9b3c9f1aa72be02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  attackPower: 1
+  defencePower: 15
 --- !u!1 &2456712462040275781
 GameObject:
   m_ObjectHideFlags: 0
@@ -2111,6 +2127,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_GriffinBossBar
       objectReference: {fileID: 0}
+    - target: {fileID: 2199476208965199395, guid: 8615e374a4521134eb60436f61605f75, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2523444031316666101, guid: 8615e374a4521134eb60436f61605f75, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2194,6 +2214,16 @@ PrefabInstance:
     - target: {fileID: 2523444031316666101, guid: 8615e374a4521134eb60436f61605f75, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: 8615e374a4521134eb60436f61605f75, type: 3}
+      propertyPath: m_text
+      value: 'Griffin
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729372274488791411, guid: 8615e374a4521134eb60436f61605f75, type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8615e374a4521134eb60436f61605f75, type: 3}

@@ -8,7 +8,7 @@ public class Test_LoadingScene : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.F1))
         {
-            LoadingScene.Instance.LoadScene("Boss2");
+            LoadingScene.Instance.LoadScene("AllOfTeamProject");
            Debug.Log("´­·¶µû");
         }
     }
