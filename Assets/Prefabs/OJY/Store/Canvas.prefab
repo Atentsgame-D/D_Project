@@ -677,6 +677,22 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 8767785881309411517, guid: b8924dae22d312a43b7b9004e923b0ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767785881796526031, guid: b8924dae22d312a43b7b9004e923b0ff, type: 3}
+      propertyPath: m_text
+      value: 500/500
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767785882243358827, guid: b8924dae22d312a43b7b9004e923b0ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8767785882429054738, guid: b8924dae22d312a43b7b9004e923b0ff, type: 3}
+      propertyPath: m_text
+      value: 300/300
+      objectReference: {fileID: 0}
     - target: {fileID: 9220361849402735539, guid: b8924dae22d312a43b7b9004e923b0ff, type: 3}
       propertyPath: m_fontSize
       value: 40

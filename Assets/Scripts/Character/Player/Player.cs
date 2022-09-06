@@ -197,6 +197,8 @@ public class Player : MonoBehaviour, IEquipTarget
     private float inputY;
     private float inputX;
 
+    private string SceneName;
+
     /// <summary>
     /// 3인칭 카메라 사용여부(true면 3인칭 false면 1인칭 )
     /// </summary>
@@ -208,6 +210,8 @@ public class Player : MonoBehaviour, IEquipTarget
         cameraTarget = transform.Find("PlayerCameraRoot").GetComponent<Transform>();
         FirstCamera = GameObject.Find("Player1stCamera").GetComponent<FirstPersonCamera>();
         FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
+        SceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"현재 씬은 {SceneName}입니다.");
 
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         coolTime = GameObject.Find("SkillInfo").GetComponent<SkillCoolTimeManager>();
@@ -222,6 +226,19 @@ public class Player : MonoBehaviour, IEquipTarget
     }
     private void Start()
     {
+        cameraSetting();
+
+        if (GameManager.Inst.isPrevStat)
+        {
+            GameManager.Inst.MainPlayer.Hp = GameManager.Inst.PreHp;
+            GameManager.Inst.MainPlayer.Mp = GameManager.Inst.PreMp;
+        }
+        else
+        {
+            hp = maxHP;
+            mp = maxMP;
+        }
+
         GameManager.Inst.InvenUI.OnInventoryOpen += () => actions.Player.Disable();
         GameManager.Inst.InvenUI.OnInventoryClose += () => actions.Player.Enable();
 
@@ -294,6 +311,7 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         CameraRotate();
     }
+
     //OnEnable / OnDisable-----------------------------------------------------------------------------
     private void OnEnable()
     {
@@ -304,7 +322,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
         actions.Player.Enable();
         actions.Player.Use.performed += OnUseInput;                  //f키
-        actions.Player.CameraChange.performed += CameraChange;       //g키
+        //actions.Player.CameraChange.performed += CameraChange;       //g키, 카메라 전환 테스트용도로 사용되었음
         actions.Player.Jump.performed += OnJump;
         actions.Player.MoveModeChange.performed += OnMoveModeChange; // 왼쪽 쉬프트 
         actions.Player.Skill1.performed += OnSkill_1;
@@ -332,7 +350,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Skill1.performed -= OnSkill_1;
         actions.Player.MoveModeChange.performed -= OnMoveModeChange;
         actions.Player.Jump.performed -= OnJump;
-        actions.Player.CameraChange.performed -= CameraChange;
+        //actions.Player.CameraChange.performed -= CameraChange;
         actions.Player.Use.performed -= OnUseInput;
         actions.Player.Disable();
 
@@ -342,22 +360,42 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.PlayerMove.Disable();
     }
 
-    private void CameraChange(InputAction.CallbackContext _)
+    /// <summary>
+    /// 카메라 전환 테스트를 위해 만듦
+    /// </summary>
+    /// <param name="_">g키눌렀을때 실행되게 만들었으므로 사용 안함</param>
+    //private void CameraChange(InputAction.CallbackContext _)
+    //{
+    //    Debug.Log("동굴 입장");
+    //    // on3rdCamera가 true이면 
+    //    if (On3rdCamera) // true일때 = 3인칭 => 1인칭 전환
+    //    {
+    //        FirstCamera.ChangeCamera(true);
+    //        StartCoroutine(onBody());
+    //        On3rdCamera = false;
+    //    }
+    //    else // false일때 = 1인칭 => 3인칭 전환
+    //    {
+    //        FirstCamera.ChangeCamera(false);
+    //        FirstBody.OnBody(true);
+    //        On3rdCamera = true;
+    //    }
+    //}
+
+    void cameraSetting()
     {
-        Debug.Log("시점 변경");
-        if (On3rdCamera)
+        if (SceneName == "stage_2_old")
         {
             FirstCamera.ChangeCamera(true);
             StartCoroutine(onBody());
             On3rdCamera = false;
         }
-        else
+        else // false일때 = 1인칭 => 3인칭 전환
         {
             FirstCamera.ChangeCamera(false);
             FirstBody.OnBody(true);
             On3rdCamera = true;
         }
-
     }
     IEnumerator onBody()
     {

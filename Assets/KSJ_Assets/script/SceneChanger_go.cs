@@ -45,6 +45,10 @@ public class SceneChanger_go : MonoBehaviour
                     break;
             }
             Debug.Log("현재 씬을" + SceneNum + "으로 전환합니다.");
+
+            GameManager.Inst.PreHp = GameManager.Inst.MainPlayer.Hp;
+            GameManager.Inst.PreMp = GameManager.Inst.MainPlayer.Mp;
+
             SceneManager.LoadScene(SceneNum);                   //다음 씬으로 이동
             
         }

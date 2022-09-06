@@ -51,6 +51,33 @@ public class GameManager : MonoBehaviour
     {
         get => player;
     }
+
+    // 이전씬의 체력 마나 정보를 가져오기  --------------------------
+    public bool isPrevStat = false;
+    // 이전 씬에서의 체력 
+    float preHp;
+    public float PreHp
+    {
+        get => preHp;
+        set
+        {
+            preHp = value;
+            isPrevStat = true;
+        }
+    }
+    //이전 씬에서의 마나
+    float preMp;
+    public float PreMp
+    {
+        get => preMp;
+        set
+        {
+            preMp = value;
+            isPrevStat = true;
+        }
+    }
+    //-------------------------------------------------------
+
     static GameManager instance = null;
     public static GameManager Inst
     {

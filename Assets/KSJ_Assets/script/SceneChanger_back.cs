@@ -5,24 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger_back : MonoBehaviour
 {
-    private string SceneNum;  //¾À º¯¼ö
+    private string SceneNum;  //ì”¬ ë³€ìˆ˜
     private Renderer triggerRenderer;
     // Start is called before the first frame update
     void Start()
     {
-        SceneNum = SceneManager.GetActiveScene().name;  //ÇöÀç ¾À È®ÀÎ
-        Debug.Log("ÇöÀç ¾ÀÀº" + SceneNum + "ÀÔ´Ï´Ù.");
+        SceneNum = SceneManager.GetActiveScene().name;  //í˜„ì¬ ì”¬ í™•ì¸
+        Debug.Log("í˜„ì¬ ì”¬ì€" + SceneNum + "ì…ë‹ˆë‹¤.");
         triggerRenderer = GetComponent<Renderer>();
     }
 
 
-    private void OnTriggerEnter(Collider collision)  //Ãæµ¹ ÆÇÁ¤
+    private void OnTriggerEnter(Collider collision)  //ì¶©ëŒ íŒì •
     {
-        Debug.Log("¹°Ã¼ Ãæµ¹ È®ÀÎ");
-        if (collision.gameObject.tag == "Player")  //Ãæµ¹ÇÑ °ÍÀÌ ÇÃ·¹ÀÌ¾î¿´À» ¶§
+        Debug.Log("ë¬¼ì²´ ì¶©ëŒ í™•ì¸");
+        if (collision.gameObject.tag == "Player")  //ì¶©ëŒí•œ ê²ƒì´ í”Œë ˆì´ì–´ì˜€ì„ ë•Œ
         {
-            Debug.Log("Ãæµ¹ ¹°Ã¼ ÅÂ±× ÇÃ·¹ÀÌ¾î È®ÀÎ");
-            switch (SceneNum)                           //ÇöÀç ¾À È®ÀÎ ¹× ´ÙÀ½ ¾ÀÀ¸·Î º¯¼ö º¯È¯
+            Debug.Log("ì¶©ëŒ ë¬¼ì²´ íƒœê·¸ í”Œë ˆì´ì–´ í™•ì¸");
+            switch (SceneNum)                           //í˜„ì¬ ì”¬ í™•ì¸ ë° ë‹¤ìŒ ì”¬ìœ¼ë¡œ ë³€ìˆ˜ ë³€í™˜
             {
                 case "village_water":
                     SceneNum = "stage_1";
@@ -39,13 +39,17 @@ public class SceneChanger_back : MonoBehaviour
                 case "village":
                     SceneNum = "stage_3";
                     break;
-                default:                                        //ÇöÀç ¾ÀÀ» ÆÇ¸í ºÒ°¡´ÉÇÒ °æ¿ì ´ÙÀ½ ¾ÀÀ» ½ºÅ×ÀÌÁö 1·Î
-                    Debug.Log("¿¡·¯ ¹ß»ı SceneNumÃÊ±âÈ­");
+                default:                                        //í˜„ì¬ ì”¬ì„ íŒëª… ë¶ˆê°€ëŠ¥í•  ê²½ìš° ë‹¤ìŒ ì”¬ì„ ìŠ¤í…Œì´ì§€ 1ë¡œ
+                    Debug.Log("ì—ëŸ¬ ë°œìƒ SceneNumì´ˆê¸°í™”");
                     SceneNum = "stage_1";
                     break;
             }
-            Debug.Log("ÇöÀç ¾ÀÀ»" + SceneNum + "À¸·Î ÀüÈ¯ÇÕ´Ï´Ù.");
-            SceneManager.LoadScene(SceneNum);                   //´ÙÀ½ ¾ÀÀ¸·Î ÀÌµ¿
+            Debug.Log("í˜„ì¬ ì”¬ì„" + SceneNum + "ìœ¼ë¡œ ì „í™˜í•©ë‹ˆë‹¤.");
+
+            GameManager.Inst.PreHp = GameManager.Inst.MainPlayer.Hp;
+            GameManager.Inst.PreMp = GameManager.Inst.MainPlayer.Mp;
+
+            SceneManager.LoadScene(SceneNum);                   //ë‹¤ìŒ ì”¬ìœ¼ë¡œ ì´ë™
 
         }
     }

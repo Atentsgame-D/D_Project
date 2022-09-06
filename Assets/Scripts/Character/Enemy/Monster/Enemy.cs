@@ -419,7 +419,6 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("뭔가 들어옴");
         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
         {
             curHealth -= player.AttackPower;
