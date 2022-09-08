@@ -36,6 +36,10 @@ public class GameManager : MonoBehaviour
     public FirstPersonCamera FirstPersonCamera => firstPersonCamera;
     //------------
 
+
+    // 보스 사망 여부
+    public bool bossDead = false;
+
 // e07fac2c8ab9b1f58f75548b44df44a109cf7b65
     private GameObject talkPanel;
     private TextMeshProUGUI talkText;

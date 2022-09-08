@@ -134,7 +134,6 @@ public class Player : MonoBehaviour, IEquipTarget
     public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
-    bool UsingSkill = false;
     // 전투스탯 ---------------------
 
     //공
@@ -201,6 +200,9 @@ public class Player : MonoBehaviour, IEquipTarget
 
     private string SceneName;
 
+    public GameObject bossCamera;
+    public Transform bossCameraDestination;
+
     /// <summary>
     /// 3인칭 카메라 사용여부(true면 3인칭 false면 1인칭 )
     /// </summary>
@@ -229,7 +231,7 @@ public class Player : MonoBehaviour, IEquipTarget
     private void Start()
     {
         cameraSetting();
-
+        GameManager.Inst.bossDead = false;
         if (GameManager.Inst.isPrevStat)
         {
             GameManager.Inst.MainPlayer.Hp = GameManager.Inst.PreHp;
@@ -309,9 +311,26 @@ public class Player : MonoBehaviour, IEquipTarget
             }
         }
     }
+
+
     private void LateUpdate()
     {
-        CameraRotate();
+        CameraRotate();        
+    }
+
+    public void bossDeadCamera()
+    {
+        OnDisable();
+        bossCamera.SetActive(true);
+        StartCoroutine(cameraMove());
+    }
+
+    IEnumerator cameraMove()
+    {
+        //카메라 이동
+        yield return new WaitForSeconds(35.0f);
+        bossCamera.SetActive(false);
+        OnEnable();
     }
 
     //OnEnable / OnDisable-----------------------------------------------------------------------------

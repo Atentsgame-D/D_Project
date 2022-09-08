@@ -372,6 +372,7 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
     {
         if (isDead == false)
         {
+            GameManager.Inst.bossDead = true;
             ChangeState(Boss_EnemyState.Dead);
         }
     }
