@@ -29,6 +29,7 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
 
     //사망용 -----------------------------------------------------------------------------------------
     bool isDead = false;
+    public GameObject explosionPrefab;
 
     //IHealth -------------------------------------------------------------------------------------
     public float hp = 100.0f;
@@ -67,21 +68,24 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
     }
     private void Update()
     {
-        switch (state)
+        if (!isDead)
         {
-            case Boss_EnemyState.Idle:
-                IdleUpdate();
-                break;
-            case Boss_EnemyState.Chase:
-                ChaseUpdate();
-                break;
-            case Boss_EnemyState.Attack:
-                Targeting();
-                break;
-            case Boss_EnemyState.Dead:
-            default:
-                break;
-        }
+            switch (state)
+            {
+                case Boss_EnemyState.Idle:
+                    IdleUpdate();
+                    break;
+                case Boss_EnemyState.Chase:
+                    ChaseUpdate();
+                    break;
+                case Boss_EnemyState.Attack:
+                    Targeting();
+                    break;
+                case Boss_EnemyState.Dead:
+                default:
+                    break;
+            }
+        }        
     }
     void IdleUpdate()
     {
@@ -145,44 +149,10 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
             anim.SetTrigger("Attack");
             int randAtk = Random.Range(0, 3);
             anim.SetInteger("AttackType", randAtk);
-            Attack(player);
+            //Attack(player);
             attackCoolTime = attackSpeed;
         }
     }
-
-    /* private void OnTriggerEnter(Collider other)
-     {
-         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-         {
-             //attackTarget = other.GetComponent<IBattle>();
-             ChangeState(Boss_EnemyState.Attack);
-
-             return;
-         }
-     }
-
-     private void OnTriggerExit(Collider other)
-     {
-         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-         {
-             ChangeState(Boss_EnemyState.Chase);
-             return;
-         }
-     }
-
-     private void OnCollisionEnter(Collision collision)
-     {
-         if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
-         {
-             HP -= player.AttackPower;
-             if (player.gainHP)
-             {
-                 player.Hp += player.AttackPower * 0.5f;
-             }
-
-             Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
-         }
-     }*/
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
@@ -266,7 +236,7 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
                 agent.isStopped = true;
                 break;
             case Boss_EnemyState.Dead:
-               // DiePresent();
+                DiePresent();
                 break;
             default:
                 break;
@@ -283,6 +253,7 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         HP = 0;
+        StartCoroutine(DeadEffect());
     }
 
     IEnumerator DeadEffect()
@@ -294,29 +265,27 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
         }
         else
         {
-            // Die();
-            // isChase = false;
-            // Destroy(gameObject, 2);
             ChangeState(Boss_EnemyState.Dead);
-            //ItemDrop();
+            GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
             anim.SetTrigger("Die");
-            anim.SetBool("Dead", true);
+            anim.SetBool("Dead", true); 
+            yield return new WaitForSeconds(3.0f);
+            Collider[] colliders = GetComponents<Collider>();
+            foreach (var col in colliders)
+            {
+                col.enabled = false;
+            }
+            agent.enabled = false;
+            Rigidbody rigid = GetComponent<Rigidbody>();
+            rigid.isKinematic = false;
+            rigid.drag = 20.0f;
+            Destroy(this.gameObject, 12.0f);
         }
 
         // Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
         // hpBar.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(3.0f);
-        Collider[] colliders = GetComponents<Collider>();
-        foreach (var col in colliders)
-        {
-            col.enabled = false;
-        }
-        agent.enabled = false;
-        Rigidbody rigid = GetComponent<Rigidbody>();
-        rigid.isKinematic = false;
-        rigid.drag = 20.0f;
-         Destroy(this.gameObject, 12.0f);
+        
     }
     private void OnDrawGizmos()
     {
@@ -361,6 +330,10 @@ public class Enemy_LizardBoss : MonoBehaviour, IHealth
         }
 
         return result;
+    }
+    public void bossAttack()
+    {
+        Attack(player);
     }
     public void Attack(Player target)
     {
