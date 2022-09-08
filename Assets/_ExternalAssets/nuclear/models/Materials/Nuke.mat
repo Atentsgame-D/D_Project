@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Nuke 3
+  m_Name: Nuke
   m_Shader: {fileID: 4800000, guid: 20bdaadeb6a3a4a44b2892a4df93d1cf, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
@@ -78,32 +78,34 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _Displace_max: -0.43
-    - _Displace_min: 0.3
+    - _Displace_max: -0.16
+    - _Displace_min: 0.44
     - _DstBlend: 0
-    - _Emmis_power: 106
+    - _Emmis_power: 30
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Opacity: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _Speed: 0.39
-    - _Speed2: 0.8
+    - _Speed: 0.5
+    - _Speed2: -0.3
     - _SrcBlend: 1
-    - _Steam_blend: 0.746
-    - _U: 3.4
+    - _Steam_blend: 0.012
+    - _U: 1.8
     - _UVSec: 0
-    - _V: -0.3
+    - _V: 0.5
     - _ZWrite: 1
-    - _blur: 0
-    - _emmis_exp: 1.18
-    - _tesselation_factor: 26.4
+    - __opacity: 1
+    - _blur: 0.86
+    - _emmis_exp: 0.69
+    - _tesselation_factor: 23
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.8207547, g: 0.243417, b: 0.08904416, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _steam_cloud_color: {r: 1, g: 0.5669371, b: 0.102941155, a: 1}
   m_BuildTextureStacks: []

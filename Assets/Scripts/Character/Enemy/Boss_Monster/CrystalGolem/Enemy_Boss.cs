@@ -29,7 +29,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     //사망용 -----------------------------------------------------------------------------------------
     bool isDead = false;
-
+    public GameObject explosionPrefab;
     //IHealth -------------------------------------------------------------------------------------
     public float hp = 100.0f;
     float maxHP = 100.0f;
@@ -67,20 +67,23 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     }
     private void Update()
     {
-        switch (state)
+        if (!isDead)
         {
-            case Boss_EnemyState.Idle:
-                IdleUpdate();
-                break;
-           case Boss_EnemyState.Chase:
-                ChaseUpdate();
-                break;
-            case Boss_EnemyState.Attack:
-                Targeting();
-                break;
-            case Boss_EnemyState.Dead:
-            default:
-                break;
+            switch (state)
+            {
+                case Boss_EnemyState.Idle:
+                    IdleUpdate();
+                    break;
+                case Boss_EnemyState.Chase:
+                    ChaseUpdate();
+                    break;
+                case Boss_EnemyState.Attack:
+                    Targeting();
+                    break;
+                case Boss_EnemyState.Dead:
+                default:
+                    break;
+            }
         }
     }
     void IdleUpdate()
@@ -146,7 +149,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             anim.SetTrigger("Attack");
             int randAtk = Random.Range(0, 3);
             anim.SetInteger("AttackType", randAtk);
-            Attack(player);
+            //bossAttack();
             attackCoolTime = attackSpeed;
         }
     }
@@ -267,7 +270,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 agent.isStopped = true;
                 break;
             case Boss_EnemyState.Dead:
-               // DiePresent();
+                DiePresent();
                 break;
             default:
                 break;
@@ -277,15 +280,14 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         anim.SetInteger("EnemyState", (int)state);
     }
     void DiePresent()
-    {
-       
+    {       
         anim.SetBool("Dead", true);
         anim.SetTrigger("Die");
         isDead = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         HP = 0;
-       // StartCoroutine(DeadEffect());
+        StartCoroutine(DeadEffect());
     }
 
     IEnumerator DeadEffect()
@@ -297,34 +299,28 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         }
         else
         {
-            // Die();
-           // isChase = false;
-           // Destroy(gameObject, 2);
             ChangeState(Boss_EnemyState.Dead);
-            //ItemDrop();
+            GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
             anim.SetTrigger("Die");
             anim.SetBool("Dead", true);
-            /*isDead = true;
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
-            HP = 0;*/
+
+            yield return new WaitForSeconds(3.0f);
+            Collider[] colliders = GetComponents<Collider>();
+            foreach (var col in colliders)
+            {
+                col.enabled = false;
+            }
+            agent.enabled = false;
+            Rigidbody rigid = GetComponent<Rigidbody>();
+            rigid.isKinematic = false;
+            rigid.drag = 20.0f;
+            Destroy(this.gameObject, 12.0f);
         }
 
        // Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
-       // hpBar.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(3.0f);
-        Collider[] colliders = GetComponents<Collider>();
-        foreach (var col in colliders)
-        {
-            col.enabled = false;
-        }
-        agent.enabled = false;
-        Rigidbody rigid = GetComponent<Rigidbody>();
-        rigid.isKinematic = false;
-        rigid.drag = 20.0f;
-        Destroy(this.gameObject, 12.0f);
+       // hpBar.gameObject.SetActive(false);        
     }
+
     private void OnDrawGizmos()
     {
         //Gizmos.color = Color.blue;
@@ -369,7 +365,11 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
         return result;  
     }
-    public void Attack(Player target)
+    public void bossAttack()
+    {
+        Attack(player);
+    }
+    private void Attack(Player target)
     {
         if (target != null)
         {            

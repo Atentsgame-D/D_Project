@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ public AudioSource shockwaveSound;
 	  void OnTriggerEnter(Collider other) {
            if (other.gameObject.tag == "Player")
 		   {
-			   shockwaveSound.Play();
+			   //shockwaveSound.Play();
 
 		   }
     }
