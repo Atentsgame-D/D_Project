@@ -30,6 +30,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
     //사망용 -----------------------------------------------------------------------------------------
     bool isDead = false;
     public GameObject explosionPrefab;
+    bool bossExplosion = false;
 
     //IHealth -------------------------------------------------------------------------------------
     public float hp = 100.0f;
@@ -266,9 +267,15 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
             attackCoolTime = attackSpeed;
         }
         else
-        {
+        {            
             ChangeState(Boss_EnemyState.Dead);
-            GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            if (!bossExplosion)
+            {
+                GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
+                GameManager.Inst.MainPlayer.bossDeadCamera();
+                bossExplosion = true;
+            }
+            
             anim.SetTrigger("Die");
             anim.SetBool("Dead", true);
             yield return new WaitForSeconds(3.0f);
@@ -289,6 +296,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
 
         
     }
+
     private void OnDrawGizmos()
     {
         //Gizmos.color = Color.blue;
@@ -381,10 +389,9 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
 
     void Die()
     {
-        if (isDead == false)
+        if (!isDead)
         {
-            GameManager.Inst.bossDead = true;
-            ChangeState(Boss_EnemyState.Dead);
+            ChangeState(Boss_EnemyState.Dead);            
         }
     }
 }

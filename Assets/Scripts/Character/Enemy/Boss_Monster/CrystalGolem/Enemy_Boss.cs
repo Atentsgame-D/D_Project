@@ -30,8 +30,10 @@ public class Enemy_Boss : MonoBehaviour,IHealth
     //사망용 -----------------------------------------------------------------------------------------
     bool isDead = false;
     public GameObject explosionPrefab;
-    //IHealth -------------------------------------------------------------------------------------
-    public float hp = 100.0f;
+    bool bossExplosion = false;
+    
+//IHealth -------------------------------------------------------------------------------------
+public float hp = 100.0f;
     float maxHP = 100.0f;
     public float HP
     {
@@ -269,7 +271,12 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         else
         {
             ChangeState(Boss_EnemyState.Dead);
-            GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            if (!bossExplosion)
+            {
+                GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
+                GameManager.Inst.MainPlayer.bossDeadCamera();
+                bossExplosion = true;
+            }
             anim.SetTrigger("Die");
             anim.SetBool("Dead", true);
 
@@ -373,10 +380,9 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     void Die()
     {
-        if (isDead == false)
+        if (!isDead)
         {
-            GameManager.Inst.bossDead = true;
             ChangeState(Boss_EnemyState.Dead);
-        }
+        }        
     }
 }

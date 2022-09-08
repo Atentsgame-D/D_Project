@@ -45,7 +45,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
     private Equipment equip;
     // ------------------------------------------------------------------------------------------
-
+    public GameObject canvas;
     PlayerInputActions actions = null;
     Animator anim;
     GameObject useText;
@@ -201,7 +201,7 @@ public class Player : MonoBehaviour, IEquipTarget
     private string SceneName;
 
     public GameObject bossCamera;
-    public Transform bossCameraDestination;
+    public GameObject bossCameraDestination;
 
     /// <summary>
     /// 3인칭 카메라 사용여부(true면 3인칭 false면 1인칭 )
@@ -216,7 +216,6 @@ public class Player : MonoBehaviour, IEquipTarget
         FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
         SceneName = SceneManager.GetActiveScene().name;
         Debug.Log($"현재 씬은 {SceneName}입니다.");
-
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         coolTime = GameObject.Find("SkillInfo").GetComponent<SkillCoolTimeManager>();
         actions = new PlayerInputActions();
@@ -228,6 +227,8 @@ public class Player : MonoBehaviour, IEquipTarget
         equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
         gameOver = GameObject.Find("GameOver").GetComponent<GameOver>();
     }
+
+    
     private void Start()
     {
         cameraSetting();
@@ -318,18 +319,30 @@ public class Player : MonoBehaviour, IEquipTarget
         CameraRotate();        
     }
 
+    // 캐릭터 위치.y +10  캐릭터위치.z -5 에서출발 캐릭터 위치.y +10  캐릭터위치.z -25 까지 이동
     public void bossDeadCamera()
     {
         OnDisable();
+        canvas.SetActive(false);
         bossCamera.SetActive(true);
+        bossCameraDestination.SetActive(true);
         StartCoroutine(cameraMove());
     }
 
+    float cameraMoveTime = 0.0f;
+    float explosionDuration = 30.0f;
+    float cameraSpeed = 1.0f;
     IEnumerator cameraMove()
     {
-        //카메라 이동
-        yield return new WaitForSeconds(35.0f);
+        while(cameraMoveTime <= explosionDuration)
+        {
+            bossCamera.transform.position = Vector3.Lerp(bossCamera.transform.position, bossCameraDestination.transform.position, cameraSpeed * Time.deltaTime);
+            cameraMoveTime += Time.deltaTime;
+            yield return null;
+        }
+        bossCameraDestination.SetActive(false);
         bossCamera.SetActive(false);
+        canvas.SetActive(true);
         OnEnable();
     }
 
