@@ -337,7 +337,7 @@ public class Enemy : MonoBehaviour
 
                     attackCoolTime = attackSpeed;
                     rushCoolTime = 2.0f;
-                    //player.TakeDamage(damage);
+                    player.TakeDamage(damage);
                 }
 
                 break;
@@ -359,7 +359,7 @@ public class Enemy : MonoBehaviour
                     }
 
                     attackCoolTime = attackSpeed;
-                    //player.TakeDamage(damage);
+                    player.TakeDamage(damage);
                 }
 
                 break;
@@ -381,7 +381,7 @@ public class Enemy : MonoBehaviour
                     }
 
                     attackCoolTime = attackSpeed;
-                    //player.TakeDamage(damage);
+                    player.TakeDamage(damage);
                 }
 
                 break;

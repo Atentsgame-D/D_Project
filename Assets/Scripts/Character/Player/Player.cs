@@ -80,8 +80,9 @@ public class Player : MonoBehaviour, IEquipTarget
     public System.Action<float> OnHpChange;
 
     private void Dead()
-    {
+    { 
         OnDisable();
+        anim.SetTrigger("Die");
         StartCoroutine(resetScene());
     }
 
@@ -133,6 +134,7 @@ public class Player : MonoBehaviour, IEquipTarget
     public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
+    bool UsingSkill = false;
     // 전투스탯 ---------------------
 
     //공
@@ -494,6 +496,7 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         if (coolTime.skill1_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
+            UsingSkill = true;
             Debug.Log("스킬1 발동");
             Mp -= 30.0f;
             StartCoroutine(Skill01());
@@ -511,12 +514,14 @@ public class Player : MonoBehaviour, IEquipTarget
         anim.SetBool("OnSkill1", false);
         actions.Player.Enable();
         actions.PlayerMove.Enable();
+        UsingSkill = false;
     }
 
     private void OnSkill_2(InputAction.CallbackContext _) // 회전회오리
     {
         if (coolTime.skill2_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
+            UsingSkill = false;
             Mp -= 30.0f;
             StartCoroutine(Skill02());
             coolTime.skill2();
@@ -531,6 +536,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Enable();
         anim.SetBool("OnSkill2", false);
         attackPower *= 2.0f;
+        UsingSkill = false;
     }
 
     private void OnSkill_3(InputAction.CallbackContext _) // 흡혈 버프
@@ -603,6 +609,10 @@ public class Player : MonoBehaviour, IEquipTarget
             {
                 IsDead = true;
                 Dead();
+            }
+            else
+            {
+                anim.SetTrigger("OnHit");
             }
         }
     }
