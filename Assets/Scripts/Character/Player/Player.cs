@@ -340,6 +340,7 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         while(cameraMoveTime <= explosionDuration)
         {
+            inputDir = Vector3.zero;
             bossCamera.transform.position = Vector3.Lerp(bossCamera.transform.position, bossCameraDestination.transform.position, cameraSpeed * Time.deltaTime);
             cameraMoveTime += Time.deltaTime;
             yield return null;
