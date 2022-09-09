@@ -134,6 +134,7 @@ public class Player : MonoBehaviour, IEquipTarget
     public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
+    ParticleSystem ps;
     // 전투스탯 ---------------------
 
     //공
@@ -211,6 +212,7 @@ public class Player : MonoBehaviour, IEquipTarget
     //---------------------------------------
     private void Awake()
     {
+        ps = transform.GetChild(8).GetComponent<ParticleSystem>();
         cameraTarget = transform.Find("PlayerCameraRoot").GetComponent<Transform>();
         FirstCamera = GameObject.Find("Player1stCamera").GetComponent<FirstPersonCamera>();
         FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
@@ -528,6 +530,7 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         if (coolTime.skill1_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
+            ps.Play();
             anim.SetBool("UsingSkill",true);
             Debug.Log("스킬1 발동");
             Mp -= 30.0f;
@@ -547,6 +550,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Enable();
         actions.PlayerMove.Enable();
         anim.SetBool("UsingSkill", false);
+        ps.Stop();
     }
 
     private void OnSkill_2(InputAction.CallbackContext _) // 회전회오리
