@@ -299,6 +299,10 @@ public class Player : MonoBehaviour, IEquipTarget
             {
                 inputDir.y += gravity * Time.deltaTime;
             }
+            else
+            {
+                anim.SetBool("Grounded", true);
+            }
 
             //스킬1을 사용했을떄 전방으로 돌진
             if (Onskill01)
@@ -493,6 +497,7 @@ public class Player : MonoBehaviour, IEquipTarget
         {
             inputDir.y = jumpPower; // y축 이동방향을 점프높이로 설정하여 올라가다가 다시 내려오게 만듦 = 점프
             anim.SetTrigger("OnJump");
+            anim.SetBool("Grounded", false);
         }
     }
     //------------------
