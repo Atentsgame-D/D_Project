@@ -134,7 +134,8 @@ public class Player : MonoBehaviour, IEquipTarget
     public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
-    ParticleSystem ps;
+    ParticleSystem ps1;
+    ParticleSystem ps3;
     // 전투스탯 ---------------------
 
     //공
@@ -211,8 +212,9 @@ public class Player : MonoBehaviour, IEquipTarget
 
     //---------------------------------------
     private void Awake()
-    {
-        ps = transform.GetChild(8).GetComponent<ParticleSystem>();
+    {        
+        ps1 = transform.GetChild(8).GetComponent<ParticleSystem>();
+        ps3 = transform.GetChild(9).GetComponent<ParticleSystem>();
         cameraTarget = transform.Find("PlayerCameraRoot").GetComponent<Transform>();
         FirstCamera = GameObject.Find("Player1stCamera").GetComponent<FirstPersonCamera>();
         FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
@@ -530,7 +532,7 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         if (coolTime.skill1_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
-            ps.Play();
+            ps1.Play();
             anim.SetBool("UsingSkill",true);
             Debug.Log("스킬1 발동");
             Mp -= 30.0f;
@@ -550,7 +552,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Enable();
         actions.PlayerMove.Enable();
         anim.SetBool("UsingSkill", false);
-        ps.Stop();
+        ps1.Stop();
     }
 
     private void OnSkill_2(InputAction.CallbackContext _) // 회전회오리
@@ -579,6 +581,7 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         if (coolTime.skill3_CoolTime <= 0.0f && Mp > 50.0f && controller.isGrounded)
         {
+            ps3.Play();
             Mp -= 50.0f;
             StartCoroutine(Skill03());
             coolTime.skill3();
@@ -590,6 +593,7 @@ public class Player : MonoBehaviour, IEquipTarget
         gainHP = true;
         yield return new WaitForSeconds(6.0f);
         gainHP = false;
+        ps3.Stop();
     }
 
     private void OnSkill_4(InputAction.CallbackContext _) // 도약
