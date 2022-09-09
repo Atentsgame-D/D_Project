@@ -67,6 +67,7 @@ public class TempItemSlotUI : ItemSlotUI
     /// <param name="obj"></param>
     public void OnDrop(InputAction.CallbackContext obj)
     {
+        if (eventData == null) return;
         Vector2 mousePos = Mouse.current.position.ReadValue();      // 마우스 위치 받아오기
         eventData.position = mousePos;
         List<RaycastResult> results = new List<RaycastResult>();
