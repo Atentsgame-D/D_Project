@@ -3448,6 +3448,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5287135856224854650, guid: bb5ebd3bb08caf940803c27f7cf6defa, type: 3}
   m_PrefabInstance: {fileID: 713493123}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &713493125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5287135856224854654, guid: bb5ebd3bb08caf940803c27f7cf6defa, type: 3}
+  m_PrefabInstance: {fileID: 713493123}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &720417619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: 57b1c6e5e6fd80c4f8ee1d5ccba246c8, type: 3}
@@ -10586,6 +10591,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7391070143442485838, guid: 0c5bb82ff7180d448b083ea9c0af77b4, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 713493125}
     - target: {fileID: 7391070143936428663, guid: 0c5bb82ff7180d448b083ea9c0af77b4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.046738297

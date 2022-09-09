@@ -629,6 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b285e7de6317f1a4bab19f52497fe7e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 1759264295834012, guid: ecf1e40c76cefd74f8d802b6014da097, type: 3}
   hp: 100
   attackPower: 11
   defencePower: 10

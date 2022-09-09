@@ -990,6 +990,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7391070143442485838, guid: 0c5bb82ff7180d448b083ea9c0af77b4, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 479401750}
     - target: {fileID: 7391070143936428663, guid: 0c5bb82ff7180d448b083ea9c0af77b4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.046735406
@@ -3002,6 +3006,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bb5ebd3bb08caf940803c27f7cf6defa, type: 3}
+--- !u!1 &479401750 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5287135856224854654, guid: bb5ebd3bb08caf940803c27f7cf6defa, type: 3}
+  m_PrefabInstance: {fileID: 479401749}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &481230197
 PrefabInstance:
   m_ObjectHideFlags: 0
