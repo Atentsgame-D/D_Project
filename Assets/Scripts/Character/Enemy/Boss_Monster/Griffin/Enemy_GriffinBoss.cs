@@ -31,10 +31,13 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
     bool isDead = false;
     public GameObject explosionPrefab;
     bool bossExplosion = false;
+    // hpUI -----------------------------------------------------------------------------------------
+    public GameObject UIClose;
+
 
     //IHealth -------------------------------------------------------------------------------------
     public float hp = 100.0f;
-    float maxHP = 100.0f;
+    float maxHP = 400.0f;
     public float HP
     {
         get => hp;
@@ -66,6 +69,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        UIClose = GameObject.FindWithTag("HPUI");
     }
     private void Update()
     {
@@ -75,12 +79,15 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
             {
                 case Boss_EnemyState.Idle:
                     IdleUpdate();
+                    UIClose.SetActive(false);
                     break;
                 case Boss_EnemyState.Chase:
                     ChaseUpdate();
+                    UIClose.SetActive(true);
                     break;
                 case Boss_EnemyState.Attack:
                     Targeting();
+                    UIClose.SetActive(true);
                     break;
                 case Boss_EnemyState.Dead:
                 default:

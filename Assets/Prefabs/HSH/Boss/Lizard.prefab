@@ -342,9 +342,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 1759264295834012, guid: ecf1e40c76cefd74f8d802b6014da097, type: 3}
-  hp: 100
-  attackPower: 1
-  defencePower: 15
+  UIClose: {fileID: 0}
+  hp: 400
+  attackPower: 70
+  defencePower: 100
 --- !u!1 &1677996614400793802
 GameObject:
   m_ObjectHideFlags: 0

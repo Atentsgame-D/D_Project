@@ -630,9 +630,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 1759264295834012, guid: ecf1e40c76cefd74f8d802b6014da097, type: 3}
+  UIClose: {fileID: 0}
   hp: 100
-  attackPower: 11
-  defencePower: 10
+  attackPower: 44
+  defencePower: 20
 --- !u!195 &2478042123065135450
 NavMeshAgent:
   m_ObjectHideFlags: 0
