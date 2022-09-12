@@ -7,6 +7,7 @@ TagManager:
   - Weapon
   - Enemy
   - Store
+  - HPUI
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Player
   - Object
   - 
-  - 
+  - BossExplosion
   - 
   - 
   - 

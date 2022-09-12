@@ -45,7 +45,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
     private Equipment equip;
     // ------------------------------------------------------------------------------------------
-
+    public GameObject canvas;
     PlayerInputActions actions = null;
     Animator anim;
     GameObject useText;
@@ -80,8 +80,9 @@ public class Player : MonoBehaviour, IEquipTarget
     public System.Action<float> OnHpChange;
 
     private void Dead()
-    {
+    { 
         OnDisable();
+        anim.SetTrigger("Die");
         StartCoroutine(resetScene());
     }
 
@@ -133,6 +134,8 @@ public class Player : MonoBehaviour, IEquipTarget
     public bool gainHP = false;
     bool Onskill01 = false;
     public float skill01Distance = 10.0f;
+    ParticleSystem ps1;
+    ParticleSystem ps3;
     // 전투스탯 ---------------------
 
     //공
@@ -197,6 +200,11 @@ public class Player : MonoBehaviour, IEquipTarget
     private float inputY;
     private float inputX;
 
+    private string SceneName;
+
+    public GameObject bossCamera;
+    public GameObject bossCameraDestination;
+
     /// <summary>
     /// 3인칭 카메라 사용여부(true면 3인칭 false면 1인칭 )
     /// </summary>
@@ -204,11 +212,14 @@ public class Player : MonoBehaviour, IEquipTarget
 
     //---------------------------------------
     private void Awake()
-    {
+    {        
+        ps1 = transform.GetChild(8).GetComponent<ParticleSystem>();
+        ps3 = transform.GetChild(9).GetComponent<ParticleSystem>();
         cameraTarget = transform.Find("PlayerCameraRoot").GetComponent<Transform>();
         FirstCamera = GameObject.Find("Player1stCamera").GetComponent<FirstPersonCamera>();
         FirstBody = transform.Find("Mesh").GetComponent<FirstCameraBody>();
-
+        SceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"현재 씬은 {SceneName}입니다.");
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         coolTime = GameObject.Find("SkillInfo").GetComponent<SkillCoolTimeManager>();
         actions = new PlayerInputActions();
@@ -220,8 +231,23 @@ public class Player : MonoBehaviour, IEquipTarget
         equipUI = GameObject.Find("EquipmentUI").GetComponent<EquipmentUI>();
         gameOver = GameObject.Find("GameOver").GetComponent<GameOver>();
     }
+
+    
     private void Start()
     {
+        cameraSetting();
+        GameManager.Inst.bossDead = false;
+        if (GameManager.Inst.isPrevStat)
+        {
+            GameManager.Inst.MainPlayer.Hp = GameManager.Inst.PreHp;
+            GameManager.Inst.MainPlayer.Mp = GameManager.Inst.PreMp;
+        }
+        else
+        {
+            hp = maxHP;
+            mp = maxMP;
+        }
+
         GameManager.Inst.InvenUI.OnInventoryOpen += () => actions.Player.Disable();
         GameManager.Inst.InvenUI.OnInventoryClose += () => actions.Player.Enable();
 
@@ -273,6 +299,10 @@ public class Player : MonoBehaviour, IEquipTarget
             {
                 inputDir.y += gravity * Time.deltaTime;
             }
+            else
+            {
+                anim.SetBool("Grounded", true);
+            }
 
             //스킬1을 사용했을떄 전방으로 돌진
             if (Onskill01)
@@ -290,10 +320,41 @@ public class Player : MonoBehaviour, IEquipTarget
             }
         }
     }
+
+
     private void LateUpdate()
     {
-        CameraRotate();
+        CameraRotate();        
     }
+
+    // 캐릭터 위치.y +10  캐릭터위치.z -5 에서출발 캐릭터 위치.y +10  캐릭터위치.z -25 까지 이동
+    public void bossDeadCamera()
+    {
+        OnDisable();
+        canvas.SetActive(false);
+        bossCamera.SetActive(true);
+        bossCameraDestination.SetActive(true);
+        StartCoroutine(cameraMove());
+    }
+
+    float cameraMoveTime = 0.0f;
+    float explosionDuration = 30.0f;
+    float cameraSpeed = 1.0f;
+    IEnumerator cameraMove()
+    {
+        while(cameraMoveTime <= explosionDuration)
+        {
+            inputDir = Vector3.zero;
+            bossCamera.transform.position = Vector3.Lerp(bossCamera.transform.position, bossCameraDestination.transform.position, cameraSpeed * Time.deltaTime);
+            cameraMoveTime += Time.deltaTime;
+            yield return null;
+        }
+        bossCameraDestination.SetActive(false);
+        bossCamera.SetActive(false);
+        canvas.SetActive(true);
+        OnEnable();
+    }
+
     //OnEnable / OnDisable-----------------------------------------------------------------------------
     private void OnEnable()
     {
@@ -304,7 +365,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
         actions.Player.Enable();
         actions.Player.Use.performed += OnUseInput;                  //f키
-        actions.Player.CameraChange.performed += CameraChange;       //g키
+        //actions.Player.CameraChange.performed += CameraChange;       //g키, 카메라 전환 테스트용도로 사용되었음
         actions.Player.Jump.performed += OnJump;
         actions.Player.MoveModeChange.performed += OnMoveModeChange; // 왼쪽 쉬프트 
         actions.Player.Skill1.performed += OnSkill_1;
@@ -332,7 +393,7 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Skill1.performed -= OnSkill_1;
         actions.Player.MoveModeChange.performed -= OnMoveModeChange;
         actions.Player.Jump.performed -= OnJump;
-        actions.Player.CameraChange.performed -= CameraChange;
+        //actions.Player.CameraChange.performed -= CameraChange;
         actions.Player.Use.performed -= OnUseInput;
         actions.Player.Disable();
 
@@ -342,22 +403,42 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.PlayerMove.Disable();
     }
 
-    private void CameraChange(InputAction.CallbackContext _)
+    /// <summary>
+    /// 카메라 전환 테스트를 위해 만듦
+    /// </summary>
+    /// <param name="_">g키눌렀을때 실행되게 만들었으므로 사용 안함</param>
+    //private void CameraChange(InputAction.CallbackContext _)
+    //{
+    //    Debug.Log("동굴 입장");
+    //    // on3rdCamera가 true이면 
+    //    if (On3rdCamera) // true일때 = 3인칭 => 1인칭 전환
+    //    {
+    //        FirstCamera.ChangeCamera(true);
+    //        StartCoroutine(onBody());
+    //        On3rdCamera = false;
+    //    }
+    //    else // false일때 = 1인칭 => 3인칭 전환
+    //    {
+    //        FirstCamera.ChangeCamera(false);
+    //        FirstBody.OnBody(true);
+    //        On3rdCamera = true;
+    //    }
+    //}
+
+    void cameraSetting()
     {
-        Debug.Log("시점 변경");
-        if (On3rdCamera)
+        if (SceneName == "stage_2_old")
         {
             FirstCamera.ChangeCamera(true);
             StartCoroutine(onBody());
             On3rdCamera = false;
         }
-        else
+        else // false일때 = 1인칭 => 3인칭 전환
         {
             FirstCamera.ChangeCamera(false);
             FirstBody.OnBody(true);
             On3rdCamera = true;
         }
-
     }
     IEnumerator onBody()
     {
@@ -416,6 +497,7 @@ public class Player : MonoBehaviour, IEquipTarget
         {
             inputDir.y = jumpPower; // y축 이동방향을 점프높이로 설정하여 올라가다가 다시 내려오게 만듦 = 점프
             anim.SetTrigger("OnJump");
+            anim.SetBool("Grounded", false);
         }
     }
     //------------------
@@ -456,6 +538,8 @@ public class Player : MonoBehaviour, IEquipTarget
     {
         if (coolTime.skill1_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
+            ps1.Play();
+            anim.SetBool("UsingSkill",true);
             Debug.Log("스킬1 발동");
             Mp -= 30.0f;
             StartCoroutine(Skill01());
@@ -473,12 +557,15 @@ public class Player : MonoBehaviour, IEquipTarget
         anim.SetBool("OnSkill1", false);
         actions.Player.Enable();
         actions.PlayerMove.Enable();
+        anim.SetBool("UsingSkill", false);
+        ps1.Stop();
     }
 
     private void OnSkill_2(InputAction.CallbackContext _) // 회전회오리
     {
         if (coolTime.skill2_CoolTime <= 0.0f && Mp > 30.0f && controller.isGrounded)
         {
+            anim.SetBool("UsingSkill", true);
             Mp -= 30.0f;
             StartCoroutine(Skill02());
             coolTime.skill2();
@@ -493,12 +580,14 @@ public class Player : MonoBehaviour, IEquipTarget
         actions.Player.Enable();
         anim.SetBool("OnSkill2", false);
         attackPower *= 2.0f;
+        anim.SetBool("UsingSkill", false);
     }
 
     private void OnSkill_3(InputAction.CallbackContext _) // 흡혈 버프
     {
         if (coolTime.skill3_CoolTime <= 0.0f && Mp > 50.0f && controller.isGrounded)
         {
+            ps3.Play();
             Mp -= 50.0f;
             StartCoroutine(Skill03());
             coolTime.skill3();
@@ -510,6 +599,7 @@ public class Player : MonoBehaviour, IEquipTarget
         gainHP = true;
         yield return new WaitForSeconds(6.0f);
         gainHP = false;
+        ps3.Stop();
     }
 
     private void OnSkill_4(InputAction.CallbackContext _) // 도약
@@ -565,6 +655,10 @@ public class Player : MonoBehaviour, IEquipTarget
             {
                 IsDead = true;
                 Dead();
+            }
+            else
+            {
+                anim.SetTrigger("OnHit");
             }
         }
     }

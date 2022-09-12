@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/KSJ/stage_1.unity
+    guid: a3a05e029234e754587b7298ba2c7ac2
+  - enabled: 1
+    path: Assets/Scenes/KSJ/stage_2.unity
+    guid: 7c877f6b7db0f284da8107e49393fc77
+  - enabled: 1
+    path: Assets/Scenes/KSJ/stage_3.unity
+    guid: 29346b732cf3db740b158f8549f99f1e
+  - enabled: 1
+    path: Assets/Scenes/KSJ/village_3.unity
+    guid: 29a9a60fb3f125d4288aea7bc4ac3539
+  - enabled: 1
+    path: Assets/Scenes/KSJ/village_2.unity
+    guid: f314b7c8d7a6a7a45a8c50f97476ab60
+  - enabled: 1
+    path: Assets/Scenes/KSJ/village_1.unity
+    guid: 8b5d13a7df39b534c8c85d7e1146cbc0
   m_configObjects: {}

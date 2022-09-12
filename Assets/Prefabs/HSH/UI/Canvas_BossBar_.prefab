@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6456078904533518050}
   m_Layer: 5
   m_Name: Canvas_BossBar_
-  m_TagString: Untagged
+  m_TagString: HPUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

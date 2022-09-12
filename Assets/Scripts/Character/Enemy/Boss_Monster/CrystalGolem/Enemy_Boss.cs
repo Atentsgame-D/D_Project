@@ -29,10 +29,15 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     //사망용 -----------------------------------------------------------------------------------------
     bool isDead = false;
+    public GameObject explosionPrefab;
+    bool bossExplosion = false;
 
-    //IHealth -------------------------------------------------------------------------------------
-    public float hp = 100.0f;
-    float maxHP = 100.0f;
+    // hpUI -----------------------------------------------------------------------------------------
+    public GameObject UIClose;
+
+//IHealth -------------------------------------------------------------------------------------
+public float hp = 100.0f;
+    float maxHP = 400.0f;
     public float HP
     {
         get => hp;
@@ -64,23 +69,30 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        UIClose = GameObject.FindWithTag("HPUI");
     }
     private void Update()
     {
-        switch (state)
+        if (!isDead)
         {
-            case Boss_EnemyState.Idle:
-                IdleUpdate();
-                break;
-           case Boss_EnemyState.Chase:
-                ChaseUpdate();
-                break;
-            case Boss_EnemyState.Attack:
-                Targeting();
-                break;
-            case Boss_EnemyState.Dead:
-            default:
-                break;
+            switch (state)
+            {
+                case Boss_EnemyState.Idle:
+                    IdleUpdate();
+                    UIClose.SetActive(false);
+                    break;
+                case Boss_EnemyState.Chase:
+                    ChaseUpdate();
+                    UIClose.SetActive(true);
+                    break;
+                case Boss_EnemyState.Attack:
+                    Targeting();
+                    UIClose.SetActive(true);
+                    break;
+                case Boss_EnemyState.Dead:
+                default:
+                    break;
+            }
         }
     }
     void IdleUpdate()
@@ -90,6 +102,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             ChangeState(Boss_EnemyState.Chase);
             return;
         }
+        //Canvas_BossBar.SetActive(false);
 
     }
 
@@ -146,41 +159,10 @@ public class Enemy_Boss : MonoBehaviour,IHealth
             anim.SetTrigger("Attack");
             int randAtk = Random.Range(0, 3);
             anim.SetInteger("AttackType", randAtk);
-            Attack(player);
+            //bossAttack();
             attackCoolTime = attackSpeed;
         }
     }
-
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-    //    {
-    //        //attackTarget = other.GetComponent<IBattle>();
-    //        ChangeState(Boss_EnemyState.Attack);
-    //        return;
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject == GameManager.Inst.MainPlayer.gameObject)
-    //    {
-    //        ChangeState(Boss_EnemyState.Idle);
-    //        return;
-    //    }
-    //}
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Weapon")) // 무기에 쳐맞을때
-    //    {
-    //        HP -= player.AttackPower;
-    //        if (player.gainHP)
-    //        {
-    //            player.Hp += player.AttackPower * 0.5f;
-    //        }
-    //        Debug.Log("Enemy : " + Mathf.Max(0, HP)); // 체력을 0밑으로 떨어지지 않게 함
-    //    }
-    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -233,6 +215,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         {
             case Boss_EnemyState.Idle:
                 agent.isStopped = true;
+              //  Canvas_BossBar.SetActive(false);
                 break;
              case Boss_EnemyState.Chase:
                 agent.isStopped = true;
@@ -267,7 +250,7 @@ public class Enemy_Boss : MonoBehaviour,IHealth
                 agent.isStopped = true;
                 break;
             case Boss_EnemyState.Dead:
-               // DiePresent();
+                DiePresent();
                 break;
             default:
                 break;
@@ -277,15 +260,14 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         anim.SetInteger("EnemyState", (int)state);
     }
     void DiePresent()
-    {
-       
+    {       
         anim.SetBool("Dead", true);
         anim.SetTrigger("Die");
         isDead = true;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
         HP = 0;
-       // StartCoroutine(DeadEffect());
+        StartCoroutine(DeadEffect());
     }
 
     IEnumerator DeadEffect()
@@ -297,34 +279,33 @@ public class Enemy_Boss : MonoBehaviour,IHealth
         }
         else
         {
-            // Die();
-           // isChase = false;
-           // Destroy(gameObject, 2);
             ChangeState(Boss_EnemyState.Dead);
-            //ItemDrop();
+            if (!bossExplosion)
+            {
+                GameObject obj = Instantiate(explosionPrefab, transform.position, transform.rotation);
+                GameManager.Inst.MainPlayer.bossDeadCamera();
+                bossExplosion = true;
+            }
             anim.SetTrigger("Die");
             anim.SetBool("Dead", true);
-            /*isDead = true;
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
-            HP = 0;*/
+
+            yield return new WaitForSeconds(3.0f);
+            Collider[] colliders = GetComponents<Collider>();
+            foreach (var col in colliders)
+            {
+                col.enabled = false;
+            }
+            agent.enabled = false;
+            Rigidbody rigid = GetComponent<Rigidbody>();
+            rigid.isKinematic = false;
+            rigid.drag = 20.0f;
+            Destroy(this.gameObject, 12.0f);
         }
 
        // Boss_HP_Bar hpBar = GetComponentInChildren<Boss_HP_Bar>();
-       // hpBar.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(3.0f);
-        Collider[] colliders = GetComponents<Collider>();
-        foreach (var col in colliders)
-        {
-            col.enabled = false;
-        }
-        agent.enabled = false;
-        Rigidbody rigid = GetComponent<Rigidbody>();
-        rigid.isKinematic = false;
-        rigid.drag = 20.0f;
-        Destroy(this.gameObject, 12.0f);
+       // hpBar.gameObject.SetActive(false);        
     }
+
     private void OnDrawGizmos()
     {
         //Gizmos.color = Color.blue;
@@ -369,7 +350,11 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
         return result;  
     }
-    public void Attack(Player target)
+    public void bossAttack()
+    {
+        Attack(player);
+    }
+    private void Attack(Player target)
     {
         if (target != null)
         {            
@@ -404,9 +389,9 @@ public class Enemy_Boss : MonoBehaviour,IHealth
 
     void Die()
     {
-        if (isDead == false)
+        if (!isDead)
         {
             ChangeState(Boss_EnemyState.Dead);
-        }
+        }        
     }
 }
