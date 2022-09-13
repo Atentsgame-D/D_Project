@@ -25,19 +25,19 @@ public class SceneChanger_go : MonoBehaviour
             switch (SceneNum)                           //현재 씬 확인 및 다음 씬으로 변수 변환
             {
                 case "stage_1":                         
-                    SceneNum = "village_water";
+                    SceneNum = "village_1";
                     break;
-                case "village_water":
-                    SceneNum = "stage_2_old";
+                case "village_1":
+                    SceneNum = "stage_2";
                     break;
-                case "stage_2_old":
-                    SceneNum = "village_small";
+                case "stage_2":
+                    SceneNum = "village_2";
                     break;
-                case "village_small":
+                case "village_2":
                     SceneNum = "stage_3";
                     break;
                 case "stage_3":
-                    SceneNum = "village";
+                    SceneNum = "village_3";
                     break;
                 default:                                        //현재 씬을 판명 불가능할 경우 다음 씬을 스테이지 1로
                     Debug.Log("에러 발생 SceneNum초기화");
