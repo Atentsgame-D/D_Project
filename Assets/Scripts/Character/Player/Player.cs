@@ -427,7 +427,7 @@ public class Player : MonoBehaviour, IEquipTarget
 
     void cameraSetting()
     {
-        if (SceneName == "stage_2_old")
+        if (SceneName == "stage_2")
         {
             FirstCamera.ChangeCamera(true);
             StartCoroutine(onBody());

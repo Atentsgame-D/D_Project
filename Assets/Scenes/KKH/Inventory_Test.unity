@@ -574,6 +574,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 3492231559375027585, guid: 4d1abfa50791ad041947940e68d19930, type: 3}
+      propertyPath: m_TagString
+      value: Store
+      objectReference: {fileID: 0}
     - target: {fileID: 3492231559375027587, guid: 4d1abfa50791ad041947940e68d19930, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -761,6 +765,10 @@ PrefabInstance:
     - target: {fileID: 4868072775033629775, guid: 4d1abfa50791ad041947940e68d19930, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5927439616831496267, guid: 4d1abfa50791ad041947940e68d19930, type: 3}
+      propertyPath: isNPC
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7395953082466284449, guid: 4d1abfa50791ad041947940e68d19930, type: 3}
       propertyPath: m_Layer
