@@ -24,20 +24,20 @@ public class SceneChanger_back : MonoBehaviour
             Debug.Log("충돌 물체 태그 플레이어 확인");
             switch (SceneNum)                           //현재 씬 확인 및 다음 씬으로 변수 변환
             {
-                case "village_1":
-                    SceneNum = "stage_1";
-                    break;
-                case "stage_2":
+                case "stage_1":
                     SceneNum = "village_1";
                     break;
                 case "village_2":
-                    SceneNum = "stage_2";
+                    SceneNum = "stage_1";
                     break;
-                case "stage_3":
+                case "stage_2":
                     SceneNum = "village_2";
                     break;
                 case "village_3":
-                    SceneNum = "stage_3";
+                    SceneNum = "stage_2";
+                    break;
+                case "stage_3":
+                    SceneNum = "village_3";
                     break;
                 default:                                        //현재 씬을 판명 불가능할 경우 다음 씬을 스테이지 1로
                     Debug.Log("에러 발생 SceneNum초기화");

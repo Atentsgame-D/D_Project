@@ -430,7 +430,7 @@ public class Player : MonoBehaviour, IEquipTarget
         if (SceneName == "stage_2")
         {
             FirstCamera.ChangeCamera(true);
-            StartCoroutine(onBody());
+            FirstBody.OnBody(false);
             On3rdCamera = false;
         }
         else // false일때 = 1인칭 => 3인칭 전환
