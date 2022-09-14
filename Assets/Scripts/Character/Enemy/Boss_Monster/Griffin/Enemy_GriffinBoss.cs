@@ -212,6 +212,7 @@ public class Enemy_GriffinBoss : MonoBehaviour, IHealth
         {
             case Boss_EnemyState.Idle:
                 agent.isStopped = true;
+                agent.velocity = Vector3.zero;
                 break;
             case Boss_EnemyState.Chase:
                 agent.isStopped = true;
